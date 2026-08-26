@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/*
+ * Sengaja dibiarkan minimal.
+ *
+ * Design token (warna, font, spacing) BELUM didefinisikan di sini karena acuan
+ * visual ada di Figma dan scope FE-0002 cuma framework + routing. Preset warna
+ * & font bawaan create-next-app sudah dibuang supaya tidak ada keputusan desain
+ * yang ikut ter-commit diam-diam lalu keburu dipakai.
+ *
+ * Token dari Figma diisi di sini saat slicing dimulai, lewat `@theme`.
+ */

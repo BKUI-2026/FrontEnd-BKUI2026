@@ -17,4 +17,6 @@ Tiap kali kontrak API berubah di BE, catat di sini: tanggal & jam, endpoint yang
 
 | Tanggal & Jam | Endpoint | Perubahan | Ref BE |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-08-26 20:45 WIB | `GET /api/v1/health` | Endpoint pertama BE. Response `{ status: 'ok'\|'degraded', timestamp: string, uptime: number, database: 'up'\|'down' }`. Base path semua endpoint: `/api/v1`, BE jalan di port 3000. CORS `credentials: true`, origin FE harus terdaftar di env `CORS_ORIGINS` sisi BE. | BE ARCH-0002 |
+
+> Per 2026-08-26, `GET /api/v1/health` adalah **satu-satunya** endpoint BE yang sudah ada. Endpoint auth, form registrasi (CASA / School Roadshow / Mentoring), dan Content **belum didefinisikan** — jangan bikin tipe response-nya duluan di FE (README boundary nomor 4). Tipe yang sudah ditulis di `src/lib/api.ts` baru `HealthCheckResponse`.
