@@ -3,7 +3,7 @@ id: FE-0001
 tipe: —
 author: <Nama>
 fitur: Setup Awal Project
-tanggal: 2026-08-26
+tanggal: 2026-08-26 15:29 WIB
 status_integrasi: Belum Dikerjakan
 ---
 

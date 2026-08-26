@@ -3,7 +3,7 @@ id: FE-XXXX
 tipe: Components(<Nama Komponen>) | Slides(<Nama Halaman>) | gabungan keduanya
 author: <Nama>
 fitur: <Nama Fitur/Update>
-tanggal: YYYY-MM-DD
+tanggal: YYYY-MM-DD HH:MM WIB
 status_integrasi: Belum Dikerjakan | Masih Dummy Data | Terhubung ke API
 ---
 

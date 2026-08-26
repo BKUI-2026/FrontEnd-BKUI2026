@@ -13,8 +13,8 @@ File ini BUKAN salinan kontrak API, cuma pointer. Source of truth kontrak API ad
 > Link relatif ini jalan selama folder FrontEnd-BKUI2026 dan BackEnd-BKUI2026 tetap sibling di dalam folder project-bkui2026 seperti sekarang.
 
 ## Catatan Sinkronisasi
-Tiap kali kontrak API berubah di BE, catat di sini: tanggal, endpoint yang berubah, ARCH/commit terkait di BE.
+Tiap kali kontrak API berubah di BE, catat di sini: tanggal & jam, endpoint yang berubah, ARCH/commit terkait di BE.
 
-| Tanggal | Endpoint | Perubahan | Ref BE |
+| Tanggal & Jam | Endpoint | Perubahan | Ref BE |
 |---|---|---|---|
 | — | — | — | — |
