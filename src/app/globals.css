@@ -19,3 +19,61 @@
   /* Biru muda — background navbar */
   --color-bkui-navbar: #e6f3fd;
 }
+
+/*
+ * Animasi kelopak sakura berjatuhan (komponen SakuraBerjatuhan).
+ *
+ * Dipisah jadi dua keyframe yang jalan di elemen berbeda:
+ * - `sakura-jatuh` di pembungkus luar → gerak turun saja
+ * - `sakura-putar` di gambar di dalamnya → berputar + oleng kiri-kanan
+ *
+ * Dipisah begini supaya durasi jatuh dan durasi putar bisa beda-beda per
+ * kelopak. Kalau digabung jadi satu keyframe, keduanya terkunci di ritme yang
+ * sama dan gerakannya jadi kelihatan seragam/robotik.
+ *
+ * Keduanya cuma menganimasi `transform` — properti yang bisa ditangani
+ * compositor GPU, jadi tidak memicu layout/repaint tiap frame.
+ */
+@keyframes sakura-jatuh {
+  from {
+    transform: translate3d(0, -15vh, 0);
+  }
+  to {
+    transform: translate3d(0, 115vh, 0);
+  }
+}
+
+/*
+ * Jarak oleng kiri-kanan diatur lewat `--oleng`, di-set per kelopak dari
+ * komponen secara proporsional terhadap ukurannya. Kalau dipatok satu angka
+ * untuk semua, kelopak besar kelihatan kaku sementara yang kecil kelihatan
+ * berlebihan.
+ */
+@keyframes sakura-putar {
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  25% {
+    transform: rotate(90deg) translateX(var(--oleng, 14px));
+  }
+  50% {
+    transform: rotate(180deg) translateX(0);
+  }
+  75% {
+    transform: rotate(270deg) translateX(calc(var(--oleng, 14px) * -1));
+  }
+  100% {
+    transform: rotate(360deg) translateX(0);
+  }
+}
+
+/*
+ * Hormati setelan "kurangi animasi" di OS. Animasi non-stop di seluruh layar
+ * bisa memicu mual/pusing bagi sebagian orang, jadi kalau pengguna sudah minta
+ * animasi dikurangi, kelopaknya disembunyikan sepenuhnya.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .sakura-layer {
+    display: none;
+  }
+}

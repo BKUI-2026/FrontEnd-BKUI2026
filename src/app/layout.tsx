@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { SakuraBerjatuhan } from "@/components/ui/SakuraBerjatuhan";
 
 import "./globals.css";
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
+        <SakuraBerjatuhan />
         <Navbar />
         {children}
         <Footer />
