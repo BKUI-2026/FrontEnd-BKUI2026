@@ -1,12 +1,21 @@
 @import "tailwindcss";
 
 /*
- * Sengaja dibiarkan minimal.
+ * Design token BKUI 2026.
  *
- * Design token (warna, font, spacing) BELUM didefinisikan di sini karena acuan
- * visual ada di Figma dan scope FE-0002 cuma framework + routing. Preset warna
- * & font bawaan create-next-app sudah dibuang supaya tidak ada keputusan desain
- * yang ikut ter-commit diam-diam lalu keburu dipakai.
+ * Warna diambil dari Figma. Pakai token ini di komponen (mis. `bg-bkui-oren`),
+ * JANGAN tulis hex langsung di class — biar kalau warnanya direvisi cukup
+ * diubah di sini.
  *
- * Token dari Figma diisi di sini saat slicing dimulai, lewat `@theme`.
+ * Font & spacing scale belum ditentukan, nunggu acuan Figma berikutnya.
  */
+@theme {
+  /* Oren — warna utama CTA (tombol "Pesan Tiket") */
+  --color-bkui-oren: #ff7730;
+
+  /* Biru — tombol sekunder (mis. "Masuk sebagai Siswa") */
+  --color-bkui-button: #84c2f6;
+
+  /* Biru muda — background navbar */
+  --color-bkui-navbar: #e6f3fd;
+}

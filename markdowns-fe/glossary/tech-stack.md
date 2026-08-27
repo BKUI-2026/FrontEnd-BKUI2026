@@ -11,5 +11,7 @@
 | Placeholder | Halaman kosong yang menandai rutenya sudah ada, UI-nya belum dislicing | Komponen `PagePlaceholder`, dihapus per halaman saat slicing dimulai |
 | Design token | Nilai desain (warna, font, spacing) yang dipakai ulang lintas komponen | Belum diisi — nunggu Figma. Nanti masuk `globals.css` lewat `@theme` |
 | Env NEXT_PUBLIC_ | Prefix env Next.js yang bikin nilainya ikut ter-bundle ke browser | Boleh untuk base URL & Client ID, HARAM untuk secret |
+| Client component | Komponen bertanda `"use client"`, bisa pakai state & event handler | Navbar pakai ini karena butuh toggle menu mobile & baca URL aktif |
+| aria-current | Atribut HTML penanda item navigasi yang sedang dibuka | Dipakai di Navbar biar halaman aktif kebaca screen reader, bukan cuma beda warna |
 
 > Tambah baris baru tiap ada istilah baru yang dipakai di code/diskusi.

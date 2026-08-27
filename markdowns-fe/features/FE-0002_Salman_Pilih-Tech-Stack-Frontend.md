@@ -1,7 +1,7 @@
 ---
 id: FE-0002
 tipe: Slides(Skeleton Semua Halaman)
-author: Claude
+author: Salman
 fitur: Pilih Tech Stack Frontend & Scaffold Routing Skeleton
 tanggal: 2026-08-26 21:15 WIB
 status_integrasi: Belum Dikerjakan

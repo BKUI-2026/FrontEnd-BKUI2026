@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { Navbar } from "@/components/layout/Navbar";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,8 +14,9 @@ export const metadata: Metadata = {
 /**
  * Root layout.
  *
- * Sengaja belum ada Navbar/Footer — komponen itu butuh acuan Figma dan bukan
- * scope FE-0002. Font juga belum ditentukan, nunggu design token dari Figma.
+ * Navbar tampil di semua halaman (FE-0003) — strukturnya sudah jadi, tapi
+ * style-nya masih netral karena belum dislicing dari Figma. Footer belum ada.
+ * Font juga belum ditentukan, nunggu design token dari Figma.
  *
  * Props diketik eksplisit, bukan pakai `LayoutProps<"/">` bawaan Next. Tipe itu
  * baru ada setelah `next build`/`next dev` sempat jalan, jadi `npm run typecheck`
@@ -22,7 +25,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
