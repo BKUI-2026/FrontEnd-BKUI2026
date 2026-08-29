@@ -1,5 +1,5 @@
 import { PapanArah } from "@/components/landing/PapanArah";
-import { SectionLangit } from "@/components/landing/SectionLangit";
+import { DekorSection, SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { SUBJUDUL_ARAH_PETUALANGAN } from "@/lib/landing-content";
 
@@ -27,7 +27,10 @@ import { SUBJUDUL_ARAH_PETUALANGAN } from "@/lib/landing-content";
  */
 export function ArahPetualangan() {
   return (
-    <SectionLangit className="pb-20 pt-16 sm:pb-28 sm:pt-20">
+    <SectionLangit
+      className="pb-20 pt-16 sm:pb-28 sm:pt-20"
+      dekorasi={<DekorSection nama="arah" tinggi={885} />}
+    >
       <div className="relative mx-auto flex w-full max-w-[1240px] flex-col items-center px-5 sm:px-8">
         <JudulSticker as="h2" ukuran="h1" className="text-center">
           Tentukan Arah Petualanganmu

@@ -67,8 +67,57 @@ export function SectionLangit({
 }
 
 /**
+ * Lapisan ilustrasi khas satu section — bukit, pohon, semak, bunga, jamur, dsb.
+ *
+ * Tiap berkas `dekor-*.webp` adalah hasil ekspor section dari Figma yang
+ * langit dan area kontennya sudah dilepas, jadi tinggal ditumpuk di belakang
+ * isi section (cara pembuatannya dicatat di FE-0007).
+ *
+ * **Ditempel ke tepi BAWAH**, bukan atas. Sebagian besar dekorasi (bukit,
+ * semak, jamur) memang duduk di dasar section, sementara tinggi section di web
+ * ikut isinya dan tidak pernah persis 885px seperti kanvas Figma. Kalau
+ * ditempel dari atas, dasar ilustrasinya jadi menggantung di tengah section.
+ *
+ * `min-w-[900px]` menahan gambarnya supaya tidak ikut mengecil habis di layar
+ * sempit — kalau dibiarkan menyusut, pohon dan semaknya jadi terlalu kecil
+ * untuk terbaca. Kelebihannya meluber lalu terpotong `overflow-hidden` milik
+ * section.
+ */
+export function DekorSection({
+  nama,
+  tinggi,
+  className,
+}: {
+  /** Nama berkas tanpa awalan/akhiran, mis. `"video"` untuk `dekor-video.webp`. */
+  nama: string;
+  /** Tinggi asli berkas, dipakai next/image buat menghitung rasio. */
+  tinggi: number;
+  className?: string;
+}) {
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute inset-x-0 bottom-0 -z-10 overflow-hidden ${className ?? ""}`}
+    >
+      <Image
+        src={`/image/landing/dekor-${nama}.webp`}
+        alt=""
+        width={1512}
+        height={tinggi}
+        sizes="100vw"
+        className="h-auto w-full min-w-[900px]"
+      />
+    </div>
+  );
+}
+
+/**
  * Deretan bendera segitiga yang menggantung di tepi atas section
  * (Frame 283 di Figma, dipakai ulang di tiga section).
+ *
+ * Sengaja tetap dipakai sebagai SVG terpisah, tidak ikut dilebur ke
+ * `dekor-*.webp`: segitiga birunya (#3570B6) sewarna langit, jadi ikut terhapus
+ * saat langit dilepas dari hasil ekspor. Versi SVG juga lebih tajam.
  *
  * Lebarnya dipaksa minimal 1512px lewat `min-w-[1512px]` supaya di layar lebar
  * benderanya tidak melar jadi segitiga gepeng — kalau layarnya lebih lebar dari

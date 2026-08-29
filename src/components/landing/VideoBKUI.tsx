@@ -1,6 +1,8 @@
-import Image from "next/image";
-
-import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
+import {
+  DekorBendera,
+  DekorSection,
+  SectionLangit,
+} from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { VIDEO_LANDING } from "@/lib/landing-content";
 
@@ -20,16 +22,9 @@ import { VIDEO_LANDING } from "@/lib/landing-content";
 export function VideoBKUI() {
   return (
     <SectionLangit className="pb-16 pt-[max(180px,12vw)] sm:pb-24">
-      {/* Dekorasi: bendera di atas, pohon di kanan bawah */}
+      {/* Bendera di tepi atas, lalu pohon/bunga/jamur/bukit dari Figma */}
       <DekorBendera />
-      <Image
-        src="/image/landing/pohon-aftermovie.webp"
-        alt=""
-        aria-hidden
-        width={700}
-        height={1210}
-        className="pointer-events-none absolute -right-16 bottom-0 -z-10 hidden w-[340px] lg:block"
-      />
+      <DekorSection nama="video" tinggi={885} />
 
       <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-6 px-5 sm:px-8">
         <JudulSticker as="h2" ukuran="h2">

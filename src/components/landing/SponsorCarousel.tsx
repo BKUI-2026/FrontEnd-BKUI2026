@@ -21,13 +21,13 @@ import { DAFTAR_SPONSOR } from "@/lib/landing-content";
 export function SponsorCarousel() {
   return (
     <section aria-labelledby="judul-sponsor" className="relative isolate">
-      {/* Lereng rumput dari Figma, jadi transisi dari FAQ ke footer */}
+      {/* Pita sponsor + rumput dari Figma, jadi transisi dari FAQ ke footer */}
       <Image
-        src="/image/landing/rumput-band.webp"
+        src="/image/landing/dekor-sponsor.webp"
         alt=""
         aria-hidden
         width={1512}
-        height={673}
+        height={280}
         sizes="100vw"
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-full w-full object-cover"
       />

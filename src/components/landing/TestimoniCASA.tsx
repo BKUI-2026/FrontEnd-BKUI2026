@@ -3,7 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
+import {
+  DekorBendera,
+  DekorSection,
+  SectionLangit,
+} from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
 
@@ -30,15 +34,8 @@ export function TestimoniCASA() {
     <SectionLangit className="pb-24 pt-[max(195px,12.5vw)]">
       <DekorBendera />
 
-      {/* Pohon cemara kiri & kanan, hanya muat di layar lebar */}
-      <Image
-        src="/image/landing/pohon-kiri.webp"
-        alt=""
-        aria-hidden
-        width={620}
-        height={921}
-        className="pointer-events-none absolute -left-10 bottom-0 -z-10 hidden w-[300px] xl:block"
-      />
+      {/* Pohon cemara kiri & kanan, gunung, dan tanah dari Figma */}
+      <DekorSection nama="testi" tinggi={885} />
       <Image
         src="/image/landing/pohon-kanan.webp"
         alt=""
