@@ -13,7 +13,7 @@ Format nama file: `FE-000X_<Nama>_<Nama Fitur/Update>.md`
 - `<Nama>`: nama orang yang mengerjakan
 - `<Nama Fitur/Update>`: nama fitur atau ringkasan update singkat
 
-Contoh: `FE-0003_Salman_Navbar-Struktur-Awal.md`
+Contoh: `FE-0005_Salman_Slicing-Landing-Page.md`
 
 Tipe (`Components`, `Slides`, atau gabungan mis. `Components(Navbar)+Slides(LandingPage)`) dicatat di field `tipe:` pada frontmatter, **bukan di nama file** — biar nama file tetap pendek dan bebas tanda kurung. Tanda kurung di nama file bikin link Markdown ke file itu putus, karena renderer menganggap link selesai di `)` pertama.
 

@@ -1,0 +1,59 @@
+import { PapanArah } from "@/components/landing/PapanArah";
+import { SectionLangit } from "@/components/landing/SectionLangit";
+import { JudulSticker } from "@/components/ui/JudulSticker";
+import { SUBJUDUL_ARAH_PETUALANGAN } from "@/lib/landing-content";
+
+/**
+ * Section "Arah Petualangan" (istilah PRD) — dua papan kayu yang mengarahkan
+ * pengunjung ke jalur yang sesuai:
+ *
+ * - **Peserta** → beli tiket siswa (lewat halaman /ticket, lalu keluar ke Yesplis)
+ * - **Sekolah** → pendaftaran School Roadshow, diisi PJ Sekolah tanpa login
+ *
+ * Ini titik percabangan role yang disebut AGENTS.md bagian 5.1 & 5.2. Karena
+ * jalur Sekolah TIDAK butuh login (PRD menegaskan PJ Sekolah cukup akses
+ * publik), papan kanan langsung mengarah ke halamannya.
+ *
+ * -------------------------------------------------------------------------
+ * Status: LINK PESERTA MASIH PLACEHOLDER
+ * -------------------------------------------------------------------------
+ * Di PRD, jalur Peserta bermuara ke pendaftaran Mentoring yang butuh login
+ * sebagai Student, sementara endpoint auth di BE belum ada. Tombolnya dibuat
+ * mengarah ke /ticket — halaman publik yang sudah ada rutenya — karena itu yang
+ * tertulis di label tombolnya ("Pesan Tiket Siswa"), BUKAN menebak rute login.
+ *
+ * Begitu Auth jalan, cek ke PM apakah tombol ini seharusnya mengarah ke
+ * /daftar-mentoring untuk pengunjung yang sudah login.
+ */
+export function ArahPetualangan() {
+  return (
+    <SectionLangit className="pb-20 pt-16 sm:pb-28 sm:pt-20">
+      <div className="relative mx-auto flex w-full max-w-[1240px] flex-col items-center px-5 sm:px-8">
+        <JudulSticker as="h2" ukuran="h1" className="text-center">
+          Tentukan Arah Petualanganmu
+        </JudulSticker>
+
+        <p className="mt-1 text-center font-ui text-base font-semibold text-bkui-teks sm:text-xl">
+          {SUBJUDUL_ARAH_PETUALANGAN}
+        </p>
+
+        <div className="mt-12 flex w-full flex-col items-center gap-14 sm:mt-16 md:flex-row md:items-start md:justify-center md:gap-8">
+          <PapanArah
+            judul="Peserta"
+            deskripsi="Eksplorasi masa depanmu. Tiket ini memberikan akses ke seluruh rangkaian acara puncak Bedah Kampus UI."
+            labelTombol="Pesan Tiket Siswa"
+            href="/ticket"
+            miring={-0.6}
+          />
+          <PapanArah
+            judul="Sekolah"
+            deskripsi="Daftarkan instansi Pendidikanmu untuk prioritas kunjungan roadshow representatif kami."
+            labelTombol="Daftarkan Sekolah"
+            href="/school-roadshow"
+            miring={0.6}
+          />
+        </div>
+      </div>
+    </SectionLangit>
+  );
+}

@@ -8,8 +8,16 @@ import type { CSSProperties } from "react";
  * Jadi komponen ini tetap server component dan tidak menambah beban di browser
  * selain animasi transform yang ditangani GPU.
  *
- * Ditaruh di belakang konten (`-z-10`) supaya teks tetap gampang dibaca, dan
- * `pointer-events-none` supaya kelopaknya tidak pernah menghalangi klik.
+ * Ditaruh di `z-40`: melayang di atas seluruh isi halaman, tapi tetap lewat di
+ * BELAKANG Navbar yang `sticky z-50` — biar menu navigasi tidak ikut ramai
+ * ketutup kelopak.
+ *
+ * Jadi angkanya tidak boleh sembarang diubah: harus di atas 0 supaya menang
+ * dari konten halaman, dan harus di bawah 50 supaya kalah dari navbar.
+ *
+ * `pointer-events-none` jadi wajib karena lapisan ini menutupi seluruh layar:
+ * tanpa itu, kelopaknya akan memblokir semua klik ke link dan tombol di
+ * bawahnya.
  */
 
 /** Rasio asli aset public/logo/sakura.svg (65 × 94). */
@@ -65,7 +73,7 @@ export function SakuraBerjatuhan() {
     <div
       // `.sakura-layer` dipakai globals.css buat menyembunyikan seluruh lapisan
       // ini kalau pengguna menyalakan "kurangi animasi" di OS.
-      className="sakura-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="sakura-layer pointer-events-none fixed inset-0 z-40 overflow-hidden"
       aria-hidden
     >
       {KELOPAK.map((k, i) => (

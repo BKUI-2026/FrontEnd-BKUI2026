@@ -1,23 +1,124 @@
 @import "tailwindcss";
 
 /*
- * Design token BKUI 2026.
+ * Design token BKUI 2026 — diambil dari Figma (Local variables).
  *
- * Warna diambil dari Figma. Pakai token ini di komponen (mis. `bg-bkui-oren`),
+ * Pakai token ini di komponen (mis. `bg-bkui-oren`, `text-bkui-hijau`),
  * JANGAN tulis hex langsung di class — biar kalau warnanya direvisi cukup
  * diubah di sini.
  *
- * Font & spacing scale belum ditentukan, nunggu acuan Figma berikutnya.
+ * Nama variabel di Figma dipertahankan apa adanya di komentar supaya bisa
+ * ditelusuri balik ke file desain.
  */
 @theme {
-  /* Oren — warna utama CTA (tombol "Pesan Tiket") */
+  /* ---- Warna: brand utama ---- */
+  /* Secondary/50 — CTA utama (tombol "Pesan Tiket") */
   --color-bkui-oren: #ff7730;
-
-  /* Biru — tombol sekunder (mis. "Masuk sebagai Siswa") DAN background Footer */
+  /* Primary/Base "biru muda" — tombol sekunder & background Footer */
   --color-bkui-button: #84c2f6;
-
-  /* Biru muda — background navbar */
+  /* Primary/10 — background navbar & tombol pil di atas ilustrasi */
   --color-bkui-navbar: #e6f3fd;
+
+  /* ---- Warna: judul & teks ---- */
+  /* Warna isi semua judul display */
+  --color-bkui-hijau: #155125;
+  /* Garis tepi kartu FAQ + ikon chevron */
+  --color-bkui-hijau-garis: #165524;
+  /* "hijau I"/"hijau II" — gradien pil Timeline */
+  --color-bkui-hijau-tua: #0e4700;
+  --color-bkui-hijau-daun: #018b01;
+  /* Outline luar judul display (tidak punya nama variabel di Figma) */
+  --color-bkui-pink: #ef84ae;
+  /* text-light — outline dalam judul + teks di atas papan kayu & pil Timeline */
+  --color-bkui-terang: #f3fbe6;
+  /* Primary/100 — warna teks paragraf */
+  --color-bkui-teks: #1a2731;
+  /* Secondary/100 — teks di kartu Tokoh Inspirasi */
+  --color-bkui-coklat: #331201;
+
+  /* ---- Warna: permukaan ---- */
+  /* krem */
+  --color-bkui-krem: #fef7c6;
+  /* Gradient/5 — panel Testimoni & isi bingkai video */
+  --color-bkui-krem-kartu: #faf3c2;
+  /* Gradient/9 — gradien kartu (FAQ, Tokoh Inspirasi, Timeline) */
+  --color-bkui-kartu-atas: #ffd896;
+  --color-bkui-kartu-bawah: #fff6e6;
+  /* Garis tepi kartu Tokoh Inspirasi */
+  --color-bkui-coklat-garis: #aa3d18;
+  /* Tiang papan "Arah Petualangan" */
+  --color-bkui-kayu: #865334;
+  /* kuning — bingkai video After Movie */
+  --color-bkui-kuning: #feec1e;
+  --color-bkui-kuning-bingkai: #e8d61b;
+  /* oranye, biru tua — dipakai di ilustrasi (bendera, bunga) */
+  --color-bkui-oranye: #ff5c07;
+  --color-bkui-biru-tua: #3570b6;
+  /* Neutral/10 */
+  --color-bkui-netral: #fdfdfc;
+
+  /* ---- Font ---- */
+  /* Talina DEMO — judul display */
+  --font-display: var(--font-display), ui-rounded, system-ui, sans-serif;
+  /* Delight — subheading, angka, label tombol */
+  --font-ui: var(--font-ui), system-ui, sans-serif;
+  /* Inter — paragraf */
+  --font-body: var(--font-body), system-ui, sans-serif;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Judul "stiker" — elemen khas desain BKUI 2026
+ * ---------------------------------------------------------------------------
+ *
+ * Tiap judul di Figma punya tiga lapis: isi hijau, outline krem tipis, lalu
+ * outline pink tebal + bayangan. Dipakai komponen `JudulSticker`.
+ *
+ * Dibuat dengan MENUMPUK tiga salinan teks di satu sel grid, bukan dengan
+ * `paint-order: stroke fill`. Alasannya: kalau cuma satu elemen, dua outline
+ * dengan warna berbeda tidak mungkin dibuat, dan `paint-order` pada teks HTML
+ * belum konsisten di semua browser. Dengan tiga lapis, lapisan terbawah tetap
+ * terbaca sebagai outline meski `paint-order` diabaikan browser.
+ *
+ * Tebal outline pakai satuan `em` supaya ikut mengecil bersama font-size saat
+ * layar mengecil — kalau dipatok px, di mobile outline-nya jadi terlalu tebal
+ * dan judulnya berubah jadi gumpalan.
+ */
+.judul-sticker {
+  display: inline-grid;
+  place-items: center;
+  /* Outline menonjol keluar dari kotak teks; tanpa ini ujungnya kepotong. */
+  padding: 0.28em 0.3em;
+  line-height: 1.4;
+}
+
+.judul-sticker > * {
+  grid-area: 1 / 1;
+  /* Semua lapis harus persis setumpuk, jadi tidak boleh ada yang membungkus
+     baris berbeda dari lapis lain. */
+  white-space: inherit;
+  text-align: inherit;
+}
+
+/* Lapis 1 (paling bawah): outline pink tebal + bayangan jatuh dari Figma. */
+.judul-sticker__pink {
+  color: var(--color-bkui-pink);
+  -webkit-text-stroke: 0.44em var(--color-bkui-pink);
+  paint-order: stroke fill;
+  /* Figma: 4.9px 7.538px 1.508px rgba(0,0,0,0.4) pada font-size 64px. */
+  text-shadow: 0.077em 0.118em 0.024em rgb(0 0 0 / 0.4);
+}
+
+/* Lapis 2: outline krem tipis. */
+.judul-sticker__krem {
+  color: var(--color-bkui-terang);
+  -webkit-text-stroke: 0.19em var(--color-bkui-terang);
+  paint-order: stroke fill;
+}
+
+/* Lapis 3 (paling atas): isi hijau — ini satu-satunya lapis yang dibaca. */
+.judul-sticker__isi {
+  color: var(--color-bkui-hijau);
 }
 
 /*

@@ -1,0 +1,9 @@
+<svg width="276" height="276" viewBox="0 0 276 276" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Rectangle 797 (Stroke)" d="M272 23.3984C272 12.685 263.315 4.00009 252.602 4H23.3984C12.685 4.00009 4.00009 12.685 4 23.3984V252.602C4.00009 263.315 12.685 272 23.3984 272H252.602C263.315 272 272 263.315 272 252.602V23.3984ZM276 252.602C276 265.524 265.524 276 252.602 276H23.3984C10.4759 276 9.07105e-05 265.524 0 252.602V23.3984C8.96854e-05 10.4759 10.4759 8.7618e-05 23.3984 0H252.602C265.524 9.07163e-05 276 10.4759 276 23.3984V252.602Z" fill="url(#paint0_linear_0_4)"/>
+<defs>
+<linearGradient id="paint0_linear_0_4" x1="138" y1="7.05682" x2="138" y2="276" gradientUnits="userSpaceOnUse">
+<stop stop-color="#AA3D18"/>
+<stop offset="0.697483" stop-color="#3B1807"/>
+</linearGradient>
+</defs>
+</svg>
