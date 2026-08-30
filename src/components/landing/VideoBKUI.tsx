@@ -21,7 +21,7 @@ import { VIDEO_LANDING } from "@/lib/landing-content";
  */
 export function VideoBKUI() {
   return (
-    <SectionLangit className="pb-16 pt-[max(180px,12vw)] sm:pb-24">
+    <SectionLangit className="min-h-[58.53vw] pb-16 pt-[max(150px,10.85vw)] sm:pb-24">
       {/* Bendera di tepi atas, lalu pohon/bunga/jamur/bukit dari Figma */}
       <DekorBendera />
       <DekorSection nama="video" tinggi={885} />

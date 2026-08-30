@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { SectionLangit } from "@/components/landing/SectionLangit";
+import { SectionLangit, StripPembatas } from "@/components/landing/SectionLangit";
 import { DESKRIPSI_BKUI } from "@/lib/landing-content";
 
 /**
@@ -33,7 +33,7 @@ export function ApaItuBKUI() {
       // Jarak atas mengikuti Figma: judul mulai di y=215 dari 1512 lebar frame
       // (≈14vw). Ini yang bikin isinya lewat di BAWAH balok kayu mendatar,
       // bukan ketabrak — sama seperti di desain.
-      className="pb-14 pt-[max(140px,14vw)] sm:pb-20"
+      className="min-h-[58.53vw] pb-14 pt-[max(140px,14.22vw)] sm:pb-20"
       dekorasi={
         /*
           Rangka kayu + dedaunan & bunga yang membingkai section ini di Figma.
@@ -49,19 +49,22 @@ export function ApaItuBKUI() {
           gambarnya: di web kelopaknya sudah jadi animasi (`SakuraBerjatuhan`),
           kalau ikut dibawa jadi dobel.
         */
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden"
-        >
-          <Image
-            src="/image/landing/dekor-apaitu.webp"
-            alt=""
-            width={1512}
-            height={885}
-            sizes="100vw"
-            className="h-auto w-full min-w-[900px]"
-          />
-        </div>
+        <>
+          <StripPembatas />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden"
+          >
+            <Image
+              src="/image/landing/dekor-apaitu.webp"
+              alt=""
+              width={1512}
+              height={885}
+              sizes="100vw"
+              className="h-auto w-full min-w-[900px]"
+            />
+          </div>
+        </>
       }
     >
       <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">

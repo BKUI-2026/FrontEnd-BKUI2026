@@ -67,6 +67,25 @@ export function SectionLangit({
 }
 
 /**
+ * Strip pembatas 24px di tepi atas section (`Rectangle 815` di Figma, dipakai di
+ * Apa itu BKUI, Arah Petualangan, dan FAQ).
+ *
+ * Dibuat sebagai kotak CSS, BUKAN ikut dilebur ke `dekor-*.webp`. Ini cuma satu
+ * warna solid setinggi 24px — tidak ada alasan jadi bitmap. Selain itu lapisan
+ * dekorasi ditempel ke tepi BAWAH section, sementara strip ini harus menempel
+ * di ATAS: kalau ikut di gambar yang sama, posisinya melenceng sejauh selisih
+ * tinggi section dengan tinggi kanvas Figma.
+ */
+export function StripPembatas() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-6 bg-bkui-strip"
+    />
+  );
+}
+
+/**
  * Lapisan ilustrasi khas satu section — bukit, pohon, semak, bunga, jamur, dsb.
  *
  * Tiap berkas `dekor-*.webp` adalah hasil ekspor section dari Figma yang

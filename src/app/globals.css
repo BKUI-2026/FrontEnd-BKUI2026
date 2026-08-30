@@ -39,6 +39,8 @@
   /* ---- Warna: permukaan ---- */
   /* krem */
   --color-bkui-krem: #fef7c6;
+  /* Rectangle 815 — strip pembatas 24px di tepi atas sebagian section */
+  --color-bkui-strip: #f8f4d6;
   /* Gradient/5 — panel Testimoni & isi bingkai video */
   --color-bkui-krem-kartu: #faf3c2;
   /* Gradient/9 — gradien kartu (FAQ, Tokoh Inspirasi, Timeline) */

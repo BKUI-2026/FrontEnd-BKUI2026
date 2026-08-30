@@ -13,7 +13,7 @@ import { DAFTAR_TOKOH, type Tokoh } from "@/lib/landing-content";
  */
 export function TokohInspirasi() {
   return (
-    <SectionLangit className="pb-20 pt-[max(200px,15.5vw)]">
+    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(200px,15.34vw)]">
       <DekorBendera />
 
       <div className="relative mx-auto flex w-full max-w-[1360px] flex-col items-center px-5 sm:px-8">

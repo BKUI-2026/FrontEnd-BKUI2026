@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-import { DekorSection, SectionLangit } from "@/components/landing/SectionLangit";
+import {
+  DekorSection,
+  SectionLangit,
+  StripPembatas,
+} from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 
@@ -20,8 +24,13 @@ import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 export function FAQ() {
   return (
     <SectionLangit
-      className="pb-16 pt-20 sm:pt-24"
-      dekorasi={<DekorSection nama="faq" tinggi={1109} />}
+      className="min-h-[73.35vw] pb-16 pt-[max(64px,7.54vw)]"
+      dekorasi={
+        <>
+          <StripPembatas />
+          <DekorSection nama="faq" tinggi={1109} />
+        </>
+      }
     >
       <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:gap-14 sm:px-8">
         <JudulSticker as="h2" ukuran="h1" className="text-center">

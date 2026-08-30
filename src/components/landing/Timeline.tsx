@@ -41,7 +41,7 @@ const GRADIEN_PIL =
 
 export function Timeline() {
   return (
-    <SectionLangit className="pb-20 pt-12 sm:pb-24">
+    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(48px,5.89vw)] sm:pb-24">
       <div className="relative mx-auto w-full max-w-[1512px] px-5 sm:px-8">
         <div className="flex justify-center">
           <JudulSticker as="h2" ukuran="h1">

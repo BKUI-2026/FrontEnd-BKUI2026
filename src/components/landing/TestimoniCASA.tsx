@@ -31,19 +31,11 @@ export function TestimoniCASA() {
     setIndeks((i) => (i + langkah + jumlah) % jumlah);
 
   return (
-    <SectionLangit className="pb-24 pt-[max(195px,12.5vw)]">
+    <SectionLangit className="min-h-[58.53vw] pb-24 pt-[max(195px,12.37vw)]">
       <DekorBendera />
 
       {/* Pohon cemara kiri & kanan, gunung, dan tanah dari Figma */}
       <DekorSection nama="testi" tinggi={885} />
-      <Image
-        src="/image/landing/pohon-kanan.webp"
-        alt=""
-        aria-hidden
-        width={620}
-        height={1161}
-        className="pointer-events-none absolute -right-10 bottom-0 -z-10 hidden w-[300px] xl:block"
-      />
 
       <div className="relative mx-auto flex w-full max-w-[1260px] flex-col items-center px-5 sm:px-8">
         <JudulSticker as="h2" ukuran="h1">
