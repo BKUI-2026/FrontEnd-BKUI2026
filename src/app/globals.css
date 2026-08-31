@@ -124,6 +124,164 @@
 }
 
 /*
+ * ---------------------------------------------------------------------------
+ * Animasi "muncul" saat elemen masuk layar
+ * ---------------------------------------------------------------------------
+ *
+ * Dipakai komponen `Muncul`. Elemen naik sedikit sambil memudar masuk.
+ *
+ * Geraknya sekali jalan, 44px, dengan pelambatan di ujung. Elemen yang melompat jauh
+ * atau memantul bikin mata mengejar posisi akhirnya dulu sebelum bisa membaca,
+ * dan di halaman sepanjang ini efeknya cepat melelahkan.
+ *
+ * Pakai properti `translate`, BUKAN `transform` — beberapa elemen di dalamnya
+ * (pohon bergoyang, judul stiker) sudah memakai `transform` sendiri, dan kalau
+ * dipakai bersama yang satu akan menimpa yang lain.
+ */
+.muncul {
+  opacity: 0;
+  translate: 0 44px;
+  transition:
+    opacity 0.7s ease-out,
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.muncul[data-tampil="ya"] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/*
+ * Tanpa JavaScript, IntersectionObserver tidak pernah jalan sehingga isinya
+ * akan tersembunyi selamanya. Aturan ini yang menjaga halaman tetap terbaca.
+ */
+@media (scripting: none) {
+  .muncul {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Ilustrasi tertiup angin
+ * ---------------------------------------------------------------------------
+ *
+ * Dipakai pada pohon, bunga, rumput, dan jamur di section After Movie &
+ * Testimoni.
+ *
+ * Titik putarnya di DASAR elemen (`transform-origin: bottom center`), bukan di
+ * tengah — tumbuhan melengkung dari pangkalnya, kalau diputar dari tengah
+ * hasilnya terlihat mengambang dan bergeser.
+ *
+ * Amplitudo, durasi, dan jeda mulainya diatur PER ELEMEN lewat custom property.
+ * Ini bagian yang bikin geraknya terasa hidup, bukan kaku:
+ *
+ * - rumput paling ringan  -> ayunan paling lebar (6-8°), paling cepat (2-2,8 dtk)
+ * - bunga sedang          -> 2,8-4,6°, 3,8-5,2 dtk
+ * - pohon paling berat    -> ayunan paling sempit (1,4-2,5°), paling lambat (5,6-7,4 dtk)
+ * - jamur nyaris diam     -> 1,9-2,1°, cuma goyah sedikit
+ * - bukit & tanah         -> tidak bergerak sama sekali
+ *
+ * Jeda mulainya NEGATIF supaya pas halaman dibuka tiap elemen sudah berada di
+ * fase yang berbeda. Kalau semuanya mulai dari nol, seluruh isi section
+ * mengayun berbarengan dan langsung terbaca sebagai animasi mesin.
+ *
+ * Cuma menganimasi `transform` — ditangani compositor GPU, tidak memicu
+ * layout/repaint tiap frame.
+ */
+@keyframes tertiup-angin {
+  from {
+    transform: rotate(calc(var(--goyang, 1.2deg) * -1));
+  }
+  to {
+    transform: rotate(var(--goyang, 1.2deg));
+  }
+}
+
+.tertiup-angin {
+  transform-origin: bottom center;
+  animation: tertiup-angin var(--goyang-durasi, 6s) ease-in-out
+    var(--goyang-mulai, 0s) infinite alternate;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Bendera segitiga bergoyang
+ * ---------------------------------------------------------------------------
+ *
+ * Titik putarnya di TEPI ATAS (`transform-origin: top center`) — benderanya
+ * digantung pada tali, jadi mengayun dari atas. Kebalikan dari tumbuhan yang
+ * mengayun dari pangkal bawah.
+ *
+ * Sudutnya tetap dijaga kecil (0,9°) karena elemennya selebar layar: pada lebar
+ * 1512px, memutar 1° saja sudah menggeser ujungnya belasan piksel. Lebih dari
+ * itu benderanya terlihat lepas dari talinya. Ayunan turun-naik 3px ditambahkan
+ * supaya geraknya tetap terbaca tanpa harus memperbesar sudutnya.
+ */
+@keyframes bendera-goyang {
+  from {
+    transform: rotate(-0.9deg) translateY(-3px);
+  }
+  to {
+    transform: rotate(0.9deg) translateY(3px);
+  }
+}
+
+.bendera-goyang {
+  transform-origin: top center;
+  animation: bendera-goyang 5s ease-in-out -2s infinite alternate;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Naik-turun pelan (maskot & panah ajakan scroll)
+ * ---------------------------------------------------------------------------
+ *
+ * Dipakai maskot tenda dan panah pada tombol "Jelajahi Lebih Lanjut". Untuk
+ * panah, gerakannya bukan sekadar hiasan — turun-naik berulang mengisyaratkan
+ * arah yang dituju tombolnya.
+ */
+@keyframes naik-turun {
+  from {
+    transform: translateY(calc(var(--naik, 11px) * -1));
+  }
+  to {
+    transform: translateY(var(--naik, 11px));
+  }
+}
+
+.naik-turun {
+  animation: naik-turun var(--naik-durasi, 2.4s) ease-in-out
+    var(--naik-mulai, 0s) infinite alternate;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Jalur timeline mengalir
+ * ---------------------------------------------------------------------------
+ *
+ * Menggeser garis putus-putus di sepanjang jalur, jadi titik-titiknya berjalan
+ * dari tahap awal ke tahap berikutnya.
+ *
+ * Ini satu-satunya animasi di halaman ini yang benar-benar membawa informasi:
+ * arah alirannya menunjukkan urutan rangkaian acara, bukan sekadar menghias.
+ * Karena itu jalannya lambat & tetap (`linear`) — bukan mengayun bolak-balik.
+ *
+ * `stroke-dasharray` aslinya "12 12", jadi satu siklus penuh = 24.
+ */
+@keyframes jalur-mengalir {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.jalur-mengalir {
+  animation: jalur-mengalir 1s linear infinite;
+}
+
+/*
  * Animasi kelopak sakura berjatuhan (komponen SakuraBerjatuhan).
  *
  * Dipisah jadi dua keyframe yang jalan di elemen berbeda:
@@ -178,5 +336,25 @@
 @media (prefers-reduced-motion: reduce) {
   .sakura-layer {
     display: none;
+  }
+
+  /* Pohonnya tetap tampil, cuma berhenti bergoyang — beda dengan kelopak yang
+     memang cuma hiasan, pohon ini bagian dari ilustrasi section. */
+  .tertiup-angin {
+    animation: none;
+  }
+
+  /* Isinya langsung tampil tanpa gerak masuk. Tetap harus terlihat — ini
+     konten, bukan hiasan. */
+  .muncul {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+
+  .bendera-goyang,
+  .naik-turun,
+  .jalur-mengalir {
+    animation: none;
   }
 }

@@ -1,6 +1,8 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 
 import { SectionLangit, StripPembatas } from "@/components/landing/SectionLangit";
+import { Muncul } from "@/components/ui/Muncul";
 import { DESKRIPSI_BKUI } from "@/lib/landing-content";
 
 /**
@@ -67,7 +69,7 @@ export function ApaItuBKUI() {
         </>
       }
     >
-      <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">
+      <Muncul className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">
         {/* Ilustrasi tenda + maskot */}
         <Image
           src="/image/landing/tenda-maskot.webp"
@@ -75,8 +77,12 @@ export function ApaItuBKUI() {
           aria-hidden
           width={800}
           height={792}
+          // Terdeteksi sebagai LCP di halaman ini — dimuat lebih awal supaya
+          // section pertama setelah hero tidak kosong dulu sesaat.
+          priority
           sizes="(min-width: 1024px) 395px, 60vw"
-          className="h-auto w-[min(60vw,320px)] shrink-0 lg:w-[395px]"
+          className="naik-turun h-auto w-[min(60vw,320px)] shrink-0 lg:w-[395px]"
+          style={{ "--naik": "12px", "--naik-durasi": "2.8s" } as CSSProperties}
         />
 
         <div className="flex w-full flex-col gap-5">
@@ -141,7 +147,7 @@ export function ApaItuBKUI() {
             {DESKRIPSI_BKUI}
           </p>
         </div>
-      </div>
+      </Muncul>
     </SectionLangit>
   );
 }

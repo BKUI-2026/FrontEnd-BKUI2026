@@ -1,9 +1,7 @@
-import {
-  DekorBendera,
-  DekorSection,
-  SectionLangit,
-} from "@/components/landing/SectionLangit";
+import { HiasanVideo } from "@/components/landing/HiasanVideo";
+import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { VIDEO_LANDING } from "@/lib/landing-content";
 
 /**
@@ -22,21 +20,23 @@ import { VIDEO_LANDING } from "@/lib/landing-content";
 export function VideoBKUI() {
   return (
     <SectionLangit className="min-h-[58.53vw] pb-16 pt-[max(150px,10.85vw)] sm:pb-24">
-      {/* Bendera di tepi atas, lalu pohon/bunga/jamur/bukit dari Figma */}
+      {/* Bendera di tepi atas, lalu seluruh hiasan ilustrasi dari Figma */}
       <DekorBendera />
-      <DekorSection nama="video" tinggi={885} />
+      <HiasanVideo />
 
       <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-6 px-5 sm:px-8">
-        <JudulSticker as="h2" ukuran="h2">
-          {VIDEO_LANDING.judul}
-        </JudulSticker>
+        <Muncul>
+          <JudulSticker as="h2" ukuran="h2">
+            {VIDEO_LANDING.judul}
+          </JudulSticker>
+        </Muncul>
 
         {/*
           Bingkai kuning tebal dari Figma. Dibangun dengan border + radius, bukan
           gambar, supaya isinya bisa berupa <video>/<iframe> sungguhan begitu
           URL-nya ada, dan rasionya tetap 16:9 di semua lebar layar.
         */}
-        <div className="w-full max-w-[996px] rounded-xl border-[10px] border-bkui-kuning-bingkai bg-bkui-krem-kartu p-2 shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px] sm:p-3">
+        <Muncul jeda={120} className="w-full max-w-[996px] rounded-xl border-[10px] border-bkui-kuning-bingkai bg-bkui-krem-kartu p-2 shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px] sm:p-3">
           <div className="flex aspect-video w-full items-center justify-center rounded-sm bg-bkui-krem-kartu">
             {VIDEO_LANDING.url ? (
               <iframe
@@ -52,7 +52,7 @@ export function VideoBKUI() {
               </p>
             )}
           </div>
-        </div>
+        </Muncul>
       </div>
     </SectionLangit>
   );

@@ -5,14 +5,27 @@ import { ButtonPil } from "@/components/ui/ButtonPil";
 /**
  * Satu papan kayu di section "Arah Petualangan".
  *
- * Papan kayunya (tiga bilah + bayangan) dipakai sebagai gambar hasil ekspor
- * Figma; teks dan tombolnya ditumpuk di atasnya sebagai HTML sungguhan supaya
- * bisa dibaca screen reader, di-copy, dan ikut membesar saat pengguna
- * memperbesar ukuran font.
+ * Seluruh ukuran & posisinya diambil dari Figma (node `224:53` untuk papan
+ * kanan, `228:167` untuk papan kiri), lalu diubah jadi persen terhadap kotak
+ * bilah kayu yang berukuran 591,5 x 359,7.
  *
- * Posisi teks dinyatakan dalam persen terhadap gambar papan, bukan px, supaya
- * ikut menyesuaikan saat papannya mengecil di layar sempit.
+ * Papannya terdiri dari TIGA bilah terpisah dengan kemiringan berbeda-beda
+ * (1,92° / 0,25° / -0,57°) — bukan satu gambar utuh. Itu yang bikin papannya
+ * terlihat seperti kayu yang dipaku satu per satu, bukan stiker. Papan kiri
+ * memakai berkas bilah yang sama persis, cuma dicerminkan.
+ *
+ * Ukuran teks memakai satuan `cqw` (persen lebar container) supaya judul dan
+ * deskripsi ikut mengecil proporsional bersama papannya. Kalau pakai ukuran
+ * tetap, di layar sempit teksnya meluber keluar bilah.
  */
+
+/** Tiga bilah kayu, posisi & kemiringan relatif terhadap kotak papan. */
+const BILAH = [
+  { berkas: "bilah-atas.svg", kiri: "50%", atas: "19.99%", lebar: "99.34%", tinggi: "34.47%", putar: 1.92 },
+  { berkas: "bilah-tengah.svg", kiri: "50.01%", atas: "53.91%", lebar: "77.28%", tinggi: "39.57%", putar: 0.25 },
+  { berkas: "bilah-bawah.svg", kiri: "49.65%", atas: "84.84%", lebar: "82.83%", tinggi: "29%", putar: -0.57 },
+] as const;
+
 interface PapanArahProps {
   judul: string;
   deskripsi: string;
@@ -21,8 +34,11 @@ interface PapanArahProps {
   /** Tujuan belum tersedia (mis. masih menunggu Auth). */
   nonaktif?: boolean;
   alasanNonaktif?: string;
-  /** Sudut miring papan, meniru dua papan yang tidak sejajar di Figma. */
-  miring?: number;
+  /**
+   * Papan kiri adalah cerminan papan kanan di Figma — bilah, kemiringan judul,
+   * dan arah bayangannya semua terbalik.
+   */
+  cermin?: boolean;
 }
 
 export function PapanArah({
@@ -32,62 +48,97 @@ export function PapanArah({
   href,
   nonaktif,
   alasanNonaktif,
-  miring = 0,
+  cermin = false,
 }: PapanArahProps) {
-  return (
-    <div className="relative flex w-full max-w-[520px] flex-col items-center">
-      {/*
-        Tiang papan — persegi panjang cokelat di belakang bilah kayu. Di Figma
-        tiangnya jauh lebih tinggi dari papannya (714px vs 359px) dan menembus
-        ke bawah sampai keluar batas section, jadi tingginya dipatok relatif
-        terhadap lebar papan, bukan terhadap tinggi isi.
-      */}
-      <div
-        aria-hidden
-        // Di layar sempit kedua papan bertumpuk vertikal, jadi tiang sepanjang
-        // versi desktop akan menusuk sampai ke papan di bawahnya.
-        className="absolute top-[8%] h-[112%] w-[9%] rounded-[10px] bg-bkui-kayu shadow-[-8px_-3px_9px_rgba(0,0,0,0.25)] md:h-[190%]"
-      />
+  const arah = cermin ? -1 : 1;
 
-      <div
-        className="relative w-full"
-        style={{ transform: miring ? `rotate(${miring}deg)` : undefined }}
-      >
-        {/* Bilah kayu */}
-        <Image
-          src="/image/landing/papan-kayu.webp"
-          alt=""
+  return (
+    <div className="@container relative w-full max-w-[591px]">
+      {/* Kotak berasio sama dengan kotak bilah di Figma (591,5 x 359,7) */}
+      <div className="relative aspect-[591.5/359.7] w-full">
+        {/*
+          Tiang. Mulai 14,5% DI ATAS bilah teratas dan menjulur sampai 198%
+          tingginya ke bawah — di Figma tiangnya memang menembus keluar batas
+          section lalu terpotong.
+        */}
+        <div
           aria-hidden
-          width={1100}
-          height={699}
-          sizes="(min-width: 1024px) 520px, 90vw"
-          className="h-auto w-full"
+          className="absolute rounded-[3.6%] bg-bkui-kayu"
+          style={{
+            left: "45.5%",
+            top: "-14.46%",
+            width: "8.93%",
+            height: "198.5%",
+            boxShadow: `${-9.912 * arah}px -4.248px 9.346px rgba(0,0,0,0.25)`,
+          }}
         />
 
-        {/* Judul — di bilah paling atas */}
-        <p className="absolute inset-x-0 top-[6%] px-[8%] text-center font-display text-[clamp(1.75rem,4.6vw,4rem)] leading-tight text-bkui-terang [text-shadow:0_3.5px_2.3px_rgb(0_0_0_/_0.25)]">
+        {BILAH.map((b) => (
+          <Image
+            key={b.berkas}
+            src={`/icon/landing/arah/${b.berkas}`}
+            alt=""
+            aria-hidden
+            width={0}
+            height={0}
+            sizes="(min-width: 768px) 591px, 90vw"
+            className="absolute"
+            style={{
+              left: b.kiri,
+              top: b.atas,
+              width: b.lebar,
+              height: b.tinggi,
+              transform: `translate(-50%, -50%) rotate(${b.putar * arah}deg)${cermin ? " scaleX(-1)" : ""}`,
+            }}
+          />
+        ))}
+
+        {/* Judul — miring 1,94° mengikuti kemiringan bilah teratas */}
+        <p
+          className="absolute text-center font-display leading-[1.4] text-bkui-terang [text-shadow:0_3.5px_2.3px_rgb(0_0_0_/_0.25)]"
+          style={{
+            left: "50%",
+            top: "8.7%",
+            width: "60%",
+            fontSize: "max(20px, 10.82cqw)",
+            transform: `translateX(-50%) rotate(${1.94 * arah}deg)`,
+          }}
+        >
           {judul}
         </p>
 
         {/* Deskripsi — di bilah tengah yang lebih gelap */}
-        <p className="absolute inset-x-0 top-[42%] px-[14%] text-center font-body text-[clamp(0.75rem,1.5vw,1.25rem)] leading-[1.4] text-bkui-terang">
+        <p
+          className="absolute text-center font-body leading-[1.4] text-bkui-terang"
+          style={{
+            left: "50%",
+            top: "43.5%",
+            width: "62.38%",
+            fontSize: "max(10px, 3.38cqw)",
+            transform: "translateX(-50%)",
+          }}
+        >
           {deskripsi}
         </p>
-      </div>
 
-      {/*
-        Tombol ditaruh di luar pembungkus yang diputar supaya tetap tegak dan
-        area kliknya tidak ikut miring. Di Figma tombolnya memang menumpuk di
-        bilah paling bawah, jadi ditarik naik dengan margin negatif.
-      */}
-      <div className="relative -mt-[9%] flex justify-center">
-        <ButtonPil
-          href={href}
-          nonaktif={nonaktif}
-          alasanNonaktif={alasanNonaktif}
+        {/*
+          Tombol ditaruh di 77,3% tinggi papan sesuai Figma, tapi ukurannya
+          TIDAK ikut mengecil bersama papan — target sentuh yang menyusut di HP
+          jadi susah dipencet.
+        */}
+        <div
+          className="absolute flex justify-center"
+          style={{ left: "50%", top: "77.3%", transform: "translate(-50%, -50%)" }}
         >
-          {labelTombol}
-        </ButtonPil>
+          <ButtonPil
+            href={href}
+            nonaktif={nonaktif}
+            alasanNonaktif={alasanNonaktif}
+            className="whitespace-nowrap"
+          >
+            {labelTombol}
+          </ButtonPil>
+        </div>
       </div>
     </div>
   );

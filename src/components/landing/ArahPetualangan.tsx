@@ -1,10 +1,8 @@
+import { HiasanArah } from "@/components/landing/HiasanArah";
 import { PapanArah } from "@/components/landing/PapanArah";
-import {
-  DekorSection,
-  SectionLangit,
-  StripPembatas,
-} from "@/components/landing/SectionLangit";
+import { SectionLangit, StripPembatas } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { SUBJUDUL_ARAH_PETUALANGAN } from "@/lib/landing-content";
 
 /**
@@ -36,34 +34,39 @@ export function ArahPetualangan() {
       dekorasi={
         <>
           <StripPembatas />
-          <DekorSection nama="arah" tinggi={885} />
+          <HiasanArah />
         </>
       }
     >
       <div className="relative mx-auto flex w-full max-w-[1240px] flex-col items-center px-5 sm:px-8">
-        <JudulSticker as="h2" ukuran="h1" className="text-center">
-          Tentukan Arah Petualanganmu
-        </JudulSticker>
+        <Muncul className="flex flex-col items-center">
+          <JudulSticker as="h2" ukuran="h1" className="text-center">
+            Tentukan Arah Petualanganmu
+          </JudulSticker>
 
-        <p className="mt-1 text-center font-ui text-base font-semibold text-bkui-teks sm:text-xl">
-          {SUBJUDUL_ARAH_PETUALANGAN}
-        </p>
+          <p className="mt-1 text-center font-ui text-base font-semibold text-bkui-teks sm:text-xl">
+            {SUBJUDUL_ARAH_PETUALANGAN}
+          </p>
+        </Muncul>
 
         <div className="mt-12 flex w-full flex-col items-center gap-14 sm:mt-16 md:flex-row md:items-start md:justify-center md:gap-8">
+          <Muncul jeda={120} className="flex w-full max-w-[591px] justify-center">
           <PapanArah
             judul="Peserta"
             deskripsi="Eksplorasi masa depanmu. Tiket ini memberikan akses ke seluruh rangkaian acara puncak Bedah Kampus UI."
             labelTombol="Pesan Tiket Siswa"
             href="/ticket"
-            miring={-0.6}
+            cermin
           />
+          </Muncul>
+          <Muncul jeda={260} className="flex w-full max-w-[591px] justify-center">
           <PapanArah
             judul="Sekolah"
             deskripsi="Daftarkan instansi Pendidikanmu untuk prioritas kunjungan roadshow representatif kami."
             labelTombol="Daftarkan Sekolah"
             href="/school-roadshow"
-            miring={0.6}
           />
+          </Muncul>
         </div>
       </div>
     </SectionLangit>

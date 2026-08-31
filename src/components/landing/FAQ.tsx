@@ -6,6 +6,7 @@ import {
   StripPembatas,
 } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 
 /**
@@ -33,15 +34,19 @@ export function FAQ() {
       }
     >
       <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:gap-14 sm:px-8">
-        <JudulSticker as="h2" ukuran="h1" className="text-center">
-          Frequently Asked Questions
-        </JudulSticker>
+        <Muncul>
+          <JudulSticker as="h2" ukuran="h1" className="text-center">
+            Frequently Asked Questions
+          </JudulSticker>
+        </Muncul>
 
         <ul className="flex w-full flex-col gap-6">
           {DAFTAR_FAQ.map((item, i) => (
             <li key={item.id}>
-              {/* Panel pertama terbuka sejak awal, sama seperti di Figma. */}
-              <BarisFAQ item={item} terbukaAwal={i === 0} />
+              <Muncul jeda={i * 80}>
+                {/* Panel pertama terbuka sejak awal, sama seperti di Figma. */}
+                <BarisFAQ item={item} terbukaAwal={i === 0} />
+              </Muncul>
             </li>
           ))}
         </ul>
@@ -62,7 +67,7 @@ function BarisFAQ({
       open={terbukaAwal}
       // `group` dipakai supaya ikon chevron bisa ikut berputar saat panelnya
       // terbuka, lewat varian `group-open:`.
-      className="group rounded-3xl border-4 border-bkui-hijau-garis bg-gradient-to-b from-bkui-kartu-atas to-bkui-kartu-bawah px-6 py-5 sm:px-8 sm:py-6"
+      className="group rounded-3xl border-4 border-bkui-hijau-garis bg-gradient-to-b from-bkui-kartu-atas to-bkui-kartu-bawah px-6 py-5 transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-8 sm:py-6"
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-body text-base font-medium leading-[1.4] text-bkui-hijau-garis group-open:font-bold sm:text-xl [&::-webkit-details-marker]:hidden">
         {item.pertanyaan}

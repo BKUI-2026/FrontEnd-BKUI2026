@@ -1,7 +1,9 @@
 import Image from "next/image";
 
 import { SectionLangit } from "@/components/landing/SectionLangit";
+import { JalurTimeline } from "@/components/landing/JalurTimeline";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { TAHAP_TIMELINE, type TahapTimeline } from "@/lib/landing-content";
 
 /**
@@ -44,28 +46,22 @@ export function Timeline() {
     <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(48px,5.89vw)] sm:pb-24">
       <div className="relative mx-auto w-full max-w-[1512px] px-5 sm:px-8">
         <div className="flex justify-center">
-          <JudulSticker as="h2" ukuran="h1">
-            Timeline
-          </JudulSticker>
+          <Muncul>
+            <JudulSticker as="h2" ukuran="h1">
+              Timeline
+            </JudulSticker>
+          </Muncul>
         </div>
 
         {/* ---------- Susunan berkelok (lg ke atas) ---------- */}
         <ol className="relative mx-auto hidden aspect-[1512/885] w-full lg:block">
           {/* Jalur putus-putus penghubung antar tahap */}
-          <Image
-            src="/icon/landing/jalur-timeline-2.svg"
-            alt=""
-            aria-hidden
-            width={376}
-            height={424}
+          <JalurTimeline
+            jalur="dua"
             className="absolute left-[15.77%] top-[28.05%] w-[24.87%]"
           />
-          <Image
-            src="/icon/landing/jalur-timeline-1.svg"
-            alt=""
-            aria-hidden
-            width={615}
-            height={359}
+          <JalurTimeline
+            jalur="satu"
             className="absolute left-[48.26%] top-[40.08%] w-[40.67%]"
           />
 
@@ -100,9 +96,11 @@ export function Timeline() {
           // hanya satu dari keduanya yang pernah tampil sekaligus — keduanya
           // dibedakan lewat `hidden`, bukan dirender bersamaan.
         >
-          {TAHAP_TIMELINE.map((tahap) => (
+          {TAHAP_TIMELINE.map((tahap, i) => (
             <li key={tahap.id}>
-              <PilTahap tahap={tahap} />
+              <Muncul jeda={i * 110}>
+                <PilTahap tahap={tahap} />
+              </Muncul>
             </li>
           ))}
         </ol>

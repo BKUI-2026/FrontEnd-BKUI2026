@@ -3,17 +3,20 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import {
-  DekorBendera,
-  DekorSection,
-  SectionLangit,
-} from "@/components/landing/SectionLangit";
+import { HiasanTestimoni } from "@/components/landing/HiasanTestimoni";
+import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
 
 /**
  * Section "Apa Kata Mereka" — testimoni peserta CASA, ditampilkan satu per satu
  * dengan tombol panah kiri/kanan seperti di Figma.
+ *
+ * Ukuran diambil dari Figma (node `265:278`): panah 97,5x152, kartu 1001x480,
+ * jarak antar keduanya 32 — total 1260. Kartunya SENGAJA tidak dibuat selebar
+ * layar; di desain memang ada ruang kosong di kiri-kanan supaya rumpun pohon
+ * di belakangnya tetap kelihatan.
  *
  * Client component karena butuh state testimoni mana yang sedang tampil.
  *
@@ -33,16 +36,16 @@ export function TestimoniCASA() {
   return (
     <SectionLangit className="min-h-[58.53vw] pb-24 pt-[max(195px,12.37vw)]">
       <DekorBendera />
+      <HiasanTestimoni />
 
-      {/* Pohon cemara kiri & kanan, gunung, dan tanah dari Figma */}
-      <DekorSection nama="testi" tinggi={885} />
+      <div className="relative mx-auto flex w-full max-w-[1260px] flex-col items-center px-4 sm:px-8">
+        <Muncul>
+          <JudulSticker as="h2" ukuran="h1">
+            Apa Kata Mereka
+          </JudulSticker>
+        </Muncul>
 
-      <div className="relative mx-auto flex w-full max-w-[1260px] flex-col items-center px-5 sm:px-8">
-        <JudulSticker as="h2" ukuran="h1">
-          Apa Kata Mereka
-        </JudulSticker>
-
-        <div className="mt-8 flex w-full items-center gap-2 sm:gap-4">
+        <Muncul jeda={120} className="mt-8 flex w-full items-center gap-2 sm:gap-8">
           <TombolPanah arah="kiri" onClick={() => pindah(-1)} />
 
           {/*
@@ -52,7 +55,7 @@ export function TestimoniCASA() {
           */}
           <article
             aria-live="polite"
-            className="flex flex-1 flex-col items-center gap-7 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:p-10 lg:flex-row"
+            className="flex flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:flex-row"
           >
             {/* Foto testimoni — placeholder selama fotonya belum ada */}
             <div className="relative aspect-square w-full max-w-[348px] shrink-0">
@@ -90,7 +93,7 @@ export function TestimoniCASA() {
           </article>
 
           <TombolPanah arah="kanan" onClick={() => pindah(1)} />
-        </div>
+        </Muncul>
 
         {/* Penanda posisi — tidak ada di Figma, tapi tanpa ini pengunjung tidak
             tahu ada berapa testimoni dan sedang di nomor berapa. */}
@@ -116,20 +119,26 @@ function TombolPanah({
       aria-label={
         arah === "kiri" ? "Testimoni sebelumnya" : "Testimoni berikutnya"
       }
-      className="shrink-0 rounded-full p-1 transition-transform hover:scale-110 focus-visible:scale-110"
+      className="shrink-0 rounded-full transition-transform hover:scale-110 focus-visible:scale-110"
     >
       {/*
         Cuma ada satu file panah (menghadap kanan) — di Figma panah kiri adalah
         salinan yang dicerminkan, bukan gambar terpisah. Dicerminkan lewat CSS
         supaya tidak ada dua file identik yang harus dijaga tetap sinkron.
+
+        Ukuran 97,5x152 diambil dari Figma; di layar sempit dikecilkan supaya
+        tidak memakan lebar kartunya.
       */}
       <Image
         src="/icon/landing/panah.svg"
         alt=""
         aria-hidden
+        // Ukuran asli berkasnya 92,4862 x 135,27. Kalau diisi angka lain
+        // (sebelumnya 98x152) rasionya meleset dan next/image protes, karena
+        // lebarnya diatur CSS sementara tingginya ikut rasio asli.
         width={92}
         height={135}
-        className={`h-auto w-6 sm:w-[62px] ${arah === "kiri" ? "-scale-x-100" : ""}`}
+        className={`h-auto w-7 sm:w-[62px] lg:w-[97.5px] ${arah === "kiri" ? "-scale-x-100" : ""}`}
       />
     </button>
   );

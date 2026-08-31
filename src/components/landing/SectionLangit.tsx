@@ -47,14 +47,22 @@ export function SectionLangit({
       {...rest}
       className={`relative isolate overflow-hidden bg-bkui-button ${className ?? ""}`}
     >
-      {/* Lapis 1 — langit berawan, menutup seluruh section */}
+      {/*
+        Lapis 1 — tekstur awan di atas warna dasar langit.
+
+        Cara menumpuknya disalin persis dari Figma: warna dasar `#84C2F6`
+        (`bg-bkui-button` di section ini), lalu tekstur awan dengan blend
+        `soft-light` opacity 38%. Sempat saya tempel sebagai gambar biasa dan
+        warnanya tidak pernah cocok — `soft-light` itu yang bikin awannya
+        menyatu lembut dengan birunya, bukan menutupi.
+      */}
       <Image
-        src="/image/landing/langit.webp"
+        src="/image/landing/awan-tekstur.webp"
         alt=""
         aria-hidden
         fill
         sizes="100vw"
-        className="-z-10 object-cover"
+        className="-z-10 object-cover opacity-[0.38] mix-blend-soft-light"
       />
 
       {/* Lapis 2 — dekorasi khas section ini */}
@@ -153,7 +161,7 @@ export function DekorBendera({ className }: { className?: string }) {
         alt=""
         width={1512}
         height={156}
-        className="h-auto w-full min-w-[1512px]"
+        className="bendera-goyang h-auto w-full min-w-[1512px]"
       />
     </div>
   );

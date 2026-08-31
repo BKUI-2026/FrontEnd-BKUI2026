@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
+import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_TOKOH, type Tokoh } from "@/lib/landing-content";
 
 /**
@@ -17,14 +18,21 @@ export function TokohInspirasi() {
       <DekorBendera />
 
       <div className="relative mx-auto flex w-full max-w-[1360px] flex-col items-center px-5 sm:px-8">
-        <JudulSticker as="h2" ukuran="h1">
-          Tokoh Inspirasi
-        </JudulSticker>
+        <Muncul>
+          <JudulSticker as="h2" ukuran="h1">
+            Tokoh Inspirasi
+          </JudulSticker>
+        </Muncul>
 
         <ul className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {DAFTAR_TOKOH.map((tokoh) => (
+          {DAFTAR_TOKOH.map((tokoh, i) => (
             <li key={tokoh.id}>
-              <KartuTokoh tokoh={tokoh} />
+              {/* Jeda dibatasi 4 langkah (sepanjang satu baris grid) lalu
+                  berulang — kalau terus bertambah, kartu terakhir baru muncul
+                  jauh setelah yang pertama dan malah terasa lambat. */}
+              <Muncul jeda={(i % 4) * 90} className="h-full">
+                <KartuTokoh tokoh={tokoh} />
+              </Muncul>
             </li>
           ))}
         </ul>
@@ -42,7 +50,7 @@ export function TokohInspirasi() {
  */
 function KartuTokoh({ tokoh }: { tokoh: Tokoh }) {
   return (
-    <article className="flex h-full flex-col items-center gap-6 rounded-3xl border-2 border-bkui-coklat-garis bg-gradient-to-b from-bkui-kartu-atas to-bkui-kartu-bawah px-6 pb-6 pt-8">
+    <article className="flex h-full flex-col items-center gap-6 rounded-3xl border-2 border-bkui-coklat-garis bg-gradient-to-b from-bkui-kartu-atas to-bkui-kartu-bawah px-6 pb-6 pt-8 transition-transform duration-300 hover:-translate-y-1.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
       <div className="relative aspect-square w-full max-w-[276px]">
         {tokoh.foto ? (
           <Image
