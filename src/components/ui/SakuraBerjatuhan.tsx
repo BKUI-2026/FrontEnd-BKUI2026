@@ -9,8 +9,12 @@ import type { CSSProperties } from "react";
  * selain animasi transform yang ditangani GPU.
  *
  * Ditaruh di `z-40`: melayang di atas seluruh isi halaman, tapi tetap lewat di
- * BELAKANG Navbar yang `sticky z-50` — biar menu navigasi tidak ikut ramai
- * ketutup kelopak.
+ * BELAKANG Navbar dan Footer yang sama-sama `z-50` — biar dua bingkai halaman
+ * itu tidak ikut ramai ketutup kelopak.
+ *
+ * Kalau nanti ada elemen lain yang juga harus dilewati dari belakang, elemen
+ * itu perlu diberi posisi (`relative`) DAN z-index di atas 40. Memberi z-index
+ * saja tidak cukup: tanpa posisi, z-index-nya diabaikan.
  *
  * Jadi angkanya tidak boleh sembarang diubah: harus di atas 0 supaya menang
  * dari konten halaman, dan harus di bawah 50 supaya kalah dari navbar.

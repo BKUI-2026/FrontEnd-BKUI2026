@@ -33,7 +33,12 @@ const SOSMED: { nama: string; ikon: string; lebar: number; tinggi: number; href:
  */
 export function Footer() {
   return (
-    <footer className="w-full bg-bkui-button">
+    // `relative z-50` bukan sekadar hiasan: lapisan kelopak sakura itu `fixed
+    // z-40` menutupi seluruh layar, dan elemen ber-z-index selalu menang atas
+    // elemen tanpa posisi. Tanpa ini kelopaknya melintas DI DEPAN footer.
+    // Angkanya disamakan dengan Navbar — keduanya sama-sama bingkai halaman
+    // yang harus berada di atas kelopak.
+    <footer className="relative z-50 w-full bg-bkui-button">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-8 py-12 md:flex-row md:items-start md:justify-between">
         {/* Kiri — kontak */}
         <div>
