@@ -18,6 +18,14 @@
   --color-bkui-button: #84c2f6;
   /* Primary/10 — background navbar & tombol pil di atas ilustrasi */
   --color-bkui-navbar: #e6f3fd;
+  /*
+   * Warna dasar latar HALAMAN Explore UI, di bawah dua lapis tekstur awan.
+   * Bukan #84C2F6 seperti section Landing Page: frame halaman di Figma
+   * menumpuk dua lapis awan, bukan satu, sehingga hasilnya lebih terang.
+   * Angkanya dihitung mundur dari render Figma — jalur latar kosong di area
+   * konten terukur rerata #A0DFFB (lihat FE-0007), bukan dikira-kira.
+   */
+  --color-bkui-langit: #99d6f9;
 
   /* ---- Warna: judul & teks ---- */
   /* Warna isi semua judul display */
@@ -48,6 +56,10 @@
   --color-bkui-kartu-bawah: #fff6e6;
   /* Garis tepi kartu Tokoh Inspirasi */
   --color-bkui-coklat-garis: #aa3d18;
+  /* Ujung gelap gradien titik carousel Explore UI */
+  --color-bkui-coklat-tua: #3b1807;
+  /* Secondary/30 — latar tab filter rumpun yang sedang aktif (Explore UI) */
+  --color-bkui-oren-muda: #ffad83;
   /* Tiang papan "Arah Petualangan" */
   --color-bkui-kayu: #865334;
   /* kuning — bingkai video After Movie */
@@ -282,6 +294,79 @@
 }
 
 /*
+ * ---------------------------------------------------------------------------
+ * Ilustrasi Hero yang bernapas
+ * ---------------------------------------------------------------------------
+ *
+ * Menyasar grup di dalam SVG Hero lewat id aslinya dari Figma (`daun`,
+ * `Igris Happy 1`, `Vector 92`/`Vector 93`). Karena id-nya mengandung spasi,
+ * pemilihnya harus pakai `[id="..."]`, bukan `#id`.
+ *
+ * Semua gerakan di sini memakai properti `translate` dan `opacity`, TIDAK
+ * pernah `transform`. Alasannya penting: tiap grup itu sudah membawa atribut
+ * `transform` dari Figma yang menaruhnya pada posisi & sudut yang benar.
+ * Menulis `transform` lewat CSS akan MENIMPA atribut itu dan seluruh
+ * ilustrasinya berhamburan. `translate` adalah properti terpisah yang
+ * ditumpuk di atas transform bawaan, jadi posisinya tetap utuh.
+ *
+ * Satuannya unit SVG (kanvas 1512x885), bukan piksel layar — jadi geraknya
+ * ikut mengecil bersama ilustrasinya di layar sempit, tanpa perlu diatur ulang.
+ */
+@keyframes hero-daun-tertiup {
+  from {
+    translate: -5px 0;
+  }
+  to {
+    translate: 5px -3px;
+  }
+}
+
+/* Tajuk sakura paling ringan dan paling atas — ayunannya paling lebar. */
+.hero-ilustrasi [id="daun"] {
+  animation: hero-daun-tertiup 7s ease-in-out -2s infinite alternate;
+}
+
+@keyframes hero-maskot-lompat {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -9px;
+  }
+}
+
+/* Maskotnya sedang melompat kegirangan di desain — gerakannya melanjutkan itu. */
+.hero-ilustrasi [id="Igris Happy 1"] {
+  animation: hero-maskot-lompat 1.6s ease-in-out infinite alternate;
+}
+
+/*
+ * Dua berkas sinar matahari. Cuma opacity yang berubah, dan hanya sedikit:
+ * sinar yang berkedip terang-redup terbaca sebagai lampu rusak, bukan matahari.
+ *
+ * Rentangnya HARUS mengitari nilai asli grup itu di Figma, yaitu `opacity=0.36`.
+ * Animasi opacity menimpa nilai aslinya, bukan mengalikannya — sempat saya isi
+ * 0.72-1 dan sinarnya langsung jadi bidang putih pekat yang menutupi bukit.
+ */
+@keyframes hero-sinar {
+  from {
+    opacity: 0.28;
+  }
+  to {
+    opacity: 0.44;
+  }
+}
+
+.hero-ilustrasi [id="Vector 92"],
+.hero-ilustrasi [id="Vector 93"] {
+  animation: hero-sinar 9s ease-in-out infinite alternate;
+}
+
+.hero-ilustrasi [id="Vector 93"] {
+  animation-delay: -4.5s;
+}
+
+/*
  * Animasi kelopak sakura berjatuhan (komponen SakuraBerjatuhan).
  *
  * Dipisah jadi dua keyframe yang jalan di elemen berbeda:
@@ -354,7 +439,11 @@
 
   .bendera-goyang,
   .naik-turun,
-  .jalur-mengalir {
+  .jalur-mengalir,
+  .hero-ilustrasi [id="daun"],
+  .hero-ilustrasi [id="Igris Happy 1"],
+  .hero-ilustrasi [id="Vector 92"],
+  .hero-ilustrasi [id="Vector 93"] {
     animation: none;
   }
 }

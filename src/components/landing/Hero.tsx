@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+
+import { HeroIlustrasi } from "./HeroIlustrasi";
 
 /**
  * Hero Landing Page — ilustrasi perkemahan "Makara Expedition" + CTA turun.
@@ -11,22 +12,33 @@ import Link from "next/link";
  * sebenarnya ditulis sebagai <h1> khusus screen reader — supaya halaman tetap
  * punya satu heading level 1 yang benar untuk pembaca layar dan mesin pencari.
  *
- * Tombol "Jelajahi Lebih Lanjut" di Figma ikut menempel di gambar. Tombol itu
- * SUDAH DIHAPUS dari file ilustrasi (`hero-bkui2026.webp`) dan diganti tombol
- * HTML sungguhan, supaya bisa difokus lewat keyboard, terbaca screen reader,
- * dan ukurannya menyesuaikan layar.
+ * Ilustrasinya sendiri SVG (lihat `HeroIlustrasi`), bukan lagi satu WebP rata.
+ * Versi WebP-nya cuma 1x kanvas Figma sehingga berbayang di layar retina.
+ *
+ * Tombol "Jelajahi Lebih Lanjut" di Figma ikut menempel di ilustrasi. Grup
+ * `Button`-nya SUDAH DIBUANG dari SVG hasil ekspor dan diganti tombol HTML
+ * sungguhan, supaya bisa difokus lewat keyboard, terbaca screen reader, dan
+ * ukurannya menyesuaikan layar.
  */
 
 /** Anchor tujuan tombol — section pertama setelah hero. */
 const TUJUAN_JELAJAHI = "#apa-itu-bkui";
 
 /**
- * Warna tepi bawah ilustrasi, disalin dari piksel baris terakhir gambar.
- * Dipakai buat menyambung strip tombol versi mobile supaya tidak ada garis
- * batas yang kelihatan antara gambar dan strip di bawahnya.
+ * Warna tepi bawah ilustrasi, diukur dari empat baris piksel terakhir hasil
+ * render. Dipakai buat menyambung strip tombol versi mobile supaya tidak ada
+ * garis batas yang kelihatan antara ilustrasi dan strip di bawahnya.
+ *
+ * Angkanya WAJIB diukur ulang kalau ilustrasinya berubah — nilai lama masih
+ * disalin dari `hero-bkui2026.webp` dan langsung meleset jauh begitu hero-nya
+ * diganti SVG, karena tepi bawah versi vektor jauh lebih pucat.
+ *
+ * Batang pohon yang gelap di sekitar 90% sengaja tidak dijadikan stop: di
+ * ilustrasi ia cuma selebar batang, tapi sebagai stop gradien ia akan melebar
+ * jadi pita cokelat selebar layar.
  */
 const SAMBUNGAN_RUMPUT =
-  "linear-gradient(to right, #6EBF08 0%, #71C009 30%, #EAD105 45%, #EAD105 100%)";
+  "linear-gradient(to right, #70B536 0%, #9ECC46 30%, #F8F2DA 58%, #E5D145 76%, #DDD586 100%)";
 
 export function Hero() {
   const labelTombol = (
@@ -47,17 +59,15 @@ export function Hero() {
         tidak pernah terpotong — di layar sempit gambarnya ikut mengecil utuh.
       */}
       <div className="relative aspect-[1512/885] w-full">
-        <Image
-          src="/image/landing/hero-bkui2026.webp"
-          alt=""
-          aria-hidden
-          fill
-          sizes="100vw"
-          // Gambar pertama yang dilihat pengunjung — dimuat lebih dulu supaya
-          // tidak ada jeda kosong di atas halaman.
-          priority
-          className="object-cover"
-        />
+        {/*
+          Ilustrasinya menempati seluruh kotak berasio tetap ini. Karena SVG,
+          tidak ada yang perlu dimuat lebih dulu: markup-nya sudah ikut di HTML
+          dan tergambar begitu halaman sampai — tidak ada jeda kosong seperti
+          waktu masih berupa gambar.
+        */}
+        <div className="absolute inset-0">
+          <HeroIlustrasi />
+        </div>
 
         {/*
           Posisi tombol mengikuti Figma (tengah, 86.9% dari atas frame). Karena

@@ -2,18 +2,21 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-08-29 10:05 WIB
+Terakhir diperbarui: 2026-09-01 10:15 WIB
 
 ## Status Integrasi per Fitur
 
 **Landing Page sudah dislicing penuh dari Figma** (FE-0005) — halaman pertama yang isinya jadi. Isinya masih dummy karena endpoint `Content` di BE belum ada.
 
-Delapan halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
+**Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
+animasi Framer Motion. Isinya masih dummy karena alasan yang sama.
+
+Tujuh halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
 | Landing Page | `/` | **Masih Dummy Data** | TBD (entity `Content` — video, tokoh, testimoni, FAQ, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
-| Explore UI | `/explore-ui` | Belum Dikerjakan | TBD (entity `Content`, endpoint belum ada) | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
+| Explore UI | `/explore-ui` | **Masih Dummy Data** | TBD (entity `Content` — deskripsi fakultas, prodi, foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
 | Merchandise Catalog | `/merchandise` | Belum Dikerjakan | — (redirect only ke Yesplis) | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 | Ticket | `/ticket` | Belum Dikerjakan | — (redirect only ke Yesplis) | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 | Profile | `/profile` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
@@ -29,6 +32,7 @@ Delapan halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sud
 - Bahasa: TypeScript
 - Styling: Tailwind CSS 4
 - React: 19
+- Animasi: Framer Motion (`framer-motion`) — dipakai di Explore UI, lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md)
 - Linting: ESLint (`next/core-web-vitals`)
 - Font: Talina DEMO (display), Delight (UI), Inter (body) — via `next/font`, lihat `src/lib/fonts.ts`
 - Auth: konsumsi Email/Password + Google SSO dari BE — **belum diimplementasi**, endpoint auth BE belum ada
@@ -49,8 +53,11 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 | JudulSticker | Sesuai Figma | Judul display berlapis (isi hijau + outline krem + pink). Teks sungguhan, bukan gambar. Lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
 | ButtonPil | Sesuai Figma | Tombol pil `Button/Large`. Beda dari ButtonPesanTiket |
 | Section Landing Page | Sesuai Figma | 9 komponen di `components/landing/` — lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
+| Hero Landing Page | Sesuai Figma | Ilustrasi SVG per-layer, bukan lagi WebP 1x yang berbayang di layar retina — lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) |
+| Latar langit halaman Explore UI | Sesuai Figma | 3 lapis (dasar + 2 tekstur `soft-light`), warna dasar dikalibrasi ke render Figma — lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
 | Latar langit section | Sesuai Figma | `langit.webp`, warnanya dicocokkan terukur ke render Figma. Cara lama (awan + opacity) sudah tidak dipakai — lihat [FE-0006](./features/FE-0006_Salman_Perbaikan-Latar-Langit-Dan-Dekorasi.md) |
-| PagePlaceholder | Sementara | Masih dipakai 8 halaman selain Landing Page. Dihapus per halaman saat slicing dimulai |
+| Section Explore UI | Sesuai Figma | 8 komponen di `components/explore/` — lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
+| PagePlaceholder | Sementara | Masih dipakai 7 halaman selain Landing Page & Explore UI. Dihapus per halaman saat slicing dimulai |
 
 **Kondisi login belum bisa dideteksi.** `src/lib/auth-state.ts` masih placeholder yang selalu mengembalikan `General Public` — endpoint auth BE belum ada, dan shape response-nya tidak boleh dikarang duluan (README boundary nomor 4). Akibatnya menu Student (Dashboard, Daftar Mentoring, Profile) belum muncul di Navbar dan tombol "Masuk" masih `disabled`.
 
@@ -66,6 +73,7 @@ src/
 ├── components/
 │   ├── layout/        → Navbar, Footer (tampil di semua halaman)
 │   ├── landing/       → section Landing Page, satu file per section
+│   ├── explore/       → section Explore UI, satu file per elemen visual
 │   ├── ui/            → komponen kecil dipakai lintas halaman
 │   └── PagePlaceholder.tsx → sementara, dihapus saat slicing
 └── lib/
@@ -74,12 +82,16 @@ src/
     ├── fonts.ts       → pemuatan 3 font Figma lewat next/font
     ├── navigation.ts  → sumber tunggal daftar menu navigasi
     ├── landing-content.ts → SEMUA konten Landing Page, masih dummy
+    ├── explore-content.ts → SEMUA konten Explore UI, masih dummy
     └── auth-state.ts  → PLACEHOLDER kondisi login, belum ada auth sungguhan
 
 public/                → aset statis, diakses lewat URL. Lihat public/README.md
 ├── logo/              → logo BKUI, BEM UI, sponsor
 ├── image/landing/     → ilustrasi Landing Page (hasil ekspor Figma, WebP)
+├── image/landing/hero/ → 4 tekstur ilustrasi Hero (dipakai dari dalam SVG)
+├── image/explore/     → ilustrasi Explore UI, per layer (WebP)
 ├── icon/landing/      → aset vektor Landing Page (SVG)
+├── icon/explore/      → aset vektor Explore UI (SVG)
 └── fonts/             → Talina DEMO & Delight (lihat catatan lisensi di FE-0005)
 ```
 
@@ -110,6 +122,10 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   only*; pemakaian komersial (tiket & sponsor) perlu beli lisensi dulu sebelum
   live. Detail & link pembelian ada di
   [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md).
+- **Konten Explore UI.** Deskripsi tiap fakultas, daftar program studi selain
+  Fasilkom, dan foto fakultas masih placeholder. Daftar prodi sengaja tidak
+  saya isi sendiri — salah menulis program studi di situs resmi universitas
+  lebih merugikan daripada placeholder yang jelas terbaca sebagai placeholder.
 - **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, isi FAQ,
   daftar sponsor, dan URL video masih placeholder — menunggu konten resmi.
 
@@ -120,6 +136,14 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   After Movie, bunga di Timeline. Di Figma masih ada semak, bukit, jamur, dan
   bunga kecil yang belum dibawa. Cara ekstraksinya ada di
   [FE-0006](./features/FE-0006_Salman_Perbaikan-Latar-Langit-Dan-Dekorasi.md).
-- **Belum dicek:** lebar tablet 768–1024px dan browser selain Chrome.
+- **Explore UI sudah dicek visual di desktop** dan cocok dengan Figma. Yang
+  belum dipasang: dua elipsis kecil dekat tenda dan semak sakura depan —
+  alasannya di [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md).
+- **Section Landing Page lain masih raster.** Dekorasi "Apa itu BKUI" dan FAQ
+  masih `dekor-*.webp`; masalah ketajaman yang sama dengan Hero berlaku di sana.
+  Lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) untuk cara
+  memindahkannya ke SVG.
+- **Belum dicek:** lebar HP & tablet (Landing Page maupun Explore UI) dan
+  browser selain Chrome.
 
-_Terakhir diubah: 2026-08-29 (FE-0006)_
+_Terakhir diubah: 2026-09-01 (FE-0008)_
