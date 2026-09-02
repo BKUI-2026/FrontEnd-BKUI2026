@@ -50,6 +50,8 @@ interface Layer {
   atas: string;
   lebar: string;
   tinggi: string;
+  /** Dibalik mendatar. Dipakai kalau flip di Figma tidak ikut terekspor. */
+  cermin?: boolean;
 }
 
 /** Berkas matahari, dipakai dua kali dengan ukuran berbeda. */
@@ -81,14 +83,32 @@ const MASKOT: Layer = {
   tinggi: "13.792%",
 };
 
+/*
+ * Tenda — satu-satunya layer yang posisinya TIDAK diambil dari metadata Figma.
+ *
+ * Metadata bounding box node ini tidak konsisten dengan isinya (kotaknya
+ * dilaporkan mulai x=696 sementara anak-anaknya ada di x=634..781), dan hasil
+ * ekspornya ikut membawa satu elemen 25px yang di Figma jatuh di y=888 — di
+ * luar frame 885px, jadi tidak pernah terlihat. Elemen itu melebarkan kotak
+ * SVG sampai 556px, tiga kali lebar tendanya sendiri.
+ *
+ * Elemen nyasarnya sudah dibuang dari `tenda.svg` dan kotaknya dirapatkan ke
+ * tinta tendanya (173.74 x 92.54), lalu posisinya DIUKUR dari render Figma:
+ * tenda menempati x 524..697, y 746..838 pada kanvas 1512x885.
+ *
+ * `cermin` wajib: di Figma sisi navy (mulut tenda) ada di KIRI dan sisi oranye
+ * di kanan, sementara SVG hasil ekspornya kebalikannya — flip horizontal pada
+ * node itu tidak ikut terbawa waktu diekspor.
+ */
 const TENDA: Layer = {
   berkas: "/icon/explore/tenda.svg",
-  lebarAsli: 556,
-  tinggiAsli: 164,
-  kiri: "46.046%",
-  atas: "84.726%",
-  lebar: "36.805%",
-  tinggi: "18.547%",
+  lebarAsli: 174,
+  tinggiAsli: 93,
+  kiri: "34.656%",
+  atas: "84.294%",
+  lebar: "11.442%",
+  tinggi: "10.412%",
+  cermin: true,
 };
 
 function gaya(l: Layer) {
@@ -159,8 +179,11 @@ export function HiasanHeader() {
           alt=""
           width={TENDA.lebarAsli}
           height={TENDA.tinggiAsli}
-          sizes="37vw"
-          className="h-full w-full"
+          sizes="12vw"
+          // `-scale-x-100` ditulis Tailwind ke properti `scale`, terpisah dari
+          // `transform` — jadi tidak bentrok dengan gerak mengambang yang
+          // dipasang Framer Motion di pembungkusnya.
+          className={`h-full w-full${TENDA.cermin ? " -scale-x-100" : ""}`}
         />
       </motion.div>
 

@@ -43,6 +43,10 @@
   --color-bkui-teks: #1a2731;
   /* Secondary/100 — teks di kartu Tokoh Inspirasi */
   --color-bkui-coklat: #331201;
+  /* Primary/800 — judul & teks pada kartu formulir auth */
+  --color-bkui-teks-tua: #092d39;
+  /* Secondary/900 — tautan "Masuk" di kartu formulir auth */
+  --color-bkui-coklat-tua-teks: #3d2609;
 
   /* ---- Warna: permukaan ---- */
   /* krem */
@@ -68,6 +72,12 @@
   /* oranye, biru tua — dipakai di ilustrasi (bendera, bunga) */
   --color-bkui-oranye: #ff5c07;
   --color-bkui-biru-tua: #3570b6;
+  /*
+   * Warna dasar rumput halaman Tiket — satu-satunya halaman yang latarnya
+   * bukan langit. Diukur dari render Figma di area rumput yang bersih dari
+   * kartu dan bunga (lihat FE-0010), bukan dikira-kira.
+   */
+  --color-bkui-rumput: #606420;
   /* Neutral/10 */
   --color-bkui-netral: #fdfdfc;
 
@@ -367,6 +377,127 @@
 }
 
 /*
+ * ---------------------------------------------------------------------------
+ * Overlay detail merchandise
+ * ---------------------------------------------------------------------------
+ *
+ * Halaman di belakang overlay dikunci supaya tidak ikut ter-scroll. `<dialog>`
+ * memberi banyak hal gratis (fokus terkurung, Escape, lapisan teratas) tapi
+ * TIDAK ini — tanpa dikunci, menggulir di atas overlay malah menggeser katalog
+ * di belakangnya.
+ *
+ * Ditulis sebagai CSS, bukan JavaScript yang menambah/menghapus kelas di
+ * <body>: `:has()` sudah mengurus buka-tutupnya sendiri, termasuk saat dialog
+ * ditutup lewat Escape atau tombol bawaan browser. Di browser lama yang belum
+ * mendukung `:has()`, yang hilang cuma penguncian scroll-nya — overlay-nya
+ * sendiri tetap berfungsi.
+ */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/*
+ * Muncul dengan naik sedikit sambil memudar. Pendek saja (0,22 dtk): overlay
+ * ini dibuka dari klik langsung, dan jeda yang terasa membuat tombolnya seperti
+ * tidak merespons.
+ */
+@keyframes overlay-muncul {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.overlay-detail {
+  animation: overlay-muncul 0.22s ease-out;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Hiasan halaman Tiket yang berputar & bergoyang
+ * ---------------------------------------------------------------------------
+ *
+ * Bunga dan matahari di SVG sudah membawa atribut `transform="rotate(...)"`
+ * dari Figma yang menaruhnya pada posisi & sudut yang benar. Menulis
+ * `transform` lewat CSS akan MENIMPA atribut itu dan hiasannya terlempar.
+ *
+ * Karena itu tiap bunga & matahari dibungkus `<g>` polos saat SVG-nya
+ * diproses (lihat `tiket-dekor.svg.ts`). Pembungkusnya tidak punya transform,
+ * jadi bebas diputar. `transform-box: fill-box` membuat porosnya di tengah
+ * bentuknya sendiri — tanpa itu porosnya di titik (0,0) kanvas dan bunganya
+ * terbang jauh keluar layar.
+ *
+ * Kecepatannya sengaja dibedakan dan sebagian dibalik arah. Kalau semuanya
+ * berputar sama, mata langsung membacanya sebagai animasi mesin, bukan taman.
+ */
+.tiket-bunga,
+.tiket-matahari,
+.tiket-kelopak {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes tiket-berputar {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Bunga kecil paling ringan — putarannya paling cepat. */
+.tiket-bunga {
+  animation: tiket-berputar 24s linear infinite;
+}
+
+.tiket-bunga-2 {
+  animation-duration: 31s;
+  animation-direction: reverse;
+}
+
+.tiket-bunga-3 {
+  animation-duration: 38s;
+}
+
+/* Matahari jauh lebih besar: pada ukuran itu, putaran cepat langsung norak. */
+.tiket-matahari {
+  animation: tiket-berputar 45s linear infinite;
+}
+
+.tiket-matahari-2 {
+  animation-duration: 62s;
+  animation-direction: reverse;
+}
+
+@keyframes tiket-kelopak-goyang {
+  from {
+    rotate: -2.2deg;
+  }
+  to {
+    rotate: 2.2deg;
+  }
+}
+
+.tiket-kelopak {
+  animation: tiket-kelopak-goyang 7s ease-in-out -2s infinite alternate;
+}
+
+@keyframes tiket-air-berkilau {
+  from {
+    opacity: 0.74;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tiket-air {
+  animation: tiket-air-berkilau 6.5s ease-in-out infinite alternate;
+}
+
+/*
  * Animasi kelopak sakura berjatuhan (komponen SakuraBerjatuhan).
  *
  * Dipisah jadi dua keyframe yang jalan di elemen berbeda:
@@ -440,6 +571,11 @@
   .bendera-goyang,
   .naik-turun,
   .jalur-mengalir,
+  .overlay-detail,
+  .tiket-bunga,
+  .tiket-matahari,
+  .tiket-kelopak,
+  .tiket-air,
   .hero-ilustrasi [id="daun"],
   .hero-ilustrasi [id="Igris Happy 1"],
   .hero-ilustrasi [id="Vector 92"],

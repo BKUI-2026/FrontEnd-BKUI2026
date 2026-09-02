@@ -42,6 +42,23 @@ export const MUNCUL: Variants = {
 };
 
 /**
+ * Versi lebih terasa dari `MUNCUL`: naik lebih jauh sambil sedikit membesar.
+ *
+ * Dipakai di halaman yang isinya sedikit dan muat satu layar — di sana gerak
+ * halus nyaris tidak terbaca, sementara di halaman panjang seperti Explore UI
+ * gerak sebesar ini justru melelahkan karena terjadi belasan kali.
+ */
+export const MUNCUL_TEGAS: Variants = {
+  sembunyi: { opacity: 0, y: 48, scale: 0.94 },
+  tampil: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+/**
  * Pembungkus yang memunculkan anak-anaknya berurutan, bukan serentak.
  *
  * 90ms adalah jarak yang cukup untuk terbaca sebagai "satu per satu" tapi
@@ -50,6 +67,15 @@ export const MUNCUL: Variants = {
 export const BERURUTAN: Variants = {
   sembunyi: {},
   tampil: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+};
+
+/**
+ * Jeda lebih lebar untuk kelompok kecil (tiga kartu tier). Dengan cuma tiga
+ * elemen, jeda 90ms selesai terlalu cepat untuk terbaca sebagai berurutan.
+ */
+export const BERURUTAN_TIER: Variants = {
+  sembunyi: {},
+  tampil: { transition: { staggerChildren: 0.16, delayChildren: 0.1 } },
 };
 
 /** Versi rapat untuk deretan chip yang jumlahnya banyak dan kecil-kecil. */
