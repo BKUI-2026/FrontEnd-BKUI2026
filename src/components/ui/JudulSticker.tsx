@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import type { ElementType, ReactNode } from "react";
 
 /** Ukuran judul, mengikuti skala Heading di Figma. */
@@ -26,6 +29,20 @@ interface JudulStickerProps {
  *
  * Cara menumpuk tiga lapisnya ada di `.judul-sticker` pada globals.css.
  *
+ * ---------------------------------------------------------------------------
+ * Judulnya "ditempel", bukan memudar masuk
+ * ---------------------------------------------------------------------------
+ * Saat pertama masuk layar, judul jatuh sedikit miring lalu mendarat melewati
+ * posisinya — gerakan tangan menempelkan stiker. Keyframe-nya di globals.css
+ * (`judul-ditempel`); di sini cuma pemicunya.
+ *
+ * Statusnya ditulis LANGSUNG ke atribut DOM, bukan lewat `useState`: memanggil
+ * setState di dalam useEffect kena lint `react-hooks/set-state-in-effect`, dan
+ * status ini murni urusan tampilan — tidak ada bagian React yang perlu tahu.
+ * Pola dan alasannya sama persis dengan komponen `Muncul`.
+ *
+ * Animasinya SEKALI JALAN; pengamatnya dilepas begitu judulnya muncul.
+ *
  * Dua lapis outline ditandai `aria-hidden` supaya screen reader tidak membaca
  * judul yang sama tiga kali.
  */
@@ -46,8 +63,59 @@ export function JudulSticker({
   ukuran = "h1",
   className,
 }: JudulStickerProps) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const elemen = ref.current;
+    if (!elemen) return;
+
+    const tempel = () => elemen.setAttribute("data-tampil", "ya");
+
+    // Browser lawas tanpa IntersectionObserver: tampilkan saja, jangan sampai
+    // judulnya tidak pernah muncul.
+    if (typeof IntersectionObserver === "undefined") {
+      tempel();
+      return;
+    }
+
+    const pengamat = new IntersectionObserver(
+      ([masuk]) => {
+        if (!masuk.isIntersecting) return;
+        tempel();
+        pengamat.disconnect();
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+    );
+
+    pengamat.observe(elemen);
+
+    /*
+     * Jaring pengaman, dan ini bukan kehati-hatian berlebihan.
+     *
+     * Sebelum animasi ini ada, judul selalu terlihat. Sekarang judul mulai dari
+     * `opacity: 0` dan baru muncul kalau pengamat viewport melaporkan sesuatu.
+     * Artinya satu kegagalan kecil di situ = SELURUH judul di situs hilang —
+     * mode gagal yang jauh lebih buruk daripada animasi yang tidak jalan.
+     *
+     * Pengamat viewport ikut siklus menggambar browser: di tab yang tidak
+     * sedang digambar (mis. halaman dibuka di tab latar), laporannya tidak
+     * pernah datang. Biasanya itu sembuh sendiri begitu tab-nya dilihat, tapi
+     * "biasanya" bukan jaminan yang pantas dipertaruhkan untuk judul.
+     *
+     * Jadi setelah 1,2 detik judulnya ditampilkan apa pun yang terjadi.
+     */
+    const pengaman = window.setTimeout(tempel, 1200);
+
+    return () => {
+      pengamat.disconnect();
+      window.clearTimeout(pengaman);
+    };
+  }, []);
+
   return (
     <Tag
+      ref={ref as React.Ref<HTMLHeadingElement>}
+      data-tampil="belum"
       className={`judul-sticker font-display ${UKURAN[ukuran]} ${className ?? ""}`}
     >
       <span aria-hidden className="judul-sticker__pink">

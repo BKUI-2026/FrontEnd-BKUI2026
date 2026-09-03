@@ -174,7 +174,7 @@ function IsiDetail({ item, onTutup }: { item: ItemKatalog; onTutup: () => void }
               href={urlYesplis}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-16 w-fit items-center justify-center rounded-full bg-bkui-oren px-9 font-ui text-lg font-medium text-bkui-coklat transition-transform hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau lg:text-xl"
+              className="tombol-kertas inline-flex h-16 w-fit items-center justify-center rounded-full bg-bkui-oren px-9 font-ui text-lg font-medium text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau lg:text-xl"
             >
               Beli di Yesplis
             </a>

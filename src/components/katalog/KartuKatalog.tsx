@@ -45,14 +45,22 @@ export function KartuKatalog({ item, onLihatDetail, tegas = false }: KartuKatalo
       variants={tegas ? MUNCUL_TEGAS : MUNCUL}
       whileHover={{ y: tegas ? -10 : -6 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="flex flex-col gap-7 rounded-3xl bg-bkui-krem-kartu p-6 drop-shadow-[0_4px_2px_rgba(0,0,0,0.1)]"
+      className="group flex flex-col gap-7 rounded-3xl bg-bkui-krem-kartu p-6 drop-shadow-[0_4px_2px_rgba(0,0,0,0.1)]"
     >
       {/*
         Foto produknya belum ada — di Figma pun kotaknya masih kosong. Tingginya
         dikunci 200px supaya kartu tidak berubah ukuran begitu fotonya masuk.
       */}
-      <div className="flex h-[200px] w-full items-center justify-center rounded-2xl bg-bkui-navbar">
-        <span className="font-ui text-sm text-bkui-teks/45">Foto menyusul</span>
+      {/*
+        `overflow-hidden` + isian yang membesar saat kartunya ditunjuk: fotonya
+        seolah mendekat di balik jendela kartu, bukan seluruh kartu yang
+        membengkak. Yang membesar isinya, bingkainya tetap — itu yang bikin
+        terbaca sebagai jendela.
+      */}
+      <div className="h-[200px] w-full overflow-hidden rounded-2xl bg-bkui-navbar">
+        <div className="flex size-full items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <span className="font-ui text-sm text-bkui-teks/45">Foto menyusul</span>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -75,7 +83,7 @@ export function KartuKatalog({ item, onLihatDetail, tegas = false }: KartuKatalo
           <button
             type="button"
             onClick={onLihatDetail}
-            className="h-12 shrink-0 cursor-pointer rounded-3xl bg-bkui-navbar px-8 font-ui text-base font-medium text-bkui-teks transition-transform hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            className="tombol-kertas h-12 shrink-0 cursor-pointer rounded-3xl bg-bkui-navbar px-8 font-ui text-base font-medium text-bkui-teks focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
           >
             Lihat Detail
           </button>
@@ -85,7 +93,7 @@ export function KartuKatalog({ item, onLihatDetail, tegas = false }: KartuKatalo
               href={urlYesplis}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-12 shrink-0 items-center justify-center rounded-3xl bg-bkui-oren px-8 font-ui text-base font-medium text-bkui-coklat transition-transform hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+              className="tombol-kertas inline-flex h-12 shrink-0 items-center justify-center rounded-3xl bg-bkui-oren px-8 font-ui text-base font-medium text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
             >
               Beli di Yesplis
             </a>

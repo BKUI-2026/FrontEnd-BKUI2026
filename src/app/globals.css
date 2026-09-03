@@ -47,6 +47,12 @@
   --color-bkui-teks-tua: #092d39;
   /* Secondary/900 — tautan "Masuk" di kartu formulir auth */
   --color-bkui-coklat-tua-teks: #3d2609;
+  /*
+   * Merah pesan galat formulir. Tidak ada di daftar variabel Figma, jadi
+   * diukur dari render desain status error halaman Masuk — inti hurufnya
+   * #EA3526 (lihat FE-0012).
+   */
+  --color-bkui-galat: #ea3526;
 
   /* ---- Warna: permukaan ---- */
   /* krem */
@@ -498,6 +504,179 @@ body:has(dialog[open]) {
 }
 
 /*
+ * ===========================================================================
+ * Bahasa gerak situs ini: KERTAS & STIKER
+ * ===========================================================================
+ *
+ * Seluruh ilustrasi BKUI 2026 dibangun dari bentuk bertepi putih yang saling
+ * ditumpuk — bukan gambar realistis, melainkan potongan kertas dan stiker yang
+ * ditempel. Geraknya mengikuti itu, dan itulah alasan tiga aturan di bawah ada.
+ *
+ * Yang SENGAJA dihindari: fade-in polos dan slide-up seragam di mana-mana.
+ * Gerak begitu bisa dipasang di situs mana pun dan tidak mengatakan apa-apa
+ * tentang situs ini.
+ */
+
+/*
+ * ---------------------------------------------------------------------------
+ * 1. Judul stiker "ditempel"
+ * ---------------------------------------------------------------------------
+ *
+ * Judul tidak muncul memudar — ia JATUH sedikit miring, mendarat melewati
+ * posisinya, lalu diam. Persis gerakan tangan menempelkan stiker: ditekan
+ * turun, sedikit meleset, diluruskan.
+ *
+ * Miringnya cuma 3,5 derajat dan lewatnya cuma 4px. Lebih dari itu judulnya
+ * terbaca goyang, bukan ditempel — dan judul adalah elemen yang paling sering
+ * dibaca di situs ini.
+ *
+ * Pakai properti `translate`/`scale`/`rotate` terpisah, BUKAN `transform`:
+ * ketiganya bisa ditumpuk tanpa saling menimpa, dan `.judul-sticker` sudah
+ * memakai grid bertumpuk tiga lapis yang tidak boleh terganggu.
+ */
+@keyframes judul-ditempel {
+  0% {
+    opacity: 0;
+    translate: 0 -18px;
+    scale: 0.86;
+    rotate: -3.5deg;
+  }
+  55% {
+    opacity: 1;
+    translate: 0 4px;
+    scale: 1.05;
+    rotate: 1.6deg;
+  }
+  78% {
+    translate: 0 0;
+    scale: 0.985;
+    rotate: -0.6deg;
+  }
+  100% {
+    translate: 0 0;
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+.judul-sticker[data-tampil="belum"] {
+  opacity: 0;
+}
+
+.judul-sticker[data-tampil="ya"] {
+  animation: judul-ditempel 0.62s cubic-bezier(0.2, 0.75, 0.3, 1) both;
+}
+
+/* Tanpa JavaScript, pengamat viewport tidak pernah jalan — judulnya harus
+   tetap terbaca, bukan tersembunyi selamanya. */
+@media (scripting: none) {
+  .judul-sticker[data-tampil="belum"] {
+    opacity: 1;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * 2. Tombol kertas
+ * ---------------------------------------------------------------------------
+ *
+ * Saat DIAM tombolnya persis seperti di Figma — bayangan lembut, tidak ada
+ * tambahan apa pun. Karakter kertasnya baru muncul saat disentuh: terangkat
+ * dan bayangannya melebar waktu ditunjuk, lalu MENEKAN TURUN ke bawah garis
+ * asalnya waktu diklik, dengan bayangan yang mengempis.
+ *
+ * Menekan turun (bukan sekadar mengecil) itu yang bikin terasa seperti menekan
+ * benda betulan. Waktu tekannya juga sengaja jauh lebih pendek daripada waktu
+ * lepasnya: benda nyata berhenti mendadak saat ditekan, dan mengambang balik
+ * pelan saat dilepas.
+ *
+ * Dipakai lewat kelas `.tombol-kertas`. Kelas Tailwind `hover:-translate-y-*`
+ * TIDAK boleh dipakai bersamaan — keduanya menulis properti `translate` yang
+ * sama dan yang belakangan menang.
+ */
+.tombol-kertas {
+  transition:
+    translate 0.2s cubic-bezier(0.2, 0.8, 0.3, 1),
+    scale 0.2s cubic-bezier(0.2, 0.8, 0.3, 1),
+    box-shadow 0.2s ease-out;
+}
+
+.tombol-kertas:hover:not(:disabled),
+.tombol-kertas:focus-visible:not(:disabled) {
+  translate: 0 -3px;
+  box-shadow: 0 10px 22px rgb(0 0 0 / 0.22);
+}
+
+.tombol-kertas:active:not(:disabled) {
+  translate: 0 2px;
+  scale: 0.975;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+  transition-duration: 0.08s;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * 3. Hembusan angin
+ * ---------------------------------------------------------------------------
+ *
+ * Ditembakkan sekali saat pengunjung menekan "Jelajahi Lebih Lanjut": seluruh
+ * lapisan kelopak sakura tergeser ke samping lalu kembali, seperti angin
+ * berhembus tepat saat perjalanan dimulai.
+ *
+ * Ini bagian paling khas dari seluruh gerak di situs — dan alasannya bukan
+ * sekadar manis. Temanya "Makara Expedition: take the step, discover the path";
+ * menekan tombol itu SECARA HARFIAH langkah pertama, jadi duniannya bereaksi.
+ *
+ * Digeser seluruh LAPISANNYA, bukan mempercepat tiap kelopak. Mengubah durasi
+ * animasi yang sedang berjalan membuat kelopaknya melompat ke posisi lain di
+ * tengah jalan; menggeser pembungkusnya mulus karena tidak menyentuh animasi
+ * jatuhnya sama sekali.
+ */
+@keyframes hembusan-angin {
+  0% {
+    translate: 0 0;
+  }
+  28% {
+    translate: 34px 0;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+[data-hembus="ya"] .sakura-layer {
+  animation: hembusan-angin 2.4s cubic-bezier(0.22, 0.7, 0.3, 1);
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * 4. Halaman berganti
+ * ---------------------------------------------------------------------------
+ *
+ * Pindah halaman tidak lagi berupa potongan keras. Isinya naik sedikit sambil
+ * memudar masuk — pendek saja (0,34 dtk), karena ini terjadi di SETIAP
+ * navigasi dan gerak yang lebih lama akan terasa seperti situs yang lambat.
+ *
+ * Navbar, Footer, dan lapisan sakura sengaja TIDAK ikut: ketiganya bingkai
+ * yang tetap, dan menganimasikannya tiap pindah halaman membuat situs terasa
+ * dibangun ulang dari nol setiap kali.
+ */
+@keyframes halaman-masuk {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.halaman-masuk {
+  animation: halaman-masuk 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
  * Animasi kelopak sakura berjatuhan (komponen SakuraBerjatuhan).
  *
  * Dipisah jadi dua keyframe yang jalan di elemen berbeda:
@@ -568,10 +747,27 @@ body:has(dialog[open]) {
     transition: none;
   }
 
+  /* Judulnya tetap tampil, cuma tidak lagi "ditempel". */
+  .judul-sticker[data-tampil="belum"],
+  .judul-sticker[data-tampil="ya"] {
+    opacity: 1;
+    animation: none;
+  }
+
+  /* Tombol tetap memberi umpan balik, tapi tanpa gerak — cuma bayangannya. */
+  .tombol-kertas:hover:not(:disabled),
+  .tombol-kertas:focus-visible:not(:disabled),
+  .tombol-kertas:active:not(:disabled) {
+    translate: 0 0;
+    scale: 1;
+  }
+
   .bendera-goyang,
   .naik-turun,
   .jalur-mengalir,
   .overlay-detail,
+  .halaman-masuk,
+  [data-hembus="ya"] .sakura-layer,
   .tiket-bunga,
   .tiket-matahari,
   .tiket-kelopak,

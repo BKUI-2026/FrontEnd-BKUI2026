@@ -19,10 +19,13 @@ import type { ReactNode } from "react";
  * Warnanya sengaja TIDAK dipudarkan supaya tetap sama dengan Figma; penanda
  * belum aktifnya lewat kursor + `title`, sama seperti ButtonMasukSiswa.
  */
+/*
+ * `tombol-kertas` (globals.css) yang mengurus gerak tekannya. Kelas Tailwind
+ * `hover:-translate-y-*` sengaja TIDAK dipakai lagi: keduanya menulis properti
+ * `translate` yang sama, dan yang belakangan menang.
+ */
 const KELAS_DASAR =
-  "inline-flex h-14 items-center justify-center gap-3 rounded-full bg-bkui-navbar px-7 font-ui text-base font-medium text-bkui-teks shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-transform sm:h-16 sm:px-9 sm:text-xl";
-
-const KELAS_AKTIF = "hover:-translate-y-0.5 focus-visible:-translate-y-0.5";
+  "tombol-kertas inline-flex h-14 items-center justify-center gap-3 rounded-full bg-bkui-navbar px-7 font-ui text-base font-medium text-bkui-teks shadow-[0_2px_10px_rgba(0,0,0,0.25)] sm:h-16 sm:px-9 sm:text-xl";
 
 interface ButtonPilProps {
   children: ReactNode;
@@ -43,7 +46,7 @@ export function ButtonPil({
   alasanNonaktif,
   className,
 }: ButtonPilProps) {
-  const kelas = `${KELAS_DASAR} ${nonaktif ? "cursor-not-allowed" : KELAS_AKTIF} ${className ?? ""}`;
+  const kelas = `${KELAS_DASAR} ${nonaktif ? "cursor-not-allowed" : ""} ${className ?? ""}`;
 
   if (nonaktif || (!href && !onClick)) {
     return (

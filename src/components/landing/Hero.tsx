@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { HeroIlustrasi } from "./HeroIlustrasi";
+import { TombolJelajahi } from "./TombolJelajahi";
 
 /**
  * Hero Landing Page — ilustrasi perkemahan "Makara Expedition" + CTA turun.
@@ -20,9 +19,6 @@ import { HeroIlustrasi } from "./HeroIlustrasi";
  * sungguhan, supaya bisa difokus lewat keyboard, terbaca screen reader, dan
  * ukurannya menyesuaikan layar.
  */
-
-/** Anchor tujuan tombol — section pertama setelah hero. */
-const TUJUAN_JELAJAHI = "#apa-itu-bkui";
 
 /**
  * Warna tepi bawah ilustrasi, diukur dari empat baris piksel terakhir hasil
@@ -91,23 +87,5 @@ export function Hero() {
         <TombolJelajahi>{labelTombol}</TombolJelajahi>
       </div>
     </section>
-  );
-}
-
-/**
- * Tombol turun ke section berikutnya.
- *
- * Sengaja memakai anchor `#`, bukan handler JavaScript: tanpa JS pun tetap
- * jalan, dapat perilaku fokus keyboard yang benar secara gratis, dan tidak
- * memaksa hero jadi client component.
- */
-function TombolJelajahi({ children }: { children: React.ReactNode }) {
-  return (
-    <Link
-      href={TUJUAN_JELAJAHI}
-      className="inline-flex h-14 items-center justify-center gap-3 rounded-full bg-bkui-navbar px-7 font-ui text-base font-medium text-bkui-teks shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-transform hover:-translate-y-0.5 focus-visible:-translate-y-0.5 sm:h-16 sm:px-9 sm:text-xl"
-    >
-      {children}
-    </Link>
   );
 }

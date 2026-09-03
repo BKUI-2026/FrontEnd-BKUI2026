@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { KolomIsian } from "./KolomIsian";
 
 /**
@@ -83,17 +85,12 @@ export function FormDaftar() {
         <span className="font-body font-medium leading-[1.2] text-bkui-teks-tua">
           Sudah punya akun?
         </span>
-        {/*
-          "Masuk" belum jadi tautan: halaman masuk belum dibuat dan rutenya
-          belum ada. Menautkannya sekarang cuma menghasilkan 404 — sama alasannya
-          dengan tombol "Masuk sebagai Siswa" di Navbar yang juga masih mati.
-        */}
-        <span
-          title="Halaman masuk belum tersedia"
-          className="font-ui font-medium capitalize leading-none text-bkui-coklat-tua-teks opacity-60"
+        <Link
+          href="/masuk"
+          className="font-ui font-medium capitalize leading-none text-bkui-coklat-tua-teks hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
         >
           Masuk
-        </span>
+        </Link>
       </p>
     </div>
   );

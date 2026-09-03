@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-02 15:05 WIB
+Terakhir diperbarui: 2026-09-02 15:50 WIB
 
 ## Status Integrasi per Fitur
 
@@ -17,8 +17,8 @@ redirect ke Yesplis, tanpa cart/checkout sama sekali.
 **Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — info tier + CTA
 redirect ke Yesplis, tanpa payment gateway.
 
-**Halaman Daftar Akun sudah dislicing** (FE-0011) tapi tombolnya mati —
-endpoint auth BE belum ada.
+**Halaman Daftar Akun & Masuk sudah dislicing** (FE-0011, FE-0012) dan saling
+terhubung, tapi belum bisa dipakai — endpoint auth BE belum ada.
 
 Lima halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
@@ -26,6 +26,7 @@ Lima halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah 
 |---|---|---|---|---|
 | Landing Page | `/` | **Masih Dummy Data** | TBD (entity `Content` — video, tokoh, testimoni, FAQ, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
+| Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** | TBD (entity `Content` — deskripsi fakultas, prodi, foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md) |
@@ -142,10 +143,13 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 
 ## Perlu Keputusan PM
 
-- **Dari mana pengguna masuk ke `/daftar`?** Halaman Daftar Akun sudah jadi tapi
-  belum bisa dicapai dari navigasi mana pun — navbar di Figma cuma punya "Masuk
-  sebagai Siswa" (halaman masuk, bukan daftar), dan tombol itu sendiri masih
-  mati. Lihat [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md).
+- **Tombol "Masuk sebagai Siswa" di Navbar mau diarahkan ke `/masuk`?** Halaman
+  Daftar dan Masuk sudah jadi dan saling terhubung, tapi keduanya belum bisa
+  dicapai dari navigasi mana pun. Menautkan tombol navbar ke `/masuk` sudah
+  masuk akal sekarang, tapi itu mengubah perilaku Navbar yang sudah disetujui —
+  saya tunggu keputusan. Lihat
+  [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) dan
+  [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md).
 
 - **Lisensi font Talina DEMO.** Font judul dari Figma berlisensi *personal use
   only*; pemakaian komersial (tiket & sponsor) perlu beli lisensi dulu sebelum
@@ -173,6 +177,6 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   Lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) untuk cara
   memindahkannya ke SVG.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
-  Daftar Akun) dan browser selain Chrome.
+  Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-02 (FE-0011)_
+_Terakhir diubah: 2026-09-02 (FE-0012)_
