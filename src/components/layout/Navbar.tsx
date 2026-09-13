@@ -27,8 +27,14 @@ export function Navbar() {
   const akses = useAkses();
   const [menuTerbuka, setMenuTerbuka] = useState(false);
 
-  const menu = menuUntuk(akses);
-  const sudahLogin = akses === "Student";
+  /*
+   * Ketiga rute ini memang hanya milik Student. Sampai session BE tersedia,
+   * pathname dipakai untuk menampilkan state navbar Student sesuai desain
+   * layar Dashboard; ini bukan pengganti guard autentikasi.
+   */
+  const ruteStudent = ["/profile", "/dashboard", "/daftar-mentoring"].includes(pathname);
+  const sudahLogin = akses === "Student" || ruteStudent;
+  const menu = menuUntuk(sudahLogin ? "Student" : akses);
 
   // Tutup menu mobile tiap pindah halaman — kalau tidak, panelnya tetap terbuka
   // menutupi konten halaman baru.

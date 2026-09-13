@@ -11,8 +11,9 @@ import type { Akses } from "./navigation";
  * dikarang duluan — makanya di sini tidak ada fetch, tidak ada tipe `User`,
  * dan tidak ada pembacaan cookie/token.
  *
- * Untuk sekarang semua pengunjung dianggap General Public, jadi menu khusus
- * Student belum muncul di Navbar.
+ * Untuk sekarang semua pengunjung dianggap General Public. Navbar hanya
+ * menampilkan state visual Student ketika pathname memang berada di route
+ * group Student; itu kebutuhan slicing dan bukan bukti autentikasi.
  *
  * Saat kontrak auth BE sudah rilis:
  * 1. Catat kontraknya di markdowns-fe/integrations/backend-api-contract.md

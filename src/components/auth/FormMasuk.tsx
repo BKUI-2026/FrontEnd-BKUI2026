@@ -65,12 +65,12 @@ export function FormMasuk() {
 
       <form onSubmit={kirim} noValidate className="flex w-full flex-col items-center gap-8">
         <div className="flex w-full flex-col gap-6 sm:max-w-[392px]">
-          <KolomIsian label="Email" name="email" type="email" placeholder="nama@email.com" autoComplete="email" />
+          <KolomIsian label="Email" name="email" type="email" placeholder="Contoh: nama@email.com" autoComplete="email" />
           <KolomIsian
             label="Kata Sandi"
             name="sandi"
             type="password"
-            placeholder="Kata sandimu"
+            placeholder="Masukkan kata sandi"
             autoComplete="current-password"
           />
         </div>

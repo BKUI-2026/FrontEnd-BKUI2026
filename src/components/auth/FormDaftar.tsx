@@ -41,10 +41,10 @@ export function FormDaftar() {
 
       <form className="flex w-full max-w-[808px] flex-col items-center gap-8">
         <div className="grid w-full gap-6 md:grid-cols-2">
-          <KolomIsian label="Nama Lengkap" name="nama" placeholder="Nama lengkapmu" autoComplete="name" />
-          <KolomIsian label="Sekolah" name="sekolah" placeholder="Asal sekolah" autoComplete="organization" />
-          <KolomIsian label="Nomor HP" name="telepon" type="tel" placeholder="08xxxxxxxxxx" autoComplete="tel" />
-          <KolomIsian label="Email" name="email" type="email" placeholder="nama@email.com" autoComplete="email" />
+          <KolomIsian label="Nama Lengkap" name="nama" placeholder="Contoh: Kasandra Putri" autoComplete="name" />
+          <KolomIsian label="Sekolah" name="sekolah" placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" />
+          <KolomIsian label="Nomor HP" name="telepon" type="tel" placeholder="Contoh: 0812 3456 7890" autoComplete="tel" />
+          <KolomIsian label="Email" name="email" type="email" placeholder="Contoh: nama@email.com" autoComplete="email" />
           <KolomIsian
             label="Kata Sandi"
             name="sandi"
@@ -56,7 +56,7 @@ export function FormDaftar() {
             label="Konfirmasi Kata Sandi"
             name="konfirmasi-sandi"
             type="password"
-            placeholder="Ulangi kata sandi"
+            placeholder="Masukkan kembali kata sandi"
             autoComplete="new-password"
           />
         </div>

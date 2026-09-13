@@ -28,8 +28,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { label: "School Roadshow", href: "/school-roadshow", akses: "General Public" },
   { label: "Merchandise", href: "/merchandise", akses: "General Public" },
 
-  // Di Figma, "Mentoring" hanya muncul pada navbar versi logged in.
-  { label: "Mentoring", href: "/daftar-mentoring", akses: "Student" },
+  // Di Figma, "Daftar Mentoring" hanya muncul pada navbar versi logged in.
+  { label: "Daftar Mentoring", href: "/daftar-mentoring", akses: "Student" },
 ] as const;
 
 /*
@@ -46,6 +46,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
 
 /** Menu yang boleh dilihat oleh kondisi akses tertentu. */
 export function menuUntuk(akses: Akses): readonly NavItem[] {
-  if (akses === "Student") return NAV_ITEMS;
+  if (akses === "Student") {
+    return NAV_ITEMS.filter((item) =>
+      ["/", "/explore-ui", "/daftar-mentoring"].includes(item.href),
+    );
+  }
   return NAV_ITEMS.filter((item) => item.akses === "General Public");
 }

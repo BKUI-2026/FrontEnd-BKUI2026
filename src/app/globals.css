@@ -16,6 +16,8 @@
   --color-bkui-oren: #ff7730;
   /* Primary/Base "biru muda" — tombol sekunder & background Footer */
   --color-bkui-button: #84c2f6;
+  /* Primary/60 — avatar placeholder di Dashboard */
+  --color-bkui-biru-redup: #6ea2cd;
   /* Primary/10 — background navbar & tombol pil di atas ilustrasi */
   --color-bkui-navbar: #e6f3fd;
   /*
@@ -53,6 +55,9 @@
    * #EA3526 (lihat FE-0012).
    */
   --color-bkui-galat: #ea3526;
+  /* Red/100 dan Red/10 — tombol keluar Dashboard */
+  --color-bkui-merah: #cc0000;
+  --color-bkui-merah-muda: #ffcccc;
 
   /* ---- Warna: permukaan ---- */
   /* krem */

@@ -7,6 +7,7 @@ import type { FormEvent } from "react";
 interface KolomRoadshowProps {
   label: string;
   name: string;
+  placeholder: string;
   type?: "text" | "email" | "tel" | "number";
   autoComplete: string;
   pencarian?: boolean;
@@ -15,6 +16,7 @@ interface KolomRoadshowProps {
 function KolomRoadshow({
   label,
   name,
+  placeholder,
   type = "text",
   autoComplete,
   pencarian = false,
@@ -37,8 +39,8 @@ function KolomRoadshow({
           required
           min={type === "number" ? 1 : undefined}
           autoComplete={autoComplete}
-          placeholder="blabla@gmail.com"
-          className="h-6 min-w-0 flex-1 bg-transparent font-body text-base font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks focus:outline-none"
+          placeholder={placeholder}
+          className="h-6 min-w-0 flex-1 bg-transparent font-body text-base font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-none"
         />
         {pencarian && (
           <Image
@@ -89,10 +91,10 @@ export function FormRoadshow() {
           <legend className="mb-6 w-full text-center font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks-tua">
             Detail Sekolah
           </legend>
-          <KolomRoadshow label="Nama Sekolah" name="namaSekolah" autoComplete="organization" pencarian />
-          <KolomRoadshow label="Alamat Sekolah" name="alamatSekolah" autoComplete="street-address" />
-          <KolomRoadshow label="Email Sekolah" name="emailSekolah" type="email" autoComplete="email" />
-          <KolomRoadshow label="Jumlah Target Siswa" name="jumlahTargetSiswa" type="number" autoComplete="off" />
+          <KolomRoadshow label="Nama Sekolah" name="namaSekolah" placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" pencarian />
+          <KolomRoadshow label="Alamat Sekolah" name="alamatSekolah" placeholder="Contoh: Jl. Taman Bukit Duri No. 2" autoComplete="street-address" />
+          <KolomRoadshow label="Email Sekolah" name="emailSekolah" type="email" placeholder="Contoh: humas@sekolah.sch.id" autoComplete="email" />
+          <KolomRoadshow label="Jumlah Target Siswa" name="jumlahTargetSiswa" type="number" placeholder="Contoh: 120" autoComplete="off" />
         </fieldset>
 
         <div aria-hidden className="hidden w-px bg-bkui-teks lg:block" />
@@ -101,9 +103,9 @@ export function FormRoadshow() {
           <legend className="mb-6 w-full text-center font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks-tua">
             Kontak Penanggung Jawab
           </legend>
-          <KolomRoadshow label="Nama Lengkap" name="namaPenanggungJawab" autoComplete="name" />
-          <KolomRoadshow label="Nomor HP" name="nomorHp" type="tel" autoComplete="tel" />
-          <KolomRoadshow label="Email" name="emailPenanggungJawab" type="email" autoComplete="email" />
+          <KolomRoadshow label="Nama Lengkap" name="namaPenanggungJawab" placeholder="Contoh: Andi Pratama" autoComplete="name" />
+          <KolomRoadshow label="Nomor HP" name="nomorHp" type="tel" placeholder="Contoh: 0812 3456 7890" autoComplete="tel" />
+          <KolomRoadshow label="Email" name="emailPenanggungJawab" type="email" placeholder="Contoh: andi@email.com" autoComplete="email" />
         </fieldset>
       </div>
 

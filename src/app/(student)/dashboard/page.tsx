@@ -1,19 +1,13 @@
-import { PagePlaceholder } from "@/components/PagePlaceholder";
+import { AcaraSaya } from "@/components/dashboard/AcaraSaya";
 
 /**
  * Student Dashboard — `/dashboard`
  *
  * Butuh login (Student).
  *
- * CATATAN: isi dashboard ini BELUM ditentukan (AGENTS.md bagian 9 — masih perlu
- * diklarifikasi ke PM). Sengaja dibiarkan placeholder, jangan diisi tebakan.
+ * UI Acara Saya mengikuti Figma. Detail mentoring dan tautan pertemuan tetap
+ * menunggu data dinamis dari Admin sesuai AGENTS.md bagian 7.
  */
 export default function StudentDashboardPage() {
-  return (
-    <PagePlaceholder
-      title="Student Dashboard"
-      akses="Student"
-      keterangan="Dashboard siswa. Kontennya belum ditentukan — masih perlu diklarifikasi ke PM sebelum diisi."
-    />
-  );
+  return <AcaraSaya />;
 }

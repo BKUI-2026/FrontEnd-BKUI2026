@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-13 22:30 WIB
+Terakhir diperbarui: 2026-09-13 21:55 WIB
 
 ## Status Integrasi per Fitur
 
@@ -28,7 +28,11 @@ terhubung, tapi belum bisa dipakai — endpoint auth BE belum ada.
 publik, validasi client, dan halaman success. Submit belum terhubung karena
 kontrak endpoint BE belum ada; halaman success belum dipanggil otomatis.
 
-Empat halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
+**Profile dan Student Dashboard sudah dislicing dari tiga state Figma**
+(FE-0018): profil, edit profil, dan Acara Saya. Data akun, simpan profil,
+logout, serta detail/tautan mentoring belum terhubung ke API.
+
+Dua halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
@@ -38,8 +42,8 @@ Empat halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
-| Profile | `/profile` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
-| Student Dashboard | `/dashboard` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
+| Profile | `/profile` | **Masih Dummy Data** (UI view/edit selesai; data & simpan belum terhubung) | TBD — endpoint auth/profil BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
+| Student Dashboard | `/dashboard` | **Masih Dummy Data** (UI Acara Saya selesai; detail & link mentoring dummy) | TBD — endpoint dashboard/content BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
 | School Roadshow Registration | `/school-roadshow`, `/school-roadshow/success` | **Masih Dummy Data** (UI form + success selesai) | TBD — endpoint registrasi & email belum ada | [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md), [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
 | Daftar CASA | `/daftar-casa` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 | Daftar Mentoring | `/daftar-mentoring` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
@@ -80,9 +84,10 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 | Section Merchandise | Sesuai Figma | 5 komponen di `components/merch/`, termasuk overlay detail berbasis `<dialog>` — lihat [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
 | Section Explore UI | Sesuai Figma | 8 komponen di `components/explore/` — lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
 | School Roadshow | Sesuai Figma | Form publik dan success state; integrasi API masih menunggu kontrak BE. Lihat [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md) dan [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
-| PagePlaceholder | Sementara | Masih dipakai 4 halaman: Profile, Student Dashboard, Daftar CASA, dan Daftar Mentoring. Dihapus per halaman saat slicing dimulai |
+| Profile & Dashboard | Sesuai Figma | Tiga state: profil, edit profil, dan Acara Saya. Aset dashboard lokal di `public/image/dashboard/` dan `public/icon/dashboard/`. Lihat [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
+| PagePlaceholder | Sementara | Masih dipakai 2 halaman: Daftar CASA dan Daftar Mentoring. Dihapus per halaman saat slicing dimulai |
 
-**Kondisi login belum bisa dideteksi.** `src/lib/auth-state.ts` masih placeholder yang selalu mengembalikan `General Public` — endpoint auth BE belum ada, dan shape response-nya tidak boleh dikarang duluan (README boundary nomor 4). Akibatnya menu Student (Dashboard, Daftar Mentoring, Profile) belum muncul di Navbar dan tombol "Masuk" masih `disabled`.
+**Kondisi login belum bisa dideteksi.** `src/lib/auth-state.ts` masih placeholder yang selalu mengembalikan `General Public` — endpoint auth BE belum ada, dan shape response-nya tidak boleh dikarang duluan (README boundary nomor 4). Pada rute khusus Student, Navbar menampilkan state Student berdasarkan pathname agar slicing bisa diperiksa; ini bukan guard atau session autentikasi.
 
 ## Struktur Folder
 
@@ -100,6 +105,7 @@ src/
 │   ├── merch/         → katalog Merchandise
 │   ├── tiket/         → halaman Ticket
 │   ├── roadshow/      → form dan dekorasi School Roadshow
+│   ├── dashboard/     → Profile view/edit, Acara Saya, sidebar, dan latar
 │   ├── katalog/       → kartu & overlay detail, dipakai Merch + Ticket
 │   ├── auth/          → formulir Daftar Akun
 │   ├── ui/            → komponen kecil dipakai lintas halaman
@@ -125,8 +131,10 @@ public/                → aset statis, diakses lewat URL. Lihat public/README.m
 ├── image/tiket/       → tekstur dekorasi & butiran latar Ticket
 ├── image/auth/        → maskot ilustrasi halaman Daftar
 ├── image/roadshow/    → tekstur dan layer dekorasi School Roadshow
+├── image/dashboard/   → tekstur dan layer bentang alam Dashboard
 ├── icon/auth/         → ikon mata tampil/sembunyi kata sandi
 ├── icon/roadshow/     → ikon field School Roadshow
+├── icon/dashboard/    → avatar placeholder, kalender, dan external link
 ├── icon/landing/      → aset vektor Landing Page (SVG)
 ├── icon/explore/      → aset vektor Explore UI (SVG)
 └── fonts/             → Talina DEMO & Delight (lihat catatan lisensi di FE-0005)
@@ -169,6 +177,9 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md).
 - **Konten Explore UI.** Daftar program studi sudah terisi dari sumber resmi UI;
   foto fakultas masih placeholder.
+- **Integrasi Profile & Dashboard.** UI sudah selesai, tetapi data profil,
+  penyimpanan, logout, daftar acara, pengumuman, dan tautan Zoom masih menunggu
+  kontrak API. Informasi mentoring wajib tetap dinamis dari Admin.
 - **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, daftar
   sponsor, dan URL video masih placeholder — menunggu konten resmi. FAQ sudah
   memakai dokumen tim.
@@ -190,4 +201,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-13 (FE-0017)_
+_Terakhir diubah: 2026-09-13 (FE-0018)_
