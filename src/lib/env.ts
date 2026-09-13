@@ -15,9 +15,11 @@ export const env = {
   googleClientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
 
   /**
-   * URL Yesplis untuk CTA keluar. Masih TBD.
+   * URL Yesplis untuk CTA keluar.
    * Ini murni tujuan redirect — TIDAK ADA checkout/cart/payment di FE.
    */
-  yesplisTicketUrl: process.env.NEXT_PUBLIC_YESPLIS_TICKET_URL ?? '',
+  yesplisTicketUrl:
+    process.env.NEXT_PUBLIC_YESPLIS_TICKET_URL ||
+    "https://www.yesplis.com/event/bedah-kampus-ui-2026",
   yesplisMerchUrl: process.env.NEXT_PUBLIC_YESPLIS_MERCH_URL ?? '',
 } as const;

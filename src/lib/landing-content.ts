@@ -1,12 +1,13 @@
 /**
- * Konten Landing Page — SEMUANYA MASIH DUMMY.
+ * Konten Landing Page — sebagian masih dummy.
  *
  * Tidak ada satupun data di file ini yang diambil dari API. Endpoint BE untuk
  * entity `Content` belum ada (per BE ARCH-0002 satu-satunya endpoint yang jalan
  * adalah `GET /api/v1/health`), dan sesuai README boundary nomor 4 bentuk
  * response-nya tidak boleh dikarang duluan.
  *
- * Semua konten di bawah ini dikumpulkan di satu file supaya:
+ * FAQ sudah memakai dokumen konten tim. Konten lainnya dikumpulkan di satu
+ * file supaya:
  * 1. jelas mana yang masih dummy dan mana yang sudah asli — komponennya sendiri
  *    tidak menyimpan teks konten sama sekali;
  * 2. saat endpoint Content rilis, cukup file ini yang diganti jadi pemanggil
@@ -118,43 +119,71 @@ export interface ItemFAQ {
   jawaban: string;
 }
 
-/** TODO: ganti dengan daftar FAQ asli dari PM. */
+/** FAQ resmi dari dokumen konten tim BKUI, tab "QNA MATA ACARA BKUI". */
 export const DAFTAR_FAQ: readonly ItemFAQ[] = [
   {
     id: "faq-1",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan:
+      "Kak, kalau aku mau ngerasain langsung gimana suasana belajar di UI kayak mahasiswa itu bisa gak sih, Kak?",
     jawaban:
-      "Tugas bomba lebih dari pada itu, bomba ni penyelamat. Kucing atas pohon, kerbau masuk parit, kuda terlepas, ular dalam rumah, semua kami selamatkan.",
+      "Bisa banget! Kamu bisa ngerasain langsung suasana belajar di UI dengan mengikuti rangkaian kegiatan Bedah Fakultas. Kamu bisa mengeksplorasi seluruh fakultas di UI untuk mencari tahu suasana belajar, fasilitas, dan kehidupan sebagai mahasiswa UI secara langsung!",
   },
   {
     id: "faq-2",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan: "Bedah Universitas itu ngapain aja sih, Kak? Gabut gak acaranya?",
     jawaban:
-      "Jawaban belum diisi. Konten FAQ menunggu daftar resmi dari PM.",
+      "Enggak dong, acaranya pasti bakal seru banget! Di Bedah Universitas kamu bakal ketemu alumni-alumni UI keren untuk ngobrol santai soal kehidupan selama kuliah dan prospek kerja ke depannya. Terus bakal ada mini parade yang bikin kamu makin merasa seperti mahasiswa UI. Jadi, jangan lupa beli tiketnya, ya!",
   },
   {
     id: "faq-3",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan:
+      "Kalau aku mau cari tahu soal mata kuliah dan dosen di Teknik Industri, apakah bisa dengan ikut BKUI?",
     jawaban:
-      "Jawaban belum diisi. Konten FAQ menunggu daftar resmi dari PM.",
+      "Bisa banget! Kalau kamu ikut BKUI 2026, kamu bisa mencari tahu soal Teknik Industri, bahkan 80 jurusan lainnya yang ada di UI. Kamu bisa cari tahu langsung tentang mata kuliah, dosen, dan cara belajar dari seluruh jurusan di UI!",
   },
   {
     id: "faq-4",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan:
+      "Kak, kalau aku ikut BKUI 2026, aku bisa keliling seluruh fakultas yang ada di UI gak?",
     jawaban:
-      "Jawaban belum diisi. Konten FAQ menunggu daftar resmi dari PM.",
+      "Tentunya bisa banget! Kalau kamu ikut BKUI 2026, kamu bisa keliling seluruh fakultas yang ada di UI sekaligus mencari tahu langsung kurikulum dan cara belajarnya.",
   },
   {
     id: "faq-5",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan: "Aku masih bingung soal prospek kerja jurusan yang aku pilih, gimana ya, Kak?",
     jawaban:
-      "Jawaban belum diisi. Konten FAQ menunggu daftar resmi dari PM.",
+      "Tenang aja, kalau kamu ikut BKUI 2026 kamu bisa tanya-tanya ke alumni UI tentang berbagai macam prospek kerja lulusan UI. Jadi, jangan lupa ikut BKUI 2026, ya!",
   },
   {
     id: "faq-6",
-    pertanyaan: "Mengapa bumi berbentuk segitiga dan Fasilkom bernama itu?",
+    pertanyaan: "Kak, bedanya Bedah Universitas, Bedah Fakultas, dan Bedah Jurusan apa sih?",
     jawaban:
-      "Jawaban belum diisi. Konten FAQ menunggu daftar resmi dari PM.",
+      "Simpelnya, Bedah Universitas buat kenalan sama UI secara utuh, Bedah Fakultas buat mengeksplorasi fakultas incaranmu, dan Bedah Jurusan buat mendalami jurusan impianmu. Ketiganya seru dan saling melengkapi, jadi jangan sampai kelewatan BKUI 2026!",
+  },
+  {
+    id: "faq-7",
+    pertanyaan: "Kak, aku belum yakin mau jurusan apa. Mulai dari mana buat nentuinnya?",
+    jawaban:
+      "Santai aja, semua jawabannya ada di BKUI 2026! Kamu bisa mulai dari Bedah Fakultas untuk melihat gambaran besarnya, lalu lanjut ke Bedah Jurusan sampai menemukan jurusan yang paling cocok. Yuk, beli tiketnya sekarang!",
+  },
+  {
+    id: "faq-8",
+    pertanyaan: "Kalau aku ikut ketiga acara BKUI 2026 sekaligus, untungnya apa, Kak?",
+    jawaban:
+      "Untungnya gede banget! Kamu bakal dapat gambaran lengkap dari tingkat universitas, fakultas, sampai jurusan, sehingga keputusanmu dalam memilih jurusan makin mantap dan gak asal pilih. Paket lengkap ini cuma ada di BKUI 2026. Yuk, beli tiketnya sekarang!",
+  },
+  {
+    id: "faq-9",
+    pertanyaan: "Kak, aku masih anak SMA kelas 10. Apa masih terlalu dini kalau ikut BKUI?",
+    jawaban:
+      "Enggak dong, justru ini waktu yang pas banget! Makin cepat kamu kenalan sama dunia kuliah, makin siap juga kamu menentukan jurusan yang cocok tanpa harus buru-buru nanti. Yuk, mulai langkah pertamamu dengan ikut BKUI 2026!",
+  },
+  {
+    id: "faq-10",
+    pertanyaan:
+      "Kak, kalau aku dari luar Jabodetabek dan datang jauh-jauh untuk ikut BKUI, worth it gak? Takut rugi ongkos doang.",
+    jawaban:
+      "Worth it banget! Ini kesempatan emas untuk langsung ngerasain suasana UI, ketemu kakak tingkat dan alumni, sampai mengenal jurusan impianmu secara nyata. Daripada menyesal salah pilih nanti, lebih baik mantapkan pilihanmu dari sekarang di BKUI 2026. Yuk, beli tiketnya!",
   },
 ] as const;
 

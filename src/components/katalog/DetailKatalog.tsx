@@ -4,11 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { angkaRupiah, type ItemKatalog } from "@/lib/katalog";
-import { env } from "@/lib/env";
 
 interface DetailKatalogProps {
   /** Item yang sedang dibuka, atau null kalau overlay tertutup. */
   item: ItemKatalog | null;
+  /** URL partner sesuai jenis katalog: tiket atau merchandise. */
+  urlYesplis: string;
   onTutup: () => void;
 }
 
@@ -39,7 +40,7 @@ interface DetailKatalogProps {
  * link keluar biasa. Tidak ada jumlah beli, pilihan ukuran, atau tambah ke
  * keranjang (README boundary nomor 1).
  */
-export function DetailKatalog({ item, onTutup }: DetailKatalogProps) {
+export function DetailKatalog({ item, urlYesplis, onTutup }: DetailKatalogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   /*
    * `onTutup` disimpan di ref supaya listener `close` di bawah tidak perlu
@@ -98,14 +99,23 @@ export function DetailKatalog({ item, onTutup }: DetailKatalogProps) {
       aria-label={item ? `Detail ${item.nama}` : undefined}
       className="m-auto w-[calc(100vw-2rem)] max-w-[1282px] bg-transparent p-0 backdrop:bg-black/50"
     >
-      {item && <IsiDetail key={item.id} item={item} onTutup={onTutup} />}
+      {item && (
+        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} />
+      )}
     </dialog>
   );
 }
 
-function IsiDetail({ item, onTutup }: { item: ItemKatalog; onTutup: () => void }) {
+function IsiDetail({
+  item,
+  urlYesplis,
+  onTutup,
+}: {
+  item: ItemKatalog;
+  urlYesplis: string;
+  onTutup: () => void;
+}) {
   const [foto, setFoto] = useState(0);
-  const urlYesplis = env.yesplisMerchUrl;
 
   const geser = (arah: 1 | -1) =>
     setFoto((i) => (i + arah + item.jumlahFoto) % item.jumlahFoto);

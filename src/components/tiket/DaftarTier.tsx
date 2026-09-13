@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import { TIER } from "@/lib/ticket-content";
 import type { ItemKatalog } from "@/lib/katalog";
+import { env } from "@/lib/env";
 import { BERURUTAN_TIER, SEKALI_MASUK } from "@/components/explore/gerak";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
 import { DetailKatalog } from "@/components/katalog/DetailKatalog";
@@ -37,11 +38,22 @@ export function DaftarTier() {
         className="mx-auto grid w-full max-w-[1115px] gap-4 sm:grid-cols-2 lg:grid-cols-3"
       >
         {TIER.map((tier) => (
-          <KartuKatalog key={tier.id} item={tier} tegas onLihatDetail={() => bukaDetail(tier)} />
+          <KartuKatalog
+            key={tier.id}
+            item={tier}
+            urlYesplis={env.yesplisTicketUrl}
+            tegas
+            onLihatDetail={() => bukaDetail(tier)}
+          />
         ))}
       </motion.div>
 
-      <DetailKatalog key={pembuka} item={detail} onTutup={() => setDetail(null)} />
+      <DetailKatalog
+        key={pembuka}
+        item={detail}
+        urlYesplis={env.yesplisTicketUrl}
+        onTutup={() => setDetail(null)}
+      />
     </>
   );
 }

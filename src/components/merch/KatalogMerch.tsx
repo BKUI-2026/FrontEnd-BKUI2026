@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { produkUntuk, type Kategori, type Produk } from "@/lib/merch-content";
+import { env } from "@/lib/env";
 import { BERURUTAN, SEKALI_MASUK } from "@/components/explore/gerak";
 import { FilterMerch } from "./FilterMerch";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
@@ -74,11 +75,21 @@ export function KatalogMerch() {
         className="grid flex-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
       >
         {daftar.map((produk) => (
-          <KartuKatalog key={produk.id} item={produk} onLihatDetail={() => bukaDetail(produk)} />
+          <KartuKatalog
+            key={produk.id}
+            item={produk}
+            urlYesplis={env.yesplisMerchUrl}
+            onLihatDetail={() => bukaDetail(produk)}
+          />
         ))}
       </motion.div>
 
-      <DetailKatalog key={pembuka} item={detail} onTutup={() => setDetail(null)} />
+      <DetailKatalog
+        key={pembuka}
+        item={detail}
+        urlYesplis={env.yesplisMerchUrl}
+        onTutup={() => setDetail(null)}
+      />
     </div>
   );
 }

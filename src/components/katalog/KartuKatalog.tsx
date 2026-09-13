@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 
-import { env } from "@/lib/env";
 import { rupiah, type ItemKatalog } from "@/lib/katalog";
 import { MUNCUL, MUNCUL_TEGAS } from "@/components/explore/gerak";
 
@@ -26,6 +25,8 @@ import { MUNCUL, MUNCUL_TEGAS } from "@/components/explore/gerak";
  */
 interface KartuKatalogProps {
   item: ItemKatalog;
+  /** URL partner sesuai jenis katalog: tiket atau merchandise. */
+  urlYesplis: string;
   /** Membuka overlay detail milik katalog. */
   onLihatDetail: () => void;
   /**
@@ -35,11 +36,12 @@ interface KartuKatalogProps {
   tegas?: boolean;
 }
 
-export function KartuKatalog({ item, onLihatDetail, tegas = false }: KartuKatalogProps) {
-  // URL Yesplis belum diberikan. Selama kosong tombolnya dimatikan, bukan
-  // ditebak — menautkan ke URL karangan lebih berbahaya daripada tombol mati.
-  const urlYesplis = env.yesplisMerchUrl;
-
+export function KartuKatalog({
+  item,
+  urlYesplis,
+  onLihatDetail,
+  tegas = false,
+}: KartuKatalogProps) {
   return (
     <motion.article
       variants={tegas ? MUNCUL_TEGAS : MUNCUL}

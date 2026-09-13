@@ -14,7 +14,7 @@ import { DaftarTier } from "@/components/tiket/DaftarTier";
  * tidak ada: dua tombol di tiap kartu persis seperti Figma, "Lihat Detail"
  * (membuka overlay di halaman yang sama) dan "Beli di Yesplis".
  *
- * URL tujuan: env `NEXT_PUBLIC_YESPLIS_TICKET_URL` — masih kosong. Lihat
+ * URL tujuan: env `NEXT_PUBLIC_YESPLIS_TICKET_URL` — sudah diisi URL event resmi. Lihat
  * markdowns-fe/integrations/yesplis-redirect.md
  *
  * Isi tier masih dummy (`lib/ticket-content.ts`); endpoint `Content` di BE

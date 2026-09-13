@@ -12,10 +12,10 @@ import { LatarHalaman } from "@/components/explore/LatarHalaman";
  * Halaman ini cuma merangkai; seluruh tampilan ada di `components/explore/`
  * dan seluruh teks di `lib/explore-content.ts`.
  *
- * BELUM ADA SATUPUN DATA DARI API. Sumbernya entity `Content` di BE dan
- * endpoint-nya belum ada, jadi shape response-nya tidak boleh dikarang duluan
- * (README boundary nomor 4). Deskripsi, daftar prodi selain Fasilkom, dan foto
- * fakultas masih placeholder — catatannya lengkap di `lib/explore-content.ts`.
+ * BELUM ADA DATA DARI API. Deskripsi fakultas berasal dari dokumen konten tim,
+ * sementara daftar prodi selain Fasilkom dan foto masih placeholder. Endpoint
+ * `Content` belum ada, jadi shape response-nya tidak dikarang duluan (README
+ * boundary nomor 4). Catatan lengkap ada di `lib/explore-content.ts`.
  *
  * Latar langitnya dipasang lewat `LatarHalaman`, yang membungkus SELURUH isi —
  * di Figma latar itu memang milik frame halaman, bukan milik satu section.

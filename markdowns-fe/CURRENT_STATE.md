@@ -2,37 +2,44 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-02 15:50 WIB
+Terakhir diperbarui: 2026-09-13 21:35 WIB
 
 ## Status Integrasi per Fitur
 
-**Landing Page sudah dislicing penuh dari Figma** (FE-0005) — halaman pertama yang isinya jadi. Isinya masih dummy karena endpoint `Content` di BE belum ada.
+**Landing Page sudah dislicing penuh dari Figma** (FE-0005). Sepuluh FAQ resmi
+sudah dimasukkan dari dokumen tim (FE-0015); konten section lainnya masih
+sebagian dummy karena endpoint `Content` di BE belum ada.
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
-animasi Framer Motion. Isinya masih dummy karena alasan yang sama.
+animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
+sudah memakai konten tim (FE-0015); prodi selain Fasilkom dan foto masih dummy.
 
 **Merchandise Catalog juga sudah dislicing penuh** (FE-0009) — katalog + CTA
 redirect ke Yesplis, tanpa cart/checkout sama sekali.
 
-**Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — info tier + CTA
-redirect ke Yesplis, tanpa payment gateway.
+**Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — CTA sudah terhubung
+ke event Yesplis resmi (FE-0015), tanpa payment gateway. Isi tier masih dummy.
 
 **Halaman Daftar Akun & Masuk sudah dislicing** (FE-0011, FE-0012) dan saling
 terhubung, tapi belum bisa dipakai — endpoint auth BE belum ada.
 
-Lima halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
+**School Roadshow Registration sudah dislicing** (FE-0013, FE-0014) dengan form
+publik, validasi client, dan halaman success. Submit belum terhubung karena
+kontrak endpoint BE belum ada; halaman success belum dipanggil otomatis.
+
+Empat halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Masih Dummy Data** | TBD (entity `Content` — video, tokoh, testimoni, FAQ, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
+| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi sudah masuk) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
-| Explore UI | `/explore-ui` | **Masih Dummy Data** | TBD (entity `Content` — deskripsi fakultas, prodi, foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
+| Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi resmi sudah masuk) | TBD (entity `Content` — prodi, foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
-| Ticket | `/ticket` | **Masih Dummy Data** | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md) |
+| Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
 | Profile | `/profile` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 | Student Dashboard | `/dashboard` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
-| School Roadshow Registration | `/school-roadshow` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
+| School Roadshow Registration | `/school-roadshow`, `/school-roadshow/success` | **Masih Dummy Data** (UI form + success selesai) | TBD — endpoint registrasi & email belum ada | [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md), [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
 | Daftar CASA | `/daftar-casa` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 | Daftar Mentoring | `/daftar-mentoring` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 
@@ -71,7 +78,8 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 | Section Ticket | Sesuai Figma | Latar rumput + hiasan berputar, lihat [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md) |
 | Section Merchandise | Sesuai Figma | 5 komponen di `components/merch/`, termasuk overlay detail berbasis `<dialog>` — lihat [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
 | Section Explore UI | Sesuai Figma | 8 komponen di `components/explore/` — lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
-| PagePlaceholder | Sementara | Masih dipakai 7 halaman selain Landing Page & Explore UI. Dihapus per halaman saat slicing dimulai |
+| School Roadshow | Sesuai Figma | Form publik dan success state; integrasi API masih menunggu kontrak BE. Lihat [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md) dan [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
+| PagePlaceholder | Sementara | Masih dipakai 4 halaman: Profile, Student Dashboard, Daftar CASA, dan Daftar Mentoring. Dihapus per halaman saat slicing dimulai |
 
 **Kondisi login belum bisa dideteksi.** `src/lib/auth-state.ts` masih placeholder yang selalu mengembalikan `General Public` — endpoint auth BE belum ada, dan shape response-nya tidak boleh dikarang duluan (README boundary nomor 4). Akibatnya menu Student (Dashboard, Daftar Mentoring, Profile) belum muncul di Navbar dan tombol "Masuk" masih `disabled`.
 
@@ -90,6 +98,7 @@ src/
 │   ├── explore/       → section Explore UI, satu file per elemen visual
 │   ├── merch/         → katalog Merchandise
 │   ├── tiket/         → halaman Ticket
+│   ├── roadshow/      → form dan dekorasi School Roadshow
 │   ├── katalog/       → kartu & overlay detail, dipakai Merch + Ticket
 │   ├── auth/          → formulir Daftar Akun
 │   ├── ui/            → komponen kecil dipakai lintas halaman
@@ -114,7 +123,9 @@ public/                → aset statis, diakses lewat URL. Lihat public/README.m
 ├── image/merch/       → 6 tekstur dekorasi Merch (dipakai dari dalam SVG)
 ├── image/tiket/       → tekstur dekorasi & butiran latar Ticket
 ├── image/auth/        → maskot ilustrasi halaman Daftar
+├── image/roadshow/    → tekstur dan layer dekorasi School Roadshow
 ├── icon/auth/         → ikon mata tampil/sembunyi kata sandi
+├── icon/roadshow/     → ikon field School Roadshow
 ├── icon/landing/      → aset vektor Landing Page (SVG)
 ├── icon/explore/      → aset vektor Explore UI (SVG)
 └── fonts/             → Talina DEMO & Delight (lihat catatan lisensi di FE-0005)
@@ -129,7 +140,7 @@ Template di `.env.example`, copy ke `.env.local`. Semua ber-prefix `NEXT_PUBLIC_
 |---|---|---|
 | `NEXT_PUBLIC_API_BASE_URL` | Base URL API BE, termasuk `/api/v1` | terisi (`http://localhost:3000/api/v1`) |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Client ID Google SSO (bukan secret) | **kosong — belum ada** |
-| `NEXT_PUBLIC_YESPLIS_TICKET_URL` | Tujuan CTA "Beli di Yesplis" di halaman Ticket | **kosong — tombolnya dimatikan sampai diisi** |
+| `NEXT_PUBLIC_YESPLIS_TICKET_URL` | Tujuan CTA "Beli di Yesplis" di halaman Ticket | **terisi — event BKUI 2026** |
 | `NEXT_PUBLIC_YESPLIS_MERCH_URL` | Tujuan CTA "Beli di Yesplis" di katalog Merch | **kosong — tombolnya dimatikan sampai diisi** |
 
 ## Cara Menjalankan (lokal)
@@ -155,12 +166,13 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   only*; pemakaian komersial (tiket & sponsor) perlu beli lisensi dulu sebelum
   live. Detail & link pembelian ada di
   [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md).
-- **Konten Explore UI.** Deskripsi tiap fakultas, daftar program studi selain
-  Fasilkom, dan foto fakultas masih placeholder. Daftar prodi sengaja tidak
+- **Konten Explore UI.** Daftar program studi selain Fasilkom dan foto fakultas
+  masih placeholder. Daftar prodi sengaja tidak
   saya isi sendiri — salah menulis program studi di situs resmi universitas
   lebih merugikan daripada placeholder yang jelas terbaca sebagai placeholder.
-- **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, isi FAQ,
-  daftar sponsor, dan URL video masih placeholder — menunggu konten resmi.
+- **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, daftar
+  sponsor, dan URL video masih placeholder — menunggu konten resmi. FAQ sudah
+  memakai dokumen tim.
 
 ## Pekerjaan Visual yang Belum Selesai
 
@@ -179,4 +191,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-02 (FE-0012)_
+_Terakhir diubah: 2026-09-13 (FE-0015)_
