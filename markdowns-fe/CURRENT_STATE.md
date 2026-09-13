@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-13 21:50 WIB
+Terakhir diperbarui: 2026-09-13 22:30 WIB
 
 ## Status Integrasi per Fitur
 
@@ -12,8 +12,8 @@ sebagian dummy karena endpoint `Content` di BE belum ada.
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
 animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
-sudah memakai konten tim (FE-0015). Prodi yang belum tersedia tidak lagi
-ditampilkan sebagai placeholder (FE-0016); foto masih dummy.
+sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
+program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy.
 
 **Merchandise Catalog juga sudah dislicing penuh** (FE-0009) — katalog + CTA
 redirect ke Yesplis, tanpa cart/checkout sama sekali.
@@ -35,7 +35,7 @@ Empat halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah
 | Landing Page | `/` | **Masih Dummy Data** (FAQ resmi sudah masuk) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
-| Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi resmi; prodi kosong disembunyikan) | TBD (entity `Content` — prodi, foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md) |
+| Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
 | Profile | `/profile` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
@@ -167,10 +167,8 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   only*; pemakaian komersial (tiket & sponsor) perlu beli lisensi dulu sebelum
   live. Detail & link pembelian ada di
   [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md).
-- **Konten Explore UI.** Daftar program studi selain Fasilkom dan foto fakultas
-  masih placeholder. Daftar prodi sengaja tidak
-  saya isi sendiri — salah menulis program studi di situs resmi universitas
-  lebih merugikan daripada placeholder yang jelas terbaca sebagai placeholder.
+- **Konten Explore UI.** Daftar program studi sudah terisi dari sumber resmi UI;
+  foto fakultas masih placeholder.
 - **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, daftar
   sponsor, dan URL video masih placeholder — menunggu konten resmi. FAQ sudah
   memakai dokumen tim.
@@ -192,4 +190,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-13 (FE-0016)_
+_Terakhir diubah: 2026-09-13 (FE-0017)_
