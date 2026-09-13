@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-13 21:55 WIB
+Terakhir diperbarui: 2026-09-13 22:00 WIB
 
 ## Status Integrasi per Fitur
 
@@ -73,6 +73,7 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 | ButtonMasukSiswa | Sesuai Figma, **disabled** | Endpoint auth BE belum ada |
 | AvatarProfil | Sesuai Figma | Mengarah ke `/profile` |
 | Footer | Sesuai Figma | Kontak + sosmed + lockup logo |
+| Favicon | Logo BKUI | Ikon bawaan Next.js diganti logo BKUI 512px. Lihat [FE-0019](./features/FE-0019_Codex_Favicon-Logo-BKUI.md) |
 | JudulSticker | Sesuai Figma | Judul display berlapis (isi hijau + outline krem + pink). Teks sungguhan, bukan gambar. Lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
 | ButtonPil | Sesuai Figma | Tombol pil `Button/Large`. Beda dari ButtonPesanTiket |
 | Section Landing Page | Sesuai Figma | 9 komponen di `components/landing/` — lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
@@ -201,4 +202,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-13 (FE-0018)_
+_Terakhir diubah: 2026-09-13 (FE-0019)_
