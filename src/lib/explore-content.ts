@@ -50,11 +50,11 @@ export interface Fakultas {
   rumpun: Rumpun;
   /** Paragraf pembuka di bagian atas kartu. */
   ringkasan: string;
-  /** Chip hijau berisi nama program studi. */
+  /** Chip hijau berisi nama program studi; kosong jika konten resmi belum ada. */
   prodi: readonly string[];
-  /** Judul kecil di bawah chip. */
-  sorotanJudul: string;
-  sorotanIsi: string;
+  /** Sorotan tambahan; null jika konten resmi belum ada. */
+  sorotanJudul: string | null;
+  sorotanIsi: string | null;
   /**
    * Jumlah slide di carousel foto. Fotonya sendiri belum ada — di Figma pun
    * masih bingkai kosong — jadi yang disimpan baru cacahnya, biar titik
@@ -63,18 +63,12 @@ export interface Fakultas {
   jumlahFoto: number;
 }
 
-const INFORMASI_AKADEMIK_MENYUSUL =
-  "Informasi program studi, kurikulum, dan detail akademik lainnya akan diperbarui setelah konten resmi tersedia.";
-
-/** Chip program studi sementara, untuk fakultas yang datanya belum diberikan. */
-const PRODI_MENYUSUL = ["Program Studi 1", "Program Studi 2", "Program Studi 3"] as const;
-
 /**
- * Hanya bagian yang datanya sudah pasti. Sisanya diisi placeholder seragam
- * lewat `map` di bawah, jadi kalau nanti konten resminya turun cukup tambahkan
- * field-nya di sini — tidak perlu menyalin ulang lima field yang sama.
+ * Hanya bagian yang datanya sudah pasti. Data yang belum tersedia dibiarkan
+ * kosong, bukan ditampilkan sebagai placeholder yang bisa disangka konten.
  */
-type FakultasDasar = Pick<Fakultas, "id" | "nama" | "rumpun"> & Partial<Fakultas>;
+type FakultasDasar = Pick<Fakultas, "id" | "nama" | "rumpun" | "ringkasan"> &
+  Partial<Fakultas>;
 
 const DAFTAR_DASAR: readonly FakultasDasar[] = [
   {
@@ -186,10 +180,9 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
 ];
 
 export const FAKULTAS: readonly Fakultas[] = DAFTAR_DASAR.map((f) => ({
-  ringkasan: "Deskripsi fakultas belum tersedia.",
-  prodi: PRODI_MENYUSUL,
-  sorotanJudul: "Informasi Akademik",
-  sorotanIsi: INFORMASI_AKADEMIK_MENYUSUL,
+  prodi: [],
+  sorotanJudul: null,
+  sorotanIsi: null,
   jumlahFoto: 4,
   ...f,
 }));

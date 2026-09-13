@@ -65,23 +65,27 @@ export function KartuFakultas({ fakultas, terbalik }: { fakultas: Fakultas; terb
             {fakultas.ringkasan}
           </p>
 
-          <motion.ul
-            variants={BERURUTAN_RAPAT}
-            className="flex flex-wrap items-center justify-center gap-3 py-2 lg:gap-7 lg:px-12 lg:py-6"
-          >
-            {fakultas.prodi.map((nama) => (
-              <ChipProdi key={nama} nama={nama} />
-            ))}
-          </motion.ul>
+          {fakultas.prodi.length > 0 && (
+            <motion.ul
+              variants={BERURUTAN_RAPAT}
+              className="flex flex-wrap items-center justify-center gap-3 py-2 lg:gap-7 lg:px-12 lg:py-6"
+            >
+              {fakultas.prodi.map((nama) => (
+                <ChipProdi key={nama} nama={nama} />
+              ))}
+            </motion.ul>
+          )}
 
-          <motion.div variants={MUNCUL} className="flex flex-col gap-2.5 text-bkui-teks">
-            <h3 className="text-center font-ui text-xl font-semibold leading-[1.2] lg:text-[28px]">
-              {fakultas.sorotanJudul}
-            </h3>
-            <p className="text-justify font-body text-base font-medium leading-[1.4] lg:text-xl">
-              {fakultas.sorotanIsi}
-            </p>
-          </motion.div>
+          {fakultas.sorotanJudul && fakultas.sorotanIsi && (
+            <motion.div variants={MUNCUL} className="flex flex-col gap-2.5 text-bkui-teks">
+              <h3 className="text-center font-ui text-xl font-semibold leading-[1.2] lg:text-[28px]">
+                {fakultas.sorotanJudul}
+              </h3>
+              <p className="text-justify font-body text-base font-medium leading-[1.4] lg:text-xl">
+                {fakultas.sorotanIsi}
+              </p>
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div variants={MUNCUL} className="flex w-full justify-center lg:w-[400px] lg:shrink-0">
