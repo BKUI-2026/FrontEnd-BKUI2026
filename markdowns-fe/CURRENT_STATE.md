@@ -2,13 +2,14 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-13 22:00 WIB
+Terakhir diperbarui: 2026-09-13 22:10 WIB
 
 ## Status Integrasi per Fitur
 
 **Landing Page sudah dislicing penuh dari Figma** (FE-0005). Sepuluh FAQ resmi
-sudah dimasukkan dari dokumen tim (FE-0015); konten section lainnya masih
-sebagian dummy karena endpoint `Content` di BE belum ada.
+sudah dimasukkan dari dokumen tim (FE-0015). Seluruh Lorem ipsum dan label
+generik sudah diganti copy yang layak tampil (FE-0020); nama pembicara dan
+testimoni asli tetap menunggu konten resmi.
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
 animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
@@ -16,10 +17,12 @@ sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
 program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy.
 
 **Merchandise Catalog juga sudah dislicing penuh** (FE-0009) — katalog + CTA
-redirect ke Yesplis, tanpa cart/checkout sama sekali.
+redirect ke Yesplis, tanpa cart/checkout sama sekali. Nama sementara dan pesan
+status sudah profesional; harga/stok palsu dihapus (FE-0020).
 
 **Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — CTA sudah terhubung
-ke event Yesplis resmi (FE-0015), tanpa payment gateway. Isi tier masih dummy.
+ke event Yesplis resmi (FE-0015), tanpa payment gateway. Nama tier mengikuti
+Figma; harga, stok, dan benefit menunggu informasi resmi (FE-0020).
 
 **Halaman Daftar Akun & Masuk sudah dislicing** (FE-0011, FE-0012) dan saling
 terhubung, tapi belum bisa dipakai — endpoint auth BE belum ada.
@@ -36,12 +39,12 @@ Dua halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah s
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi sudah masuk) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
+| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md) |
-| Merchandise Catalog | `/merchandise` | **Masih Dummy Data** | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md) |
-| Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md) |
+| Merchandise Catalog | `/merchandise` | **Masih Dummy Data** (copy layak tampil; harga/stok/foto menunggu) | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
+| Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif; harga/stok/benefit menunggu) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Profile | `/profile` | **Masih Dummy Data** (UI view/edit selesai; data & simpan belum terhubung) | TBD — endpoint auth/profil BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
 | Student Dashboard | `/dashboard` | **Masih Dummy Data** (UI Acara Saya selesai; detail & link mentoring dummy) | TBD — endpoint dashboard/content BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
 | School Roadshow Registration | `/school-roadshow`, `/school-roadshow/success` | **Masih Dummy Data** (UI form + success selesai) | TBD — endpoint registrasi & email belum ada | [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md), [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
@@ -181,9 +184,9 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Integrasi Profile & Dashboard.** UI sudah selesai, tetapi data profil,
   penyimpanan, logout, daftar acara, pengumuman, dan tautan Zoom masih menunggu
   kontrak API. Informasi mentoring wajib tetap dinamis dari Admin.
-- **Konten Landing Page.** Deskripsi BKUI, daftar tokoh, testimoni, daftar
-  sponsor, dan URL video masih placeholder — menunggu konten resmi. FAQ sudah
-  memakai dokumen tim.
+- **Konten Landing Page.** Deskripsi BKUI sudah memakai copy yang relevan dan
+  FAQ memakai dokumen tim. Identitas tokoh, testimoni asli, daftar sponsor, dan
+  URL video tetap menunggu konten resmi; UI menampilkannya secara transparan.
 
 ## Pekerjaan Visual yang Belum Selesai
 
@@ -202,4 +205,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-13 (FE-0019)_
+_Terakhir diubah: 2026-09-13 (FE-0020)_

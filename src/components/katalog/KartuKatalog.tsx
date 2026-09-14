@@ -61,7 +61,9 @@ export function KartuKatalog({
       */}
       <div className="h-[200px] w-full overflow-hidden rounded-2xl bg-bkui-navbar">
         <div className="flex size-full items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
-          <span className="font-ui text-sm text-bkui-teks/45">Foto menyusul</span>
+          <span className="px-4 text-center font-ui text-sm text-bkui-teks/55">
+            Foto resmi segera hadir
+          </span>
         </div>
       </div>
 
@@ -69,10 +71,10 @@ export function KartuKatalog({
         <div className="flex flex-col gap-1 text-bkui-teks">
           <h3 className="font-display text-2xl leading-[1.4] lg:text-[32px]">{item.nama}</h3>
           <p className="font-ui text-xl font-semibold leading-[1.2] lg:text-[28px]">
-            {rupiah(item.harga)}
+            {item.harga === null ? "Harga segera diumumkan" : rupiah(item.harga)}
           </p>
           <p className="font-body text-sm font-medium leading-[1.3] opacity-60">
-            Stocks Available: {item.stok}
+            {item.stok === null ? "Ketersediaan akan diperbarui" : `Stok tersedia: ${item.stok}`}
           </p>
         </div>
 

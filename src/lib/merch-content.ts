@@ -14,9 +14,9 @@ import type { ItemKatalog } from "@/lib/katalog";
  * terpilih. Halaman ini cuma katalog: seluruh pembelian keluar ke Yesplis
  * (AGENTS.md bagian 5.4 dan README boundary nomor 1).
  *
- * Nama, harga, dan stok masih placeholder persis seperti di Figma. Kategori
- * sengaja divariasikan supaya penyaringnya bisa dicoba — begitu konten resmi
- * turun, seluruh isi `PRODUK` diganti.
+ * Nama sementara dibuat informatif tanpa mengarang produk spesifik. Harga dan
+ * stok dibiarkan null sampai katalog resmi turun. Kategori sengaja divariasikan
+ * supaya penyaringnya tetap bisa dicoba.
  */
 
 /** Kategori di panel Filter, urutannya mengikuti Figma. */
@@ -36,24 +36,24 @@ export type Produk = ItemKatalog & { kategori: Kategori };
 type ProdukDasar = Pick<Produk, "id" | "nama" | "kategori"> & Partial<Produk>;
 
 const DAFTAR_DASAR: readonly ProdukDasar[] = [
-  { id: "m1", nama: "Nama Merchandise 1", kategori: "Apparel" },
-  { id: "m2", nama: "Nama Merchandise 2", kategori: "Accessories" },
-  { id: "m3", nama: "Nama Merchandise 3", kategori: "Bundles" },
-  { id: "m4", nama: "Nama Merchandise 4", kategori: "Event Memorabilia" },
-  { id: "m5", nama: "Nama Merchandise 5", kategori: "Apparel" },
-  { id: "m6", nama: "Nama Merchandise 6", kategori: "Accessories" },
-  { id: "m7", nama: "Nama Merchandise 7", kategori: "Apparel" },
-  { id: "m8", nama: "Nama Merchandise 8", kategori: "Bundles" },
-  { id: "m9", nama: "Nama Merchandise 9", kategori: "Event Memorabilia" },
+  { id: "m1", nama: "Koleksi Apparel BKUI", kategori: "Apparel" },
+  { id: "m2", nama: "Koleksi Aksesori BKUI", kategori: "Accessories" },
+  { id: "m3", nama: "Paket Merchandise BKUI", kategori: "Bundles" },
+  { id: "m4", nama: "Memorabilia BKUI 2026", kategori: "Event Memorabilia" },
+  { id: "m5", nama: "Apparel Makara Expedition", kategori: "Apparel" },
+  { id: "m6", nama: "Aksesori Makara Expedition", kategori: "Accessories" },
+  { id: "m7", nama: "Koleksi Apparel Eksklusif", kategori: "Apparel" },
+  { id: "m8", nama: "Paket Makara Expedition", kategori: "Bundles" },
+  { id: "m9", nama: "Kenang-kenangan BKUI 2026", kategori: "Event Memorabilia" },
 ];
 
-/** Deskripsi placeholder, disalin apa adanya dari Figma. */
+/** Informasi sementara yang jujur sampai katalog resmi tersedia. */
 const DESKRIPSI_MENYUSUL =
-  "PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.";
+  "Detail produk, bahan, ukuran, dan pilihan varian akan diperbarui setelah katalog resmi merchandise BKUI 2026 diumumkan.";
 
 export const PRODUK: readonly Produk[] = DAFTAR_DASAR.map((p) => ({
-  harga: 1_000_000_000,
-  stok: 24,
+  harga: null,
+  stok: null,
   deskripsi: DESKRIPSI_MENYUSUL,
   jumlahFoto: 4,
   ...p,

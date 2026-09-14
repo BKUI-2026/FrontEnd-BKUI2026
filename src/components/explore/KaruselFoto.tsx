@@ -15,7 +15,7 @@ import { SENTUHAN } from "./gerak";
  * titik navigasinya sudah jalan, tinggal isinya diganti `<Image>` sungguhan
  * begitu datanya turun.
  *
- * Slide kosongnya diberi label "Foto menyusul" — kotak yang benar-benar kosong
+ * Slide kosongnya diberi label "Foto resmi segera hadir" — kotak yang benar-benar kosong
  * terbaca sebagai gambar gagal dimuat, bukan sebagai konten yang belum ada.
  *
  * ---------------------------------------------------------------------------
@@ -50,7 +50,9 @@ export function KaruselFoto({ jumlah, namaFakultas }: { jumlah: number; namaFaku
             exit={kurangiGerak ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            <span className="font-ui text-sm text-bkui-teks/45">Foto menyusul</span>
+            <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
+              Foto resmi {namaFakultas} segera hadir
+            </span>
           </motion.div>
         </AnimatePresence>
 

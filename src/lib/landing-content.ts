@@ -16,13 +16,8 @@
  * AGENTS.md bagian 7 menyebut URL video, pengumuman, dan timeline mentoring
  * WAJIB dinamis dari Admin — jadi jangan hardcode nilai aslinya di komponen.
  *
- * ---------------------------------------------------------------------------
- * Catatan soal teks "Lorem ipsum"
- * ---------------------------------------------------------------------------
- * Sebagian teks di bawah masih Lorem ipsum, persis seperti di Figma. Itu memang
- * belum ditulis oleh PM, jadi sengaja TIDAK dikarang sendiri — teks karangan
- * yang terlihat masuk akal lebih berbahaya daripada Lorem ipsum, karena bisa
- * ikut terbawa ke produksi tanpa ada yang sadar itu bukan konten resmi.
+ * Konten yang belum diberikan tim ditulis sebagai pengumuman yang jujur dan
+ * layak tampil, bukan teks acak atau klaim yang mengarang nama orang.
  */
 
 /** Satu tokoh di section "Tokoh Inspirasi" (Speakers). */
@@ -42,16 +37,12 @@ export interface Tokoh {
  * asli sebagai pembicara yang belum tentu diundang bisa terbaca sebagai klaim
  * palsu, jadi diganti penomoran netral sampai daftar aslinya diberikan PM.
  */
-export const DAFTAR_TOKOH: readonly Tokoh[] = [
-  { id: "tokoh-1", nama: "Nama Tokoh 1", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-2", nama: "Nama Tokoh 2", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-3", nama: "Nama Tokoh 3", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-4", nama: "Nama Tokoh 4", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-5", nama: "Nama Tokoh 5", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-6", nama: "Nama Tokoh 6", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-7", nama: "Nama Tokoh 7", keterangan: "Peran atau institusi", foto: null },
-  { id: "tokoh-8", nama: "Nama Tokoh 8", keterangan: "Peran atau institusi", foto: null },
-] as const;
+export const DAFTAR_TOKOH: readonly Tokoh[] = Array.from({ length: 8 }, (_, i) => ({
+  id: `tokoh-${i + 1}`,
+  nama: "Segera Diumumkan",
+  keterangan: "Nantikan tokoh inspiratif BKUI 2026",
+  foto: null,
+}));
 
 /** Satu tahap di section Timeline. */
 export interface TahapTimeline {
@@ -91,23 +82,23 @@ export interface Testimoni {
 export const DAFTAR_TESTIMONI: readonly Testimoni[] = [
   {
     id: "testimoni-1",
-    nama: "Lorem ipsum dolor",
-    asalSekolah: "Sekolahnya lorem ipsum",
-    isi: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    nama: "Kesan Peserta",
+    asalSekolah: "Alumni CASA BKUI",
+    isi: "Cerita resmi peserta tentang pengalaman mengikuti rangkaian BKUI akan ditampilkan di sini setelah dikurasi oleh panitia.",
     foto: null,
   },
   {
     id: "testimoni-2",
-    nama: "Lorem ipsum dolor",
-    asalSekolah: "Sekolahnya lorem ipsum",
-    isi: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    nama: "Perjalanan Menuju UI",
+    asalSekolah: "Alumni CASA BKUI",
+    isi: "Nantikan pengalaman peserta saat mengenal kehidupan kampus, mengeksplorasi fakultas, dan menemukan program studi yang sesuai dengan minatnya.",
     foto: null,
   },
   {
     id: "testimoni-3",
-    nama: "Lorem ipsum dolor",
-    asalSekolah: "Sekolahnya lorem ipsum",
-    isi: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    nama: "Langkah Menentukan Pilihan",
+    asalSekolah: "Alumni CASA BKUI",
+    isi: "Kisah peserta tentang proses memantapkan pilihan pendidikan bersama BKUI 2026 akan hadir setelah testimoni resmi tersedia.",
     foto: null,
   },
 ] as const;
@@ -189,14 +180,15 @@ export const DAFTAR_FAQ: readonly ItemFAQ[] = [
 
 /**
  * Deskripsi "Apa itu BKUI 2026".
- * TODO: ganti dengan deskripsi resmi dari PM.
+ * Disusun dari cakupan acara yang diberikan tim: Bedah Universitas, Bedah
+ * Fakultas, dan Bedah Jurusan.
  */
 export const DESKRIPSI_BKUI =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  "Bedah Kampus Universitas Indonesia (BKUI) 2026 adalah ruang eksplorasi bagi pelajar untuk mengenal kehidupan kampus UI secara lebih dekat. Melalui rangkaian Bedah Universitas, Bedah Fakultas, dan Bedah Jurusan, peserta dapat menggali informasi tentang pengalaman kuliah, lingkungan belajar, pilihan program studi, hingga gambaran karier langsung dari sivitas dan alumni UI. BKUI membantu kamu melangkah lebih yakin dalam menentukan arah pendidikan dan masa depan.";
 
 /** Subjudul kecil di bawah judul "Tentukan Arah Petualanganmu". */
 export const SUBJUDUL_ARAH_PETUALANGAN =
-  "Lorem ipsum dolor sit amet, consectetur";
+  "Temukan pengalaman BKUI yang paling sesuai untukmu.";
 
 /**
  * Video Landing Page.

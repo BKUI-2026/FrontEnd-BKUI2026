@@ -20,9 +20,10 @@
 export interface ItemKatalog {
   id: string;
   nama: string;
-  /** Rupiah penuh tanpa desimal. Diformat saat dirender, bukan disimpan sebagai teks. */
-  harga: number;
-  stok: number;
+  /** Null selama harga resmi belum diberikan. */
+  harga: number | null;
+  /** Null selama informasi ketersediaan belum diberikan. */
+  stok: number | null;
   /** Paragraf di overlay detail. Tidak tampil di kartu. */
   deskripsi: string;
   /** Cacah slide carousel di overlay detail. Fotonya sendiri belum ada. */

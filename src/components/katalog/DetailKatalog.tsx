@@ -138,7 +138,7 @@ function IsiDetail({
         */}
         <div className="relative aspect-[600/446] w-full shrink-0 overflow-hidden rounded bg-bkui-coklat lg:w-[600px]">
           <p className="absolute inset-0 flex items-center justify-center font-ui text-sm text-bkui-terang/45">
-            Foto {foto + 1} menyusul
+            Pratinjau foto {foto + 1} segera hadir
           </p>
 
           <TombolGeser arah="mundur" onClick={() => geser(-1)} />
@@ -166,14 +166,20 @@ function IsiDetail({
           </h2>
 
           <p className="font-body text-base font-medium leading-[1.4] opacity-60 lg:text-xl">
-            Stocks Available: {item.stok}
+            {item.stok === null ? "Ketersediaan akan diperbarui" : `Stok tersedia: ${item.stok}`}
           </p>
 
           {/* "Rp" pakai font display, angkanya Delight extra bold — sesuai Figma. */}
-          <p className="text-2xl leading-[1.4] lg:text-[32px]">
-            <span className="font-display">Rp</span>
-            <span className="font-ui font-extrabold">{angkaRupiah(item.harga)}</span>
-          </p>
+          {item.harga === null ? (
+            <p className="font-ui text-2xl font-semibold leading-[1.4] lg:text-[32px]">
+              Harga segera diumumkan
+            </p>
+          ) : (
+            <p className="text-2xl leading-[1.4] lg:text-[32px]">
+              <span className="font-display">Rp</span>
+              <span className="font-ui font-extrabold">{angkaRupiah(item.harga)}</span>
+            </p>
+          )}
 
           <p className="font-body text-base font-medium leading-[1.4] lg:text-xl">
             {item.deskripsi}
