@@ -42,7 +42,7 @@ export function KolomIsian({
         {label}
       </label>
 
-      <div className="flex items-center gap-3 rounded-xl border-2 border-bkui-teks px-4 py-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau">
+      <div className="flex min-h-11 items-center gap-1 rounded-xl border-2 border-bkui-teks px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau sm:gap-3">
         <input
           id={id}
           name={name}
@@ -58,7 +58,7 @@ export function KolomIsian({
             onClick={() => setTerlihat((v) => !v)}
             aria-label={terlihat ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
             aria-pressed={terlihat}
-            className="shrink-0 cursor-pointer rounded transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            className="-my-0.5 -mr-3 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
           >
             <Image
               src={terlihat ? "/icon/auth/mata.svg" : "/icon/auth/mata-tutup.svg"}

@@ -119,7 +119,7 @@ function TombolPanah({
       aria-label={
         arah === "kiri" ? "Testimoni sebelumnya" : "Testimoni berikutnya"
       }
-      className="shrink-0 rounded-full transition-transform hover:scale-110 focus-visible:scale-110"
+      className="flex size-11 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-110 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
     >
       {/*
         Cuma ada satu file panah (menghadap kanan) — di Figma panah kiri adalah

@@ -67,7 +67,7 @@ export function KaruselFoto({ jumlah, namaFakultas }: { jumlah: number; namaFaku
         />
       </div>
 
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex min-h-11 items-center justify-center gap-1">
         {Array.from({ length: jumlah }, (_, i) => {
           const dipilih = i === aktif;
 
@@ -84,18 +84,22 @@ export function KaruselFoto({ jumlah, namaFakultas }: { jumlah: number; namaFaku
                * sekilas tanpa perlu membedakan dua nuansa cokelat yang mirip,
                * termasuk oleh mata yang sulit membedakan warna.
                *
-               * Ini SATU-SATUNYA animasi `width` di halaman ini, dan sengaja.
-               * Aturan umumnya cuma menganimasi transform/opacity supaya tidak
-               * memicu layout tiap frame — tapi di sini justru perubahan
-               * bentuknya yang membawa informasi, dan `scaleX` akan menggepengkan
-               * ujung pilnya jadi lonjong. Ongkosnya kecil dan terkurung: empat
-               * elemen 16px di dalam kolom yang lebarnya sudah pasti, jadi tidak
-               * ada apapun di luar barisan titik ini yang ikut dihitung ulang.
+               * Visual titik tetap 16/54px seperti desain, tetapi tombol luarnya
+               * minimal 44px supaya nyaman disentuh di HP. Yang dianimasikan
+               * adalah visual dan ruang tombolnya secara bersamaan, sehingga
+               * fokus keyboard serta target sentuh tidak pernah mengecil.
                */
-              animate={{ width: dipilih ? 54 : 16 }}
+              animate={{ width: dipilih ? 62 : 44 }}
               transition={kurangiGerak ? { duration: 0 } : SENTUHAN}
-              className="h-4 shrink-0 cursor-pointer rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
-            />
+              className="flex h-11 shrink-0 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            >
+              <motion.span
+                aria-hidden
+                animate={{ width: dipilih ? 54 : 16 }}
+                transition={kurangiGerak ? { duration: 0 } : SENTUHAN}
+                className="h-4 rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua"
+              />
+            </motion.button>
           );
         })}
       </div>

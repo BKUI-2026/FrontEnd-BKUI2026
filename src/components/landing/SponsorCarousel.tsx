@@ -20,7 +20,10 @@ import { DAFTAR_SPONSOR } from "@/lib/landing-content";
  */
 export function SponsorCarousel() {
   return (
-    <section aria-labelledby="judul-sponsor" className="relative isolate min-h-[18.52vw]">
+    <section
+      aria-labelledby="judul-sponsor"
+      className="relative isolate min-h-[18.52vw] overflow-hidden"
+    >
       {/* Pita sponsor + rumput dari Figma, jadi transisi dari FAQ ke footer */}
       <Image
         src="/image/landing/dekor-sponsor.webp"

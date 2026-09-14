@@ -1,46 +1,43 @@
-import Image from "next/image";
+"use client";
 
-import { HiasanHeader } from "./HiasanHeader";
-import { JudulExplore } from "./JudulExplore";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 
 /**
- * Header halaman Explore UI — ilustrasi perkemahan dengan judul melengkung.
+ * Header halaman Explore UI — ilustrasi perkemahan pada Figma node 729:6531.
  *
  * Rasionya dikunci ke 1512:885 (ukuran frame Figma) supaya ilustrasinya tidak
- * pernah terpotong: di layar sempit seluruh pemandangan ikut mengecil utuh.
- * Rasio tetap ini juga yang membuat semua lapisan hiasan bisa diposisikan
- * dalam persen, dan yang menjamin tidak ada pergeseran tata letak saat
- * gambarnya selesai dimuat.
- *
- * Langitnya sudah menyatu di dalam `lanskap.webp` (di Figma layer langit
- * terpisahnya disembunyikan pada frame ini), jadi header TIDAK memakai
- * `SectionLangit` — kalau dibungkus, langitnya jadi dobel.
+ * pernah terpotong. Asset yang dipakai adalah ekspor SVG utuh dari frame Figma,
+ * sehingga seluruh ornamen kecil, maskot, serta outline judul ikut terbawa tanpa
+ * mengubahnya menjadi screenshot raster. Animasi per kelompok elemen disimpan
+ * langsung di dalam SVG agar susunan layer tetap identik dengan desain sumber.
  */
 export function HeaderExplore() {
+  const kurangiGerak = useReducedMotion();
+
   return (
     <section className="relative isolate overflow-hidden">
       <h1 className="sr-only">
         Yuk, intip 14 fakultas dan 1 pendidikan vokasi di Universitas Indonesia
       </h1>
 
-      <div className="relative aspect-[1512/885] w-full">
-        {/* Lapis 1 — lanskap: langit, gunung, pohon, bukit, semak sakura. */}
+      <motion.div
+        className="relative aspect-[1512/885] w-full origin-center overflow-hidden bg-[#bfe7f8]"
+        initial={kurangiGerak ? false : { opacity: 0, scale: 1.015 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
         <Image
-          src="/image/explore/lanskap.webp"
+          src="/icon/explore/hero/explore-hero-complete.svg"
           alt=""
           aria-hidden
           fill
           sizes="100vw"
           priority
-          className="object-cover"
+          unoptimized
+          className="object-contain"
         />
-
-        {/* Lapis 2 — matahari, tenda, maskot (masing-masing bergerak sendiri). */}
-        <HiasanHeader />
-
-        {/* Lapis 3 — judul. */}
-        <JudulExplore />
-      </div>
+      </motion.div>
 
       {/*
         `Rectangle 815` di Figma: strip krem 24px yang memisahkan header dari

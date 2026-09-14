@@ -39,20 +39,20 @@ export function Footer() {
     // Angkanya disamakan dengan Navbar — keduanya sama-sama bingkai halaman
     // yang harus berada di atas kelopak.
     <footer className="relative z-50 w-full bg-bkui-button">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-8 py-12 md:flex-row md:items-start md:justify-between">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-5 py-10 sm:px-8 sm:py-12 md:flex-row md:items-start md:justify-between">
         {/* Kiri — kontak */}
         <div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
             {/*
               Font display dari Figma belum disiapkan di project (belum ada
               design token font), jadi sementara pakai bobot paling tebal dari
               font default.
             */}
-            <h2 className="text-4xl font-extrabold tracking-tight text-black">
+            <h2 className="text-3xl font-extrabold tracking-tight text-black sm:text-4xl">
               Contact Us
             </h2>
 
-            <ul className="flex items-center gap-4">
+            <ul className="flex items-center gap-1 sm:gap-2">
               {SOSMED.map((item) => {
                 const gambar = (
                   <Image
@@ -71,7 +71,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`BKUI 2026 di ${item.nama}`}
-                        className="inline-block transition-opacity hover:opacity-70"
+                        className="inline-flex size-11 items-center justify-center rounded-full transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                       >
                         {gambar}
                       </a>
@@ -86,7 +86,7 @@ export function Footer() {
 
           <a
             href={`mailto:${EMAIL_BKUI}`}
-            className="mt-4 inline-block text-base text-black hover:underline"
+            className="mt-2 inline-flex min-h-11 items-center break-all text-base text-black hover:underline sm:mt-4"
           >
             {EMAIL_BKUI}
           </a>

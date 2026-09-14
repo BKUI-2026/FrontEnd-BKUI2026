@@ -5,7 +5,7 @@ import { LatarHalaman } from "@/components/explore/LatarHalaman";
 /**
  * Explore UI — `/explore-ui`
  *
- * Katalog fakultas & program studi UI, mengikuti desain Figma node 307:2285.
+ * Katalog fakultas & program studi UI, mengikuti desain Figma node 551:4325.
  * Susunannya: header ilustrasi → strip pembatas → penyaring rumpun → daftar
  * fakultas berselang-seling.
  *
@@ -19,7 +19,7 @@ import { LatarHalaman } from "@/components/explore/LatarHalaman";
  *
  * Latar langitnya dipasang lewat `LatarHalaman`, yang membungkus SELURUH isi —
  * di Figma latar itu memang milik frame halaman, bukan milik satu section.
- * Header ikut dibungkus tapi menutupinya sendiri dengan `lanskap.webp`.
+ * Header ikut dibungkus tapi menutupinya sendiri dengan komposisi layer hero.
  */
 export default function ExploreUIPage() {
   return (

@@ -48,7 +48,7 @@ export function FilterMerch({ terpilih, onUbah }: FilterMerchProps) {
         {KATEGORI.map((kategori) => (
           <label
             key={kategori}
-            className="flex cursor-pointer items-center gap-3 font-ui text-lg font-medium capitalize text-bkui-teks lg:text-xl"
+            className="flex min-h-11 cursor-pointer items-center gap-3 font-ui text-lg font-medium capitalize text-bkui-teks lg:text-xl"
           >
             <input
               type="checkbox"

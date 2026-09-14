@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-14 WIB
+Terakhir diperbarui: 2026-09-15 00:25 WIB
 
 ## Status Integrasi per Fitur
 
@@ -15,7 +15,8 @@ testimoni asli tetap menunggu konten resmi. Placeholder video kini menampilkan
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
 animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
 sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
-program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy.
+program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy. Hero
+sudah mengikuti desain terbaru node `551:4325` tanpa mengubah isi (FE-0022).
 
 **Merchandise Catalog juga sudah dislicing penuh** (FE-0009) — katalog + CTA
 redirect ke Yesplis, tanpa cart/checkout sama sekali. Nama sementara dan pesan
@@ -38,12 +39,17 @@ logout, serta detail/tautan mentoring belum terhubung ke API.
 
 Dua halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
+**QA mobile responsive sudah dilakukan pada seluruh rute frontend** di lebar
+320px, 390px, dan 768px (FE-0023). Semua rute bebas horizontal overflow;
+target sentuh utama pada carousel, filter, autentikasi, dan Footer juga sudah
+disesuaikan untuk penggunaan di layar sentuh.
+
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
 | Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
-| Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md) |
+| Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** (copy layak tampil; harga/stok/foto menunggu) | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif; harga/stok/benefit menunggu) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Profile | `/profile` | **Masih Dummy Data** (UI view/edit selesai; data & simpan belum terhubung) | TBD — endpoint auth/profil BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
@@ -71,7 +77,7 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 
 | Komponen | Status | Catatan |
 |---|---|---|
-| Navbar | **Sesuai Figma** (desktop) | Dua state General Public / Student. Versi mobile belum ada di Figma & belum diverifikasi visual. Lihat [FE-0004](./features/FE-0004_Salman_Navbar-Sesuai-Figma.md) |
+| Navbar | **Sesuai Figma** (desktop), **responsif terverifikasi** (mobile) | Dua state General Public / Student. Menu mobile sudah diuji pada 320px, 390px, dan 768px. Lihat [FE-0004](./features/FE-0004_Salman_Navbar-Sesuai-Figma.md), [FE-0023](./features/FE-0023_Codex_QA-Mobile-Responsive.md) |
 | LogoBKUI | Sesuai Figma | Aset `logo/mainLogoBKUI2026.svg` — **371 KB, perlu ekspor ulang** (lihat FE-0004) |
 | ButtonPesanTiket | Sesuai Figma | Mengarah ke `/ticket`. Tidak ada checkout di FE |
 | ButtonMasukSiswa | Sesuai Figma, **disabled** | Endpoint auth BE belum ada |
@@ -196,14 +202,13 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   After Movie, bunga di Timeline. Di Figma masih ada semak, bukit, jamur, dan
   bunga kecil yang belum dibawa. Cara ekstraksinya ada di
   [FE-0006](./features/FE-0006_Salman_Perbaikan-Latar-Langit-Dan-Dekorasi.md).
-- **Explore UI sudah dicek visual di desktop** dan cocok dengan Figma. Yang
-  belum dipasang: dua elipsis kecil dekat tenda dan semak sakura depan —
-  alasannya di [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md).
+- **Explore UI sudah dicek visual di desktop dan mobile** serta memakai
+  komposisi SVG lengkap dari frame Figma terbaru (FE-0022).
 - **Section Landing Page lain masih raster.** Dekorasi "Apa itu BKUI" dan FAQ
   masih `dekor-*.webp`; masalah ketajaman yang sama dengan Hero berlaku di sana.
   Lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) untuk cara
   memindahkannya ke SVG.
-- **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
-  Daftar Akun, Masuk) dan browser selain Chrome.
+- **Belum dicek:** browser selain Chromium. Seluruh rute sudah diperiksa pada
+  lebar HP kecil 320px, HP 390px, dan tablet 768px (FE-0023).
 
-_Terakhir diubah: 2026-09-14 (FE-0021)_
+_Terakhir diubah: 2026-09-15 (FE-0023)_
