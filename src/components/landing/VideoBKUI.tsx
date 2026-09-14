@@ -14,7 +14,7 @@ import { VIDEO_LANDING } from "@/lib/landing-content";
  *
  * BELUM ADA PEMUTAR VIDEO SUNGGUHAN. `VIDEO_LANDING.url` masih null karena
  * endpoint Content di BE belum ada dan URL videonya belum diberikan. Yang
- * tampil sekarang bingkai kosong dengan keterangan — bukan iframe ke URL
+ * tampil sekarang bingkai dengan copy “Coming Soon” — bukan iframe ke URL
  * tebakan.
  */
 export function VideoBKUI() {
@@ -47,8 +47,8 @@ export function VideoBKUI() {
                 className="h-full w-full rounded-sm"
               />
             ) : (
-              <p className="px-6 text-center font-ui text-base font-semibold text-bkui-coklat/70 sm:text-xl">
-                Video {VIDEO_LANDING.judul} belum tersedia
+              <p className="px-6 text-center font-display text-4xl leading-[1.4] text-bkui-coklat sm:text-6xl lg:text-7xl">
+                Coming Soon
               </p>
             )}
           </div>

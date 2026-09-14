@@ -2,14 +2,15 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-13 22:10 WIB
+Terakhir diperbarui: 2026-09-14 WIB
 
 ## Status Integrasi per Fitur
 
 **Landing Page sudah dislicing penuh dari Figma** (FE-0005). Sepuluh FAQ resmi
 sudah dimasukkan dari dokumen tim (FE-0015). Seluruh Lorem ipsum dan label
 generik sudah diganti copy yang layak tampil (FE-0020); nama pembicara dan
-testimoni asli tetap menunggu konten resmi.
+testimoni asli tetap menunggu konten resmi. Placeholder video kini menampilkan
+“Coming Soon” dengan font judul BKUI (FE-0021).
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
 animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
@@ -39,7 +40,7 @@ Dua halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah s
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
+| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md) |
@@ -205,4 +206,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** lebar HP & tablet (Landing Page, Explore UI, Merch, Ticket,
   Daftar Akun, Masuk) dan browser selain Chrome.
 
-_Terakhir diubah: 2026-09-13 (FE-0020)_
+_Terakhir diubah: 2026-09-14 (FE-0021)_
