@@ -34,7 +34,7 @@ export function TestimoniCASA() {
     setIndeks((i) => (i + langkah + jumlah) % jumlah);
 
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-24 pt-[max(195px,12.37vw)]">
+    <SectionLangit className="min-h-[58.53vw] pb-24 pt-[max(170px,12.37vw)]">
       <DekorBendera />
       <HiasanTestimoni />
 
@@ -55,19 +55,10 @@ export function TestimoniCASA() {
           */}
           <article
             aria-live="polite"
-            className="flex flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:flex-row"
+            className="flex flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:flex-row lg:min-h-[480px]"
           >
-            {/* Foto testimoni — placeholder selama fotonya belum ada */}
+            {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
             <div className="relative aspect-square w-full max-w-[348px] shrink-0">
-              {testimoni.foto ? (
-                <Image
-                  src={testimoni.foto}
-                  alt=""
-                  fill
-                  sizes="348px"
-                  className="rounded-[28px] object-cover"
-                />
-              ) : null}
               <Image
                 src="/icon/landing/bingkai-foto-besar.svg"
                 alt=""

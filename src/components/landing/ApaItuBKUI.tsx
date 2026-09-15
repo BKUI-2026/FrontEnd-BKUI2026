@@ -1,5 +1,4 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
 
 import { SectionLangit, StripPembatas } from "@/components/landing/SectionLangit";
 import { Muncul } from "@/components/ui/Muncul";
@@ -53,36 +52,34 @@ export function ApaItuBKUI() {
         */
         <>
           <StripPembatas />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden"
-          >
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
             <Image
-              src="/image/landing/dekor-apaitu.webp"
+              src="/icon/landing/latest/apaitu-branch-left.svg"
               alt=""
-              width={1512}
-              height={885}
-              sizes="100vw"
-              className="h-auto w-full min-w-[900px]"
+              width={587}
+              height={329}
+              className="absolute -left-16 -top-10 w-[min(48vw,587px)] -rotate-12"
             />
+            <Image src="/icon/landing/latest/apaitu-flower-left.svg" alt="" width={226} height={184} className="absolute left-[12%] top-[18%] w-[min(16vw,226px)]" />
+            <Image src="/icon/landing/latest/apaitu-flower-right.svg" alt="" width={73} height={84} className="absolute right-[10%] top-[16%] w-[min(8vw,73px)]" />
+            <Image src="/icon/landing/latest/apaitu-flower-small.svg" alt="" width={87} height={95} className="absolute bottom-[16%] left-[6%] w-[min(8vw,87px)]" />
           </div>
         </>
       }
     >
       <Muncul className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">
-        {/* Ilustrasi tenda + maskot */}
+        {/* Logo ilustratif asli BKUI, berbasis vektor — bukan foto. */}
         <Image
-          src="/image/landing/tenda-maskot.webp"
+          src="/logo/mainLogoBKUI2026.svg"
           alt=""
           aria-hidden
-          width={800}
-          height={792}
+          width={439}
+          height={435}
           // Terdeteksi sebagai LCP di halaman ini — dimuat lebih awal supaya
           // section pertama setelah hero tidak kosong dulu sesaat.
           priority
           sizes="(min-width: 1024px) 395px, 60vw"
           className="naik-turun h-auto w-[min(60vw,320px)] shrink-0 lg:w-[395px]"
-          style={{ "--naik": "12px", "--naik-durasi": "2.8s" } as CSSProperties}
         />
 
         <div className="flex w-full flex-col gap-5">
@@ -143,7 +140,7 @@ export function ApaItuBKUI() {
           </div>
 
           {/* --- Deskripsi --- */}
-          <p className="max-w-[543px] text-justify font-body text-base leading-[1.4] text-bkui-teks sm:text-xl">
+          <p className="max-w-[543px] text-left font-body text-base leading-[1.4] text-bkui-teks sm:text-justify sm:text-xl">
             {DESKRIPSI_BKUI}
           </p>
         </div>

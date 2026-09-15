@@ -1,21 +1,21 @@
-import { HeroIlustrasi } from "./HeroIlustrasi";
+import Image from "next/image";
 import { TombolJelajahi } from "./TombolJelajahi";
 
 /**
- * Hero Landing Page — ilustrasi perkemahan "Makara Expedition" + CTA turun.
+ * Hero Landing Page terbaru — Figma node 776:2545 + CTA turun.
  *
- * Judul "Selamat Datang di BKUI 2026" adalah bagian dari ilustrasi: di Figma
+ * Judul "Bedah Kampus UI 2026" adalah bagian dari ilustrasi: di Figma
  * teksnya dilengkungkan mengikuti path dan diberi outline berlapis, jadi
  * bentuknya tidak bisa direproduksi dengan teks HTML tanpa kehilangan
  * karakternya. Karena itu ilustrasinya dipakai apa adanya, dan judul yang
  * sebenarnya ditulis sebagai <h1> khusus screen reader — supaya halaman tetap
  * punya satu heading level 1 yang benar untuk pembaca layar dan mesin pencari.
  *
- * Ilustrasinya sendiri SVG (lihat `HeroIlustrasi`), bukan lagi satu WebP rata.
+ * Ilustrasinya sendiri SVG hasil ekspor frame terbaru, bukan WebP rata.
  * Versi WebP-nya cuma 1x kanvas Figma sehingga berbayang di layar retina.
  *
  * Tombol "Jelajahi Lebih Lanjut" di Figma ikut menempel di ilustrasi. Grup
- * `Button`-nya SUDAH DIBUANG dari SVG hasil ekspor dan diganti tombol HTML
+ * `Button`-nya disembunyikan di SVG hasil ekspor dan diganti tombol HTML
  * sungguhan, supaya bisa difokus lewat keyboard, terbaca screen reader, dan
  * ukurannya menyesuaikan layar.
  */
@@ -34,7 +34,7 @@ import { TombolJelajahi } from "./TombolJelajahi";
  * jadi pita cokelat selebar layar.
  */
 const SAMBUNGAN_RUMPUT =
-  "linear-gradient(to right, #70B536 0%, #9ECC46 30%, #F8F2DA 58%, #E5D145 76%, #DDD586 100%)";
+  "linear-gradient(to right, #4b8c1a 0%, #5fac30 30%, #764521 58%, #f4df61 80%, #e7d64c 100%)";
 
 export function Hero() {
   const labelTombol = (
@@ -48,7 +48,7 @@ export function Hero() {
 
   return (
     <section className="relative">
-      <h1 className="sr-only">Selamat Datang di BKUI 2026</h1>
+      <h1 className="sr-only">Bedah Kampus UI 2026</h1>
 
       {/*
         Rasio dikunci ke 1512:885 (ukuran frame di Figma) supaya ilustrasinya
@@ -61,9 +61,16 @@ export function Hero() {
           dan tergambar begitu halaman sampai — tidak ada jeda kosong seperti
           waktu masih berupa gambar.
         */}
-        <div className="absolute inset-0">
-          <HeroIlustrasi />
-        </div>
+        <Image
+          src="/icon/landing/landing-hero-776-2545.svg"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          priority
+          unoptimized
+          className="object-contain"
+        />
 
         {/*
           Posisi tombol mengikuti Figma (tengah, 86.9% dari atas frame). Karena

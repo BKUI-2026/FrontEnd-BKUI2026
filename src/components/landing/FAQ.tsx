@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 import {
-  DekorSection,
   SectionLangit,
   StripPembatas,
 } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
+import { SponsorCarousel } from "@/components/landing/SponsorCarousel";
 import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 
 /**
@@ -29,7 +29,9 @@ export function FAQ() {
       dekorasi={
         <>
           <StripPembatas />
-          <DekorSection nama="faq" tinggi={1109} />
+          <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute -left-[9%] -top-[8%] -z-10 w-[64%] max-w-none opacity-90" />
+          <Image src="/icon/landing/latest/faq-grass-back.svg" alt="" aria-hidden width={2634} height={811} className="pointer-events-none absolute -bottom-[15%] left-[-22%] -z-10 w-[160%] max-w-none" />
+          <Image src="/icon/landing/latest/faq-grass-front.svg" alt="" aria-hidden width={2576} height={482} className="pointer-events-none absolute -bottom-[12%] left-[-22%] -z-10 w-[160%] max-w-none" />
         </>
       }
     >
@@ -51,6 +53,7 @@ export function FAQ() {
           ))}
         </ul>
       </div>
+      <SponsorCarousel tergabung />
     </SectionLangit>
   );
 }

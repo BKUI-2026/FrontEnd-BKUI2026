@@ -4,6 +4,7 @@ import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit"
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_TOKOH, type Tokoh } from "@/lib/landing-content";
+import { Timeline } from "./Timeline";
 
 /**
  * Section "Tokoh Inspirasi" — Speakers di daftar fitur AGENTS.md bagian 4.
@@ -14,13 +15,13 @@ import { DAFTAR_TOKOH, type Tokoh } from "@/lib/landing-content";
  */
 export function TokohInspirasi() {
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(200px,15.34vw)]">
+    <SectionLangit className="min-h-[2188px] pb-16 pt-[max(150px,12vw)]">
       <DekorBendera />
 
       <div className="relative mx-auto flex w-full max-w-[1360px] flex-col items-center px-5 sm:px-8">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1">
-            Tokoh Inspirasi
+            Previous Speakers
           </JudulSticker>
         </Muncul>
 
@@ -37,6 +38,7 @@ export function TokohInspirasi() {
           ))}
         </ul>
       </div>
+      <Timeline tergabung />
     </SectionLangit>
   );
 }

@@ -41,9 +41,8 @@ const POSISI: Record<string, { kiri: string; atas: string; lebar: string }> = {
 const GRADIEN_PIL =
   "linear-gradient(-57.688deg, #0E4700 9.79%, #018B01 111.06%)";
 
-export function Timeline() {
-  return (
-    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(48px,5.89vw)] sm:pb-24">
+export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
+  const isi = (
       <div className="relative mx-auto w-full max-w-[1512px] px-5 sm:px-8">
         <div className="flex justify-center">
           <Muncul>
@@ -105,6 +104,15 @@ export function Timeline() {
           ))}
         </ol>
       </div>
+  );
+
+  if (tergabung) {
+    return <div className="w-full pb-20 pt-16 sm:pb-24 sm:pt-24">{isi}</div>;
+  }
+
+  return (
+    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(48px,5.89vw)] sm:pb-24">
+      {isi}
     </SectionLangit>
   );
 }

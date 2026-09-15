@@ -46,7 +46,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md) |
+| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
@@ -86,7 +86,7 @@ Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack
 | Favicon | Logo BKUI | Ikon bawaan Next.js diganti logo BKUI 512px. Lihat [FE-0019](./features/FE-0019_Codex_Favicon-Logo-BKUI.md) |
 | JudulSticker | Sesuai Figma | Judul display berlapis (isi hijau + outline krem + pink). Teks sungguhan, bukan gambar. Lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
 | ButtonPil | Sesuai Figma | Tombol pil `Button/Large`. Beda dari ButtonPesanTiket |
-| Section Landing Page | Sesuai Figma | 9 komponen di `components/landing/` — lihat [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md) |
+| Section Landing Page | Mengikuti frame terbaru `776:2541` | Hero, Apa Itu, After Movie, tiga mata acara, Previous Speakers + Timeline, Testimoni, FAQ + Sponsor — lihat [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
 | Hero Landing Page | Sesuai Figma | Ilustrasi SVG per-layer, bukan lagi WebP 1x yang berbayang di layar retina — lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) |
 | Latar langit halaman Explore UI | Sesuai Figma | 3 lapis (dasar + 2 tekstur `soft-light`), warna dasar dikalibrasi ke render Figma — lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md) |
 | Latar langit section | Sesuai Figma | `langit.webp`, warnanya dicocokkan terukur ke render Figma. Cara lama (awan + opacity) sudah tidak dipakai — lihat [FE-0006](./features/FE-0006_Salman_Perbaikan-Latar-Langit-Dan-Dekorasi.md) |
@@ -197,18 +197,18 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 
 ## Pekerjaan Visual yang Belum Selesai
 
-- **Dekorasi ilustrasi beberapa section belum lengkap.** Yang sudah ada: bendera
-  segitiga, rangka kayu di "Apa itu BKUI", pohon cemara di Testimoni, pohon di
-  After Movie, bunga di Timeline. Di Figma masih ada semak, bukit, jamur, dan
-  bunga kecil yang belum dibawa. Cara ekstraksinya ada di
-  [FE-0006](./features/FE-0006_Salman_Perbaikan-Latar-Langit-Dan-Dekorasi.md).
+- **Revisi landing terbaru membawa aset SVG komposisi hero dan vektor section.**
+  Testimoni memakai pohon sakura (bukan lagi cemara), tiga papan Arah Petualangan
+  memakai bentuk papan dari Figma, dan FAQ memakai rumput vektor. Beberapa
+  tekstur awan serta dekorasi After Movie masih memakai aset ekspor Figma lama;
+  perlu audit visual lanjutan sebelum menyatakan pixel-perfect. Lihat
+  [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md).
 - **Explore UI sudah dicek visual di desktop dan mobile** serta memakai
   komposisi SVG lengkap dari frame Figma terbaru (FE-0022).
-- **Section Landing Page lain masih raster.** Dekorasi "Apa itu BKUI" dan FAQ
-  masih `dekor-*.webp`; masalah ketajaman yang sama dengan Hero berlaku di sana.
-  Lihat [FE-0008](./features/FE-0008_Salman_Hero-Landing-Jadi-SVG.md) untuk cara
-  memindahkannya ke SVG.
+- **After Movie masih memakai sebagian dekorasi WebP lama.** Pemutar videonya
+  tetap komponen HTML dan URL menunggu Admin Web; tidak ada screenshot halaman
+  yang ditempel sebagai section.
 - **Belum dicek:** browser selain Chromium. Seluruh rute sudah diperiksa pada
   lebar HP kecil 320px, HP 390px, dan tablet 768px (FE-0023).
 
-_Terakhir diubah: 2026-09-15 (FE-0023)_
+_Terakhir diubah: 2026-09-15 (FE-0024)_
