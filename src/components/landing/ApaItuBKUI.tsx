@@ -51,7 +51,42 @@ export function ApaItuBKUI() {
               height={329}
               className="absolute -left-16 -top-10 w-[min(48vw,587px)] -rotate-12"
             />
-            <Image src="/icon/landing/latest/apaitu-flower-left.svg" alt="" width={226} height={184} className="absolute left-[12%] top-[18%] w-[min(16vw,226px)]" />
+            {/*
+              Dedaunan pojok kiri atas. Namanya "flower-left", tapi isinya
+              rumpun daun — bunganya file terpisah di bawah.
+
+              Di Figma rumpun ini menempel di sudut (x 27–275, y 27–179 pada
+              frame 1512). Sebelumnya dipasang di `left-12% top-18%`, yang di
+              layar 1512px jatuh ~154px terlalu ke kanan dan ke bawah, sehingga
+              sudutnya terlihat kosong.
+            */}
+            <Image
+              src="/icon/landing/latest/apaitu-flower-left.svg"
+              alt=""
+              width={226}
+              height={184}
+              className="absolute left-[1.8%] top-[min(1.8vw,27px)] w-[min(16.4vw,248px)]"
+            />
+            {/*
+              Bunga pink yang duduk di atas dedaunan pojok kiri. Sempat hilang
+              karena asetnya memang belum pernah diekspor dari Figma.
+
+              Posisinya diukur dari render Figma node `776:2633`: bunga menempati
+              x 41–110, y 57–126 pada kanvas 1100 (= 3,7% dari kiri, 5,2% dari
+              atas, lebar 6,3% terhadap lebar frame 1512).
+
+              Jarak atas memakai `vw`, bukan persen tinggi section, karena
+              section di web lebih tinggi daripada kanvas Figma (isinya teks
+              sungguhan yang lebih panjang) — dengan persen, bunganya akan
+              melorot jauh dari sudut.
+            */}
+            <Image
+              src="/icon/landing/latest/apaitu-bunga-pink.svg"
+              alt=""
+              width={141}
+              height={141}
+              className="absolute left-[3.7%] top-[min(5.2vw,78px)] w-[min(6.3vw,95px)]"
+            />
             <Image src="/icon/landing/latest/apaitu-flower-right.svg" alt="" width={73} height={84} className="absolute right-[10%] top-[16%] w-[min(8vw,73px)]" />
             <Image src="/icon/landing/latest/apaitu-flower-small.svg" alt="" width={87} height={95} className="absolute bottom-[16%] left-[6%] w-[min(8vw,87px)]" />
           </div>

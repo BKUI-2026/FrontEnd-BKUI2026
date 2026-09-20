@@ -27,10 +27,26 @@ const POSISI_PAPAN = [
   "lg:left-[29.43%] lg:top-[56.36%]",
 ] as const;
 
+/**
+ * Kemiringan tiap papan, mengikuti Figma.
+ *
+ * Angkanya bukan kira-kira: tepi atas ketiga papan diukur dari render Figma
+ * node `776:2920`, hasilnya −1,50° / +1,51° / −1,49°. Dibulatkan ke 1,5°
+ * karena selisihnya di bawah setengah piksel pada lebar papan.
+ *
+ * Papan kiri & bawah miring berlawanan arah jarum jam, papan kanan searah —
+ * itu yang bikin susunannya terlihat "ditempel tangan", bukan kaku sejajar.
+ */
+const ROTASI_PAPAN = [
+  "-rotate-[1.5deg]",
+  "rotate-[1.5deg]",
+  "-rotate-[1.5deg]",
+] as const;
+
 /** Komposisi section Figma 776:2747 pada kanvas 1512 × 1148. */
 export function ArahPetualangan() {
   return (
-    <SectionLangit>
+    <SectionLangit tanpaAwan>
       <div className="relative min-h-[1100px] w-full overflow-hidden pb-28 pt-20 [container-type:inline-size] lg:aspect-[1512/1148] lg:min-h-0 lg:p-0">
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 hidden h-[12%] bg-gradient-to-b from-[#add919] via-[#add919] to-transparent lg:block" />
         <Image
@@ -108,7 +124,19 @@ export function ArahPetualangan() {
               key={acara.judul}
               className={`relative h-[260px] w-full sm:aspect-[613/367] sm:h-auto ${POSISI_PAPAN[index]} lg:absolute lg:w-[40.54%]`}
             >
-              <article className="relative flex h-full w-full flex-col items-center justify-center px-[10%] pb-[3%] text-center text-bkui-terang">
+              {/*
+                Miring + "timbul" saat disentuh kursor, sesuai catatan desainer
+                di Figma. Naik sedikit lalu membesar tipis, dengan bayangan yang
+                ikut menebal supaya terbaca sebagai terangkat, bukan sekadar
+                bergeser.
+
+                `motion-safe:` dipakai supaya pengguna yang mematikan animasi di
+                sistemnya tidak ikut kena gerakannya; papannya tetap miring,
+                yang hilang cuma transisinya.
+              */}
+              <article
+                className={`relative flex h-full w-full flex-col items-center justify-center px-[10%] pb-[3%] text-center text-bkui-terang ${ROTASI_PAPAN[index]} drop-shadow-[0_6px_10px_rgba(0,0,0,0.25)] transition-[transform,filter] duration-300 ease-out motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.03] motion-safe:hover:drop-shadow-[0_16px_22px_rgba(0,0,0,0.35)]`}
+              >
                 <Image
                   src="/icon/landing/latest/arah-board.svg"
                   alt=""

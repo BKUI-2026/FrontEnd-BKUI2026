@@ -19,6 +19,14 @@ interface SectionLangitProps {
   "aria-label"?: string;
   /** Dekorasi tambahan (pohon, bunga, rumput) — dirender di atas langit. */
   dekorasi?: ReactNode;
+  /**
+   * Matikan lapisan awan bawaan.
+   *
+   * Dipakai section yang sudah punya tekstur awannya sendiri
+   * (`ArahPetualangan`, `VideoBKUI`) — kalau dibiarkan menyala, awannya dobel
+   * dan langitnya jadi terlalu ramai.
+   */
+  tanpaAwan?: boolean;
   className?: string;
 }
 
@@ -26,6 +34,7 @@ export function SectionLangit({
   children,
   id,
   dekorasi,
+  tanpaAwan = false,
   className,
   ...rest
 }: SectionLangitProps) {
@@ -35,6 +44,39 @@ export function SectionLangit({
       {...rest}
       className={`relative isolate overflow-hidden bg-bkui-button ${className ?? ""}`}
     >
+      {/*
+        Awan langit. Di Figma awan bukan layer tersendiri melainkan ikut isian
+        latar tiap section, jadi asetnya diekspor terpisah sebagai `Cloud.svg`.
+
+        Ditaruh di sini, bukan diulang di tiap section, supaya semua langit
+        memakai awan yang sama persis — dan section baru otomatis kebagian.
+
+        `object-cover` dipakai karena berkasnya jauh lebih tinggi (2221×2104)
+        daripada kebanyakan section; yang terpakai hanya bagian yang kebagian
+        bidangnya.
+      */}
+      {!tanpaAwan && (
+        <Image
+          src="/image/Cloud.svg"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          /*
+            Awannya dibuat memudar di tepi atas & bawah.
+
+            Tiap section memotong berkasnya sendiri, jadi tanpa ini gumpalan
+            awan terpotong tepat di batas antar-section dan sambungannya
+            kelihatan sebagai garis — apalagi karena section bersebelahan
+            sama-sama memulai potongan dari atas.
+
+            Dengan memudar, awan larut ke biru langit sebelum mencapai batas,
+            sehingga perpindahan antar-section terbaca mulus.
+          */
+          className="pointer-events-none -z-20 object-cover object-top [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)]"
+        />
+      )}
+
       {/* Dekorasi khas section ini */}
       {dekorasi}
 

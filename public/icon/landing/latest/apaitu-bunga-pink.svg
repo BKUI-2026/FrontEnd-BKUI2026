@@ -1,0 +1,38 @@
+<!--
+  Bunga pink di pojok kiri atas section "Apa itu BKUI 2026".
+
+  Aset ini TIDAK ada di repo sebelumnya, padahal ada di Figma (node 776:2659) —
+  itu sebabnya sudut kiri atas terlihat kosong dibanding desain.
+
+  Dibangun sebagai vektor, bukan PNG ekspor, karena Figma menolak merender node
+  ini di atas ukuran aslinya (141px) dan hasil ekspornya ikut membawa latar biru
+  langit yang tidak transparan.
+
+  Semua angka diukur dari render Figma-nya, bukan dikira-kira:
+  - rentang kelopak 96px (tip ke tip) pada kanvas 141
+  - tebal kelopak 19px, ujungnya nyaris rata (radius sudut 3px) — terukur dari
+    lebar kelopak atas yang sudah penuh 19px hanya 1px di bawah ujungnya
+  - inti hijau diameter 32px → r 16
+  - warna: kelopak #F08AB9, garis luar #FCFABD, inti #2CAB64
+-->
+<svg width="141" height="141" viewBox="0 0 141 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!--
+      Empat batang membentuk delapan kelopak: tiap batang menembus pusat, jadi
+      rotasi 0/45/90/135 sudah menghasilkan kelopak di kedelapan arah.
+      Digambar dua kali — bergaris krem tebal sebagai garis luar, lalu diisi
+      pink di atasnya.
+    -->
+    <g id="kelopak">
+      <rect x="61" y="22.5" width="19" height="96" rx="3" />
+      <rect x="61" y="22.5" width="19" height="96" rx="3" transform="rotate(45 70.5 70.5)" />
+      <rect x="61" y="22.5" width="19" height="96" rx="3" transform="rotate(90 70.5 70.5)" />
+      <rect x="61" y="22.5" width="19" height="96" rx="3" transform="rotate(135 70.5 70.5)" />
+    </g>
+  </defs>
+
+  <use href="#kelopak" fill="#F08AB9" stroke="#FCFABD" stroke-width="7" stroke-linejoin="round" />
+  <use href="#kelopak" fill="#F08AB9" />
+
+  <circle cx="70.5" cy="70.5" r="16" fill="#2CAB64" stroke="#FCFABD" stroke-width="4" />
+</svg>

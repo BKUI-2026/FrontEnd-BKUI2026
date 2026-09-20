@@ -19,7 +19,7 @@ import { VIDEO_LANDING } from "@/lib/landing-content";
  */
 export function VideoBKUI() {
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-16 pt-[max(150px,10.85vw)] sm:pb-24">
+    <SectionLangit tanpaAwan className="min-h-[58.53vw] pb-16 pt-[max(150px,10.85vw)] sm:pb-24">
       {/* Bendera di tepi atas, lalu seluruh hiasan ilustrasi dari Figma */}
       <DekorBendera />
       <HiasanVideo />
