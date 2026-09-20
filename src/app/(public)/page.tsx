@@ -1,6 +1,7 @@
 import { ApaItuBKUI } from "@/components/landing/ApaItuBKUI";
 import { ArahPetualangan } from "@/components/landing/ArahPetualangan";
 import { FAQ } from "@/components/landing/FAQ";
+import { FogTransition } from "@/components/landing/FogTransition";
 import { Hero } from "@/components/landing/Hero";
 import { TestimoniCASA } from "@/components/landing/TestimoniCASA";
 import { TokohInspirasi } from "@/components/landing/TokohInspirasi";
@@ -27,7 +28,10 @@ export default function LandingPage() {
     <main className="flex-1">
       <Hero />
       <ApaItuBKUI />
-      <VideoBKUI />
+      <div className="relative z-10">
+        <VideoBKUI />
+        <FogTransition />
+      </div>
       <ArahPetualangan />
       <TokohInspirasi />
       <TestimoniCASA />

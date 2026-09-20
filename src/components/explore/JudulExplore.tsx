@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 /**
- * Judul header Explore UI: "Yuk, Intip 14 Fakultas & 1 Pendidikan Vokasi di
+ * Judul header Explore UI: "Yuk, Intip 14 Fakultas & Sekolah Vokasi di
  * Universitas Indonesia".
  *
  * Dipakai sebagai GAMBAR, bukan teks HTML — dan itu keputusan sadar, bukan

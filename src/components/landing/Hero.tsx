@@ -62,7 +62,7 @@ export function Hero() {
           waktu masih berupa gambar.
         */}
         <Image
-          src="/icon/landing/landing-hero-776-2545.svg"
+          src="/icon/landing/landing-hero-latest.svg"
           alt=""
           aria-hidden
           fill
@@ -81,7 +81,7 @@ export function Hero() {
           ilustrasinya cuma ~200px, dan tombol setinggi 56px di atasnya akan
           menutupi hampir separuh gambar.
         */}
-        <div className="absolute left-1/2 top-[86.9%] hidden -translate-x-1/2 -translate-y-1/2 md:block">
+        <div className="absolute left-1/2 top-[89.8%] hidden -translate-x-1/2 -translate-y-1/2 md:block">
           <TombolJelajahi>{labelTombol}</TombolJelajahi>
         </div>
       </div>

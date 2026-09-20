@@ -18,7 +18,7 @@ export function HeaderExplore() {
   return (
     <section className="relative isolate overflow-hidden">
       <h1 className="sr-only">
-        Yuk, intip 14 fakultas dan 1 pendidikan vokasi di Universitas Indonesia
+        Yuk, intip 14 fakultas dan Sekolah Vokasi di Universitas Indonesia
       </h1>
 
       <motion.div
@@ -37,6 +37,9 @@ export function HeaderExplore() {
           unoptimized
           className="object-contain"
         />
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-[48%] z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display text-[clamp(1.1rem,5vw,5rem)] leading-none text-[#155125] [paint-order:stroke_fill] [-webkit-text-stroke:0.12em_#f3fbe6] [text-shadow:4px_5px_0_#ec81ab,6px_8px_3px_rgba(0,0,0,.35)]">
+          Sekolah Vokasi
+        </div>
       </motion.div>
 
       {/*

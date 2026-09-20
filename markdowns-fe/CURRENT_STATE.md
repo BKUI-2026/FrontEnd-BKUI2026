@@ -13,7 +13,7 @@ testimoni asli tetap menunggu konten resmi. Placeholder video kini menampilkan
 “Coming Soon” dengan font judul BKUI (FE-0021).
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
-animasi Framer Motion. Deskripsi 14 fakultas dan 1 Program Pendidikan Vokasi
+animasi Framer Motion. Deskripsi 14 fakultas dan Sekolah Vokasi
 sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
 program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy. Hero
 sudah mengikuti desain terbaru node `551:4325` tanpa mengubah isi (FE-0022).
@@ -203,6 +203,11 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   tekstur awan serta dekorasi After Movie masih memakai aset ekspor Figma lama;
   perlu audit visual lanjutan sebelum menyatakan pixel-perfect. Lihat
   [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md).
+- **Frame landing `776:2541` diperbarui lagi.** Hero kini memakai ilustrasi
+  bus kuning dari Figma; Arah Petualangan memakai papan judul/bendera, tekstur
+  kayu, dan bukit/tanaman dari aset desain terbaru. CTA dan copy tetap HTML,
+  dengan responsif 390px sudah diperiksa. Lihat
+  [FE-0025](./features/FE-0025_Codex_Update-Landing-Bus-Arah.md).
 - **Explore UI sudah dicek visual di desktop dan mobile** serta memakai
   komposisi SVG lengkap dari frame Figma terbaru (FE-0022).
 - **After Movie masih memakai sebagian dekorasi WebP lama.** Pemutar videonya
@@ -211,4 +216,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** browser selain Chromium. Seluruh rute sudah diperiksa pada
   lebar HP kecil 320px, HP 390px, dan tablet 768px (FE-0023).
 
-_Terakhir diubah: 2026-09-15 (FE-0024)_
+_Terakhir diubah: 2026-09-20 (FE-0025)_

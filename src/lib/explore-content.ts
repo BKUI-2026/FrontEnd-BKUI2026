@@ -10,15 +10,15 @@
  * Apa yang nyata dan apa yang belum
  * ---------------------------------------------------------------------------
  * NYATA (fakta publik, aman dipakai):
- *   - nama 14 fakultas + Program Pendidikan Vokasi UI
+ *   - nama 14 fakultas + Sekolah Vokasi UI
  *   - pengelompokan rumpunnya (Saintek / Soshum / Vokasi)
  *   - daftar program studi sarjana tiap fakultas — mengikuti brosur resmi
  *     penerimaan UI; Kecerdasan Artifisial Fasilkom mengikuti desain BKUI 2026
  *   - daftar program diploma/sarjana terapan Vokasi — mengikuti laman resmi
- *     Program Pendidikan Vokasi UI
+ *     Sekolah Vokasi UI
  *
  * KONTEN RESMI DARI TIM:
- *   - deskripsi 14 fakultas + Program Pendidikan Vokasi
+ *   - deskripsi 14 fakultas + Sekolah Vokasi
  *
  * PLACEHOLDER (WAJIB diganti konten resmi sebelum live):
  *   - foto fakultas (di Figma pun masih bingkai kosong)
@@ -245,10 +245,10 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
   },
   {
     id: "vokasi",
-    nama: "Program Pendidikan Vokasi",
+    nama: "Sekolah Vokasi",
     rumpun: "Vokasi",
     ringkasan:
-      "Program Pendidikan Vokasi UI adalah perguruan tinggi yang bertujuan mempersiapkan tenaga yang dapat menerapkan keahlian dan keterampilan di bidang tertentu, siap kerja, dan mampu bersaing secara global.",
+      "Sekolah Vokasi UI adalah perguruan tinggi yang bertujuan mempersiapkan tenaga yang dapat menerapkan keahlian dan keterampilan di bidang tertentu, siap kerja, dan mampu bersaing secara global.",
     prodi: [
       "Administrasi Rumah Sakit",
       "Akuntansi",
