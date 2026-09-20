@@ -1,9 +1,6 @@
 import Image from "next/image";
 
-import {
-  SectionLangit,
-  StripPembatas,
-} from "@/components/landing/SectionLangit";
+import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 import { SponsorCarousel } from "@/components/landing/SponsorCarousel";
@@ -25,24 +22,25 @@ import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 export function FAQ() {
   return (
     <SectionLangit
-      className="pt-[max(64px,7.54vw)]"
+      className="pt-[max(48px,4.5vw)]"
       dekorasi={
         <>
-          <StripPembatas />
-          <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute -left-[5%] -top-[8%] -z-10 w-[110%] max-w-none opacity-90" />
-          <Image src="/icon/landing/latest/faq-grass-back.svg" alt="" aria-hidden width={2634} height={811} className="pointer-events-none absolute -bottom-[15%] left-[-22%] -z-10 w-[160%] max-w-none" />
-          <Image src="/icon/landing/latest/faq-grass-front.svg" alt="" aria-hidden width={2576} height={482} className="pointer-events-none absolute -bottom-[12%] left-[-22%] -z-10 w-[160%] max-w-none" />
+          <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute left-1/2 top-0 -z-10 h-auto w-[max(100%,965px)] max-w-none -translate-x-1/2" />
+          <Image src="/image/landing/faq-star.png" alt="" aria-hidden width={296} height={307} className="pointer-events-none absolute -left-[3%] top-[2%] w-[clamp(100px,17vw,260px)] rotate-[-7deg]" />
+          <Image src="/icon/landing/latest/faq-grass-back.svg" alt="" aria-hidden width={2634} height={811} className="pointer-events-none absolute bottom-[10%] left-1/2 -z-10 h-auto w-[max(120%,1512px)] max-w-none -translate-x-1/2" />
+          <div aria-hidden className="pointer-events-none absolute bottom-[10%] -left-[12%] -z-10 h-[28%] w-[65%] bg-[#064618] [clip-path:polygon(0_0,65%_8%,100%_100%,0_100%)]" />
+          <Image src="/icon/landing/latest/faq-grass-front.svg" alt="" aria-hidden width={2576} height={482} className="pointer-events-none absolute bottom-[10%] left-1/2 -z-10 h-auto w-[max(120%,1512px)] max-w-none -translate-x-1/2" />
         </>
       }
     >
-      <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:gap-14 sm:px-8">
+      <div className="relative mx-auto flex w-full max-w-[1072px] flex-col items-center gap-8 px-5 pb-[max(48px,5vw)] sm:gap-10 sm:px-8">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1" className="text-center">
             Frequently Asked Questions
           </JudulSticker>
         </Muncul>
 
-        <ul className="flex w-full flex-col gap-6">
+        <ul className="flex w-full flex-col gap-3 sm:gap-4">
           {DAFTAR_FAQ.slice(0, 6).map((item, i) => (
             <li key={item.id}>
               <Muncul jeda={i * 80}>
@@ -58,7 +56,7 @@ export function FAQ() {
               Lihat pertanyaan lainnya
               <Image src="/icon/landing/chevron-bawah.svg" alt="" aria-hidden width={24} height={24} className="size-6 brightness-0 invert transition-transform group-open:rotate-180" />
             </summary>
-            <ul className="mt-6 flex flex-col gap-6">
+            <ul className="mt-6 flex flex-col gap-3 sm:gap-4">
               {DAFTAR_FAQ.slice(6).map((item) => (
                 <li key={item.id}><BarisFAQ item={item} terbukaAwal={false} /></li>
               ))}

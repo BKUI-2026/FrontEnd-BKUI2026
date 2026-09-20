@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
-import { Muncul } from "@/components/ui/Muncul";
 
 const MATA_ACARA = [
   {
@@ -22,30 +21,68 @@ const MATA_ACARA = [
   },
 ] as const;
 
-/** Tiga kartu mata acara mengikuti Landing Page Figma terbaru, node 776:2747. */
+const POSISI_PAPAN = [
+  "lg:left-[7.21%] lg:top-[24.83%]",
+  "lg:left-[51.65%] lg:top-[24.13%]",
+  "lg:left-[29.43%] lg:top-[56.36%]",
+] as const;
+
+/** Komposisi section Figma 776:2747 pada kanvas 1512 × 1148. */
 export function ArahPetualangan() {
   return (
-    <SectionLangit
-      className="min-h-[1148px] pb-32 pt-20 sm:pt-24 lg:pb-44"
-      dekorasi={
-        <>
+    <SectionLangit>
+      <div className="relative min-h-[1100px] w-full overflow-hidden pb-28 pt-20 [container-type:inline-size] lg:aspect-[1512/1148] lg:min-h-0 lg:p-0">
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 hidden h-[12%] bg-gradient-to-b from-[#add919] via-[#add919] to-transparent lg:block" />
+        <Image
+          src="/icon/landing/latest/arah-hijau-atas.svg"
+          alt=""
+          aria-hidden
+          width={1924}
+          height={773}
+          className="pointer-events-none absolute -left-[33.93%] -top-[43.95%] h-auto w-[135.33%] max-w-none -rotate-[12.55deg]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-[33.93%] -top-[43.95%] aspect-[1924/773] w-[135.33%] -rotate-[12.55deg] bg-[url('/image/landing/hero/rumput-tekstur.webp')] bg-cover opacity-25 mix-blend-soft-light [mask-image:url('/icon/landing/latest/arah-hijau-atas.svg')] [mask-repeat:no-repeat] [mask-size:100%_100%]"
+        />
+        <Image
+          src="/image/landing/awan-tekstur.webp"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none object-cover opacity-[0.38] mix-blend-soft-light [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_78%,transparent)]"
+        />
         <Image
           src="/icon/landing/latest/arah-banner-latest.svg"
           alt=""
           aria-hidden
           width={1805}
           height={1007}
-          sizes="100vw"
-          className="pointer-events-none absolute left-1/2 top-0 -z-10 h-auto w-[119.35%] min-w-[850px] max-w-none -translate-x-1/2"
+          className="pointer-events-none absolute -left-[13.69%] top-[2.09%] h-auto w-[119.35%] max-w-none"
         />
         <Image
-          src="/icon/landing/latest/arah-vector21.svg"
+          src="/icon/landing/latest/arah-bukit-kiri.svg"
           alt=""
           aria-hidden
-          width={2634}
-          height={811}
-          sizes="100vw"
-          className="pointer-events-none absolute bottom-[-80px] left-1/2 -z-10 h-auto w-[174%] min-w-[1200px] max-w-none -translate-x-1/2"
+          width={1325}
+          height={626}
+          className="pointer-events-none absolute -left-[22%] bottom-[-24%] h-auto w-[82%] max-w-none"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-[22%] bottom-[-24%] aspect-[1325/626] w-[82%] bg-[url('/image/landing/hero/rumput-tekstur.webp')] bg-cover opacity-25 mix-blend-soft-light [mask-image:url('/icon/landing/latest/arah-bukit-kiri.svg')] [mask-repeat:no-repeat] [mask-size:100%_100%]"
+        />
+        <Image src="/icon/landing/latest/arah-rumput-kecil-1.svg" alt="" aria-hidden width={34} height={23} className="pointer-events-none absolute left-[16.7%] top-[75.4%] h-auto w-[2.3%] min-w-3" />
+        <Image src="/icon/landing/latest/arah-rumput-kecil-2.svg" alt="" aria-hidden width={34} height={23} className="pointer-events-none absolute left-[4.4%] top-[81.7%] h-auto w-[2.3%] min-w-3" />
+        <Image src="/icon/landing/latest/arah-rumput-kecil-3.svg" alt="" aria-hidden width={34} height={23} className="pointer-events-none absolute left-[7.7%] top-[92.5%] h-auto w-[2.3%] min-w-3" />
+        <Image
+          src="/icon/landing/latest/arah-bukit-bawah.svg"
+          alt=""
+          aria-hidden
+          width={1413}
+          height={452}
+          className="pointer-events-none absolute left-[5.6%] top-[91%] h-auto w-[93.4%] max-w-none"
         />
         <Image
           src="/icon/landing/latest/arah-plants.svg"
@@ -53,34 +90,43 @@ export function ArahPetualangan() {
           aria-hidden
           width={515}
           height={488}
-          className="pointer-events-none absolute bottom-0 left-[-110px] -z-10 h-auto w-[360px] sm:w-[515px]"
+          className="pointer-events-none absolute bottom-[-9%] right-[-7%] z-20 h-auto w-[34.1%] min-w-[240px] max-w-none"
         />
-        </>
-      }
-    >
-      <div className="relative mx-auto flex w-full max-w-[1240px] flex-col items-center px-5 sm:px-8">
-        <Muncul className="flex flex-col items-center gap-3">
-          <JudulSticker as="h2" ukuran="h1" className="text-center">
+
+        <div className="relative z-20 flex flex-col items-center gap-3 px-5 text-center lg:absolute lg:inset-x-0 lg:top-[7.93%] lg:gap-[0.6cqw] lg:p-0">
+          <JudulSticker as="h2" ukuran="title" className="text-[clamp(22px,4.76cqw,72px)] lg:whitespace-nowrap lg:text-[4.76cqw]">
             Tentukan Arah Petualanganmu
           </JudulSticker>
-          <p className="rounded-full bg-gradient-to-r from-bkui-hijau to-bkui-hijau-tua px-5 py-2 text-center font-ui text-base font-semibold text-white sm:text-xl">
+          <p className="rounded-full bg-gradient-to-r from-bkui-hijau-daun to-bkui-hijau-tua px-4 py-2 font-ui text-sm font-semibold leading-[1.2] text-bkui-netral sm:text-lg lg:px-[1.6cqw] lg:py-[0.66cqw] lg:text-[1.85cqw]">
             Mata Acara Bedah Kampus UI 2026
           </p>
-        </Muncul>
+        </div>
 
-        <ul className="mt-10 grid w-full grid-cols-1 gap-5 sm:mt-12 md:grid-cols-2 lg:gap-10">
+        <ul className="relative z-10 mx-auto mt-12 flex w-full max-w-[610px] flex-col gap-5 px-4 sm:px-8 lg:static lg:m-0 lg:max-w-none lg:p-0">
           {MATA_ACARA.map((acara, index) => (
-            <li key={acara.judul} className={index === 2 ? "md:col-span-2 md:mx-auto md:w-[calc(50%-1.25rem)]" : ""}>
-              <Muncul jeda={100 + index * 100} className="h-full">
-                <article className="relative flex min-h-[285px] h-full flex-col items-center justify-center gap-3 rounded-lg border border-[#5d3c2a] bg-[#67432f] p-8 text-center text-white shadow-[0_12px_22px_rgba(25,16,10,0.32)] sm:min-h-[333px] sm:p-10" style={{ backgroundImage: "linear-gradient(rgba(66, 31, 18, .23), rgba(66, 31, 18, .23)), url('/icon/landing/latest/arah-wood-texture.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                  <h3 className="font-display text-3xl leading-tight [text-shadow:2px_3px_0_#1a2731] [-webkit-text-stroke:1px_#1a2731] sm:text-4xl lg:text-[46px]">
-                    {acara.judul}
-                  </h3>
-                  <p className="max-w-sm font-body text-base leading-[1.4] sm:text-lg">
-                    {acara.deskripsi}
-                  </p>
-                </article>
-              </Muncul>
+            <li
+              key={acara.judul}
+              className={`relative h-[260px] w-full sm:aspect-[613/367] sm:h-auto ${POSISI_PAPAN[index]} lg:absolute lg:w-[40.54%]`}
+            >
+              <article className="relative flex h-full w-full flex-col items-center justify-center px-[10%] pb-[3%] text-center text-bkui-terang">
+                <Image
+                  src="/icon/landing/latest/arah-board.svg"
+                  alt=""
+                  aria-hidden
+                  fill
+                  sizes="(min-width: 1024px) 41vw, 610px"
+                  className="pointer-events-none z-0"
+                />
+                <div aria-hidden className="pointer-events-none absolute inset-[5.5%_4%_7.5%] z-0 overflow-hidden rounded-[2%] opacity-55 mix-blend-soft-light">
+                  <div className="absolute left-1/2 top-1/2 h-[180%] w-[55%] -translate-x-1/2 -translate-y-1/2 rotate-90 bg-[url('/icon/landing/latest/arah-wood-texture.jpg')] bg-cover bg-center" />
+                </div>
+                <h3 className="relative z-10 font-display text-[clamp(24px,5vw,48px)] leading-[1.4] [text-shadow:1px_2px_1px_#1a2731] [-webkit-text-stroke:1px_#1a2731] lg:text-[3.175cqw]">
+                  {acara.judul}
+                </h3>
+                <p className="relative z-10 max-w-[393px] font-body text-sm font-medium leading-[1.4] sm:text-lg lg:max-w-[69%] lg:text-[1.323cqw]">
+                  {acara.deskripsi}
+                </p>
+              </article>
             </li>
           ))}
         </ul>

@@ -1,13 +1,12 @@
-/** Kabut CSS di batas After Movie dan Arah Petualangan; bukan aset foto. */
+/** Kabut tipis di tepi section; tidak menambah tinggi atau celah halaman. */
 export function FogTransition() {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-x-0 -bottom-10 z-20 h-28 overflow-hidden bg-[linear-gradient(to_bottom,transparent_0%,rgba(236,249,255,0.6)_42%,rgba(132,194,246,0.74)_100%)] [mask-image:linear-gradient(to_bottom,transparent,black_28%,black_70%,transparent)] sm:-bottom-14 sm:h-40"
-    >
-      <div className="absolute -bottom-10 -left-[8%] h-24 w-[50%] rounded-[50%] bg-[#e9f7ff]/65 blur-2xl sm:h-32" />
-      <div className="absolute -bottom-8 left-[25%] h-24 w-[55%] rounded-[50%] bg-[#f2fbff]/55 blur-3xl sm:h-36" />
-      <div className="absolute -bottom-10 -right-[12%] h-28 w-[50%] rounded-[50%] bg-[#e6f5ff]/70 blur-2xl sm:h-36" />
+    <div aria-hidden className="pointer-events-none relative z-20 h-0">
+      <div className="absolute inset-x-0 top-0 h-20 -translate-y-1/2 overflow-hidden opacity-35 [mask-image:linear-gradient(to_bottom,transparent,black_35%,black_65%,transparent)] sm:h-28">
+        <div className="absolute -left-[10%] top-[18%] h-[65%] w-[45%] rounded-[50%] bg-white/45 blur-3xl" />
+        <div className="absolute left-[24%] top-[35%] h-[55%] w-[38%] rounded-[50%] bg-[#eaf7ff]/55 blur-3xl" />
+        <div className="absolute right-[-8%] top-[12%] h-[70%] w-[48%] rounded-[50%] bg-white/45 blur-3xl" />
+      </div>
     </div>
   );
 }

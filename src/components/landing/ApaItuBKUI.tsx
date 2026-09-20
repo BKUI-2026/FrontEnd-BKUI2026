@@ -1,16 +1,17 @@
 import Image from "next/image";
 
-import { SectionLangit, StripPembatas } from "@/components/landing/SectionLangit";
+import { SectionLangit } from "@/components/landing/SectionLangit";
 import { Muncul } from "@/components/ui/Muncul";
 import { DESKRIPSI_BKUI } from "@/lib/landing-content";
 
 /**
- * Section "Apa itu ... BKUI 2026" — Bikun di kiri, judul
+ * Section "Apa itu ... BKUI 2026" — logo BKUI di kiri, judul
  * bertumpuk dan deskripsi acara di kanan.
  *
  * Judulnya tidak memakai komponen `JudulSticker` karena susunannya khas: baris
  * "Apa itu ..." kecil di atas, "BKUI 2026" besar di bawah memakai
- * Talina, plus tiga tanda tanya miring di kanan. Semua dibangun
+ * Talina untuk huruf dan Delight ExtraBold untuk angka tahun, plus tiga
+ * tanda tanya miring di kanan. Semua dibangun
  * dari teks sungguhan, bukan gambar.
  */
 
@@ -42,7 +43,6 @@ export function ApaItuBKUI() {
           kalau ikut dibawa jadi dobel.
         */
         <>
-          <StripPembatas />
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
             <Image
               src="/icon/landing/latest/apaitu-branch-left.svg"
@@ -59,18 +59,17 @@ export function ApaItuBKUI() {
       }
     >
       <Muncul className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">
-        {/* Bikun diekstrak dari ilustrasi vektor hero, tanpa foto. */}
+        {/* Logo utama BKUI, bukan ilustrasi bus Bikun. */}
         <Image
-          src="/icon/landing/bikun-extracted.svg"
-          alt=""
-          aria-hidden
-          width={363}
-          height={309}
+          src="/logo/mainLogoBKUI2026.svg"
+          alt="Logo BKUI 2026"
+          width={439}
+          height={435}
           // Terdeteksi sebagai LCP di halaman ini — dimuat lebih awal supaya
           // section pertama setelah hero tidak kosong dulu sesaat.
           priority
           sizes="(min-width: 1024px) 395px, 60vw"
-          className="naik-turun h-auto w-[min(60vw,320px)] shrink-0 lg:w-[395px]"
+          className="h-auto w-[min(60vw,320px)] shrink-0 lg:w-[395px]"
         />
 
         <div className="flex w-full flex-col gap-5">
@@ -95,12 +94,12 @@ export function ApaItuBKUI() {
             <div className="-mt-[0.35em] flex items-center text-[clamp(1.7rem,4.6vw,5.34rem)]">
               <h2 className="judul-sticker text-[inherit]">
                 <span aria-hidden className="judul-sticker__pink">
-                  BKUI <span>2026</span>
+                  BKUI <span className="font-ui font-extrabold">2026</span>
                 </span>
                 <span aria-hidden className="judul-sticker__krem">
-                  BKUI <span>2026</span>
+                  BKUI <span className="font-ui font-extrabold">2026</span>
                 </span>
-                <span className="judul-sticker__isi">BKUI <span>2026</span></span>
+                <span className="judul-sticker__isi">BKUI <span className="font-ui font-extrabold">2026</span></span>
               </h2>
 
               {/*

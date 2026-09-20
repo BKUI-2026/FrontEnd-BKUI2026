@@ -27,14 +27,17 @@ export default function LandingPage() {
   return (
     <main className="flex-1">
       <Hero />
+      <FogTransition />
       <ApaItuBKUI />
-      <div className="relative z-10">
-        <VideoBKUI />
-        <FogTransition />
-      </div>
+      <FogTransition />
+      <VideoBKUI />
+      <FogTransition />
       <ArahPetualangan />
+      <FogTransition />
       <TokohInspirasi />
+      <FogTransition />
       <TestimoniCASA />
+      <FogTransition />
       <FAQ />
     </main>
   );

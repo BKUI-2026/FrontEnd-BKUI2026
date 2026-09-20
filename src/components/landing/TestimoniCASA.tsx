@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { HiasanTestimoni } from "@/components/landing/HiasanTestimoni";
-import { DekorBendera, SectionLangit } from "@/components/landing/SectionLangit";
+import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
@@ -34,18 +34,17 @@ export function TestimoniCASA() {
     setIndeks((i) => (i + langkah + jumlah) % jumlah);
 
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-24 pt-[max(170px,12.37vw)]">
-      <DekorBendera />
+    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(140px,12.37vw)]">
       <HiasanTestimoni />
 
-      <div className="relative mx-auto flex w-full max-w-[1260px] flex-col items-center px-4 sm:px-8">
+      <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1">
             Apa Kata Mereka
           </JudulSticker>
         </Muncul>
 
-        <Muncul jeda={120} className="mt-8 flex w-full items-center gap-2 sm:gap-8">
+        <Muncul jeda={120} className="mt-7 flex w-full items-center gap-2 sm:gap-8">
           <TombolPanah arah="kiri" onClick={() => pindah(-1)} />
 
           {/*
@@ -55,10 +54,10 @@ export function TestimoniCASA() {
           */}
           <article
             aria-live="polite"
-            className="flex flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:flex-row lg:min-h-[480px]"
+            className="flex min-w-0 flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:min-h-[min(480px,31.75vw)] lg:flex-row lg:p-[50px]"
           >
             {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
-            <div className="relative aspect-square w-full max-w-[348px] shrink-0">
+            <div className="relative aspect-square w-full max-w-[348px] shrink-0 lg:max-w-[38.7%]">
               <Image
                 src="/icon/landing/bingkai-foto-besar.svg"
                 alt=""

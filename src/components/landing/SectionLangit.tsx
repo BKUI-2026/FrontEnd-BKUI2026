@@ -4,20 +4,8 @@ import type { ReactNode } from "react";
 /**
  * Pembungkus section Landing Page dengan latar langit.
  *
- * Di Figma tiap section adalah frame `Desktop` 1512x885 dengan latar yang sama:
- * warna dasar biru muda, foto awan (`image 928`) di atasnya, lalu lapis putih
- * tipis (`image 925`) yang melembutkan semuanya.
- *
- * Ketiganya sudah digabung jadi satu file `langit.webp`, jadi di sini tinggal
- * dipasang apa adanya — tidak perlu diutak-atik opasitasnya lagi. Warnanya
- * dicocokkan langsung ke hasil render Figma (lihat FE-0006), bukan dikira-kira.
- *
- * Daripada mengulang kelas background di sembilan tempat, latarnya dipusatkan
- * di sini.
- *
- * Langitnya dipasang sebagai <Image> di lapis terpisah, bukan `background-image`
- * CSS, supaya tetap lewat optimasi next/image dan bisa ditandai `aria-hidden` —
- * ini murni dekorasi, tidak ada informasi yang perlu dibacakan screen reader.
+ * Semua section memakai satu warna langit yang sama supaya batas antar-frame
+ * tidak terlihat seperti celah saat halaman digulir.
  *
  * Tinggi section TIDAK dikunci ke 885px. Di Figma tingginya tetap karena kanvas
  * desktop memang setinggi itu; di web, tinggi harus ikut isinya supaya teks
@@ -47,49 +35,12 @@ export function SectionLangit({
       {...rest}
       className={`relative isolate overflow-hidden bg-bkui-button ${className ?? ""}`}
     >
-      {/*
-        Lapis 1 — tekstur awan di atas warna dasar langit.
-
-        Cara menumpuknya disalin persis dari Figma: warna dasar `#84C2F6`
-        (`bg-bkui-button` di section ini), lalu tekstur awan dengan blend
-        `soft-light` opacity 38%. Sempat saya tempel sebagai gambar biasa dan
-        warnanya tidak pernah cocok — `soft-light` itu yang bikin awannya
-        menyatu lembut dengan birunya, bukan menutupi.
-      */}
-      <Image
-        src="/image/landing/awan-tekstur.webp"
-        alt=""
-        aria-hidden
-        fill
-        sizes="100vw"
-        className="-z-10 object-cover opacity-[0.38] mix-blend-soft-light"
-      />
-
-      {/* Lapis 2 — dekorasi khas section ini */}
+      {/* Dekorasi khas section ini */}
       {dekorasi}
 
-      {/* Lapis 3 — isi */}
+      {/* Isi */}
       {children}
     </section>
-  );
-}
-
-/**
- * Strip pembatas 24px di tepi atas section (`Rectangle 815` di Figma, dipakai di
- * Apa itu BKUI, Arah Petualangan, dan FAQ).
- *
- * Dibuat sebagai kotak CSS, BUKAN ikut dilebur ke `dekor-*.webp`. Ini cuma satu
- * warna solid setinggi 24px — tidak ada alasan jadi bitmap. Selain itu lapisan
- * dekorasi ditempel ke tepi BAWAH section, sementara strip ini harus menempel
- * di ATAS: kalau ikut di gambar yang sama, posisinya melenceng sejauh selisih
- * tinggi section dengan tinggi kanvas Figma.
- */
-export function StripPembatas() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-6 bg-bkui-strip"
-    />
   );
 }
 
