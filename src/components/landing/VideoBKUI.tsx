@@ -24,9 +24,12 @@ export function VideoBKUI() {
       <DekorBendera />
       <HiasanVideo />
 
-      <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-6 px-5 sm:px-8">
-        <Muncul>
-          <JudulSticker as="h2" ukuran="h2">
+      <div className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-6 px-5 sm:gap-0 sm:px-8">
+        {/* z-10 supaya judulnya tetap di atas bingkai yang menindihnya. */}
+        <Muncul className="relative z-10">
+          {/* Ukuran "title" (72px), bukan "h2" (48px): di Figma judul ini
+              selebar 446px pada frame 1512, dan h2 cuma menghasilkan ~302px. */}
+          <JudulSticker as="h2" ukuran="title">
             {VIDEO_LANDING.judul}
           </JudulSticker>
         </Muncul>
@@ -36,9 +39,13 @@ export function VideoBKUI() {
           gambar, supaya isinya bisa berupa <video>/<iframe> sungguhan begitu
           URL-nya ada, dan rasionya tetap 16:9 di semua lebar layar.
         */}
-        <Muncul jeda={120} className="w-full max-w-[996px] rounded-xl border-[10px] border-bkui-kuning-bingkai bg-[url('/image/landing/hero/kayu-tekstur.webp')] bg-cover p-2 shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px] sm:p-3">
+        {/*
+          Naik sedikit supaya tepi atas bingkai tertindih judulnya, persis
+          seperti di Figma. Hanya dari `sm` ke atas — di layar sempit judul
+          dan bingkai butuh jarak supaya keduanya tetap terbaca.
+        */}
+        <Muncul jeda={120} className="w-full max-w-[996px] rounded-xl sm:-mt-[1.8vw] border-[10px] border-bkui-kuning-bingkai shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px]">
           <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-sm bg-bkui-krem-kartu">
-            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[url('/image/landing/awan-tekstur.webp')] bg-cover opacity-25 mix-blend-multiply" />
             {VIDEO_LANDING.url ? (
               <iframe
                 src={VIDEO_LANDING.url}
