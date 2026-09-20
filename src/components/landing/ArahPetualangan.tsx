@@ -21,10 +21,17 @@ const MATA_ACARA = [
   },
 ] as const;
 
+/**
+ * Posisi tiap papan pada kanvas Figma 1512 × 1148.
+ *
+ * Nilai `top` diambil dari koordinat frame papannya di Figma — y 305, 297, dan
+ * 667 — bukan dikira-kira. Sebelumnya ketiganya ~20px terlalu tinggi, yang
+ * bikin papan atas nyaris menempel ke pil "Mata Acara".
+ */
 const POSISI_PAPAN = [
-  "lg:left-[7.21%] lg:top-[24.83%]",
-  "lg:left-[51.65%] lg:top-[24.13%]",
-  "lg:left-[29.43%] lg:top-[56.36%]",
+  "lg:left-[7.21%] lg:top-[26.57%]",
+  "lg:left-[51.65%] lg:top-[25.87%]",
+  "lg:left-[29.43%] lg:top-[58.10%]",
 ] as const;
 
 /**
@@ -110,7 +117,18 @@ export function ArahPetualangan() {
         />
 
         <div className="relative z-20 flex flex-col items-center gap-3 px-5 text-center lg:absolute lg:inset-x-0 lg:top-[7.93%] lg:gap-[0.6cqw] lg:p-0">
-          <JudulSticker as="h2" ukuran="title" className="text-[clamp(22px,4.76cqw,72px)] lg:whitespace-nowrap lg:text-[4.76cqw]">
+          {/*
+            `-my-[0.28em]` membatalkan efek LAYOUT dari padding milik
+            `.judul-sticker` — padding itu ada supaya outline pink tebalnya
+            tidak terpotong, tapi ikut menambah 0.56em (40px pada font 72px)
+            ke tinggi elemen. Akibatnya pil "Mata Acara" terdorong 41px ke
+            bawah dan menempel ke papan.
+
+            Paddingnya tetap ada, jadi outline tetap utuh; yang hilang cuma
+            sumbangannya ke tinggi baris. Hasilnya teks judul mulai di y=91 dan
+            pil di y=200, sama dengan Figma.
+          */}
+          <JudulSticker as="h2" ukuran="title" className="-my-[0.28em] text-[clamp(22px,4.76cqw,72px)] lg:whitespace-nowrap lg:text-[4.76cqw]">
             Tentukan Arah Petualanganmu
           </JudulSticker>
           <p className="rounded-full bg-gradient-to-r from-bkui-hijau-daun to-bkui-hijau-tua px-4 py-2 font-ui text-sm font-semibold leading-[1.2] text-bkui-netral sm:text-lg lg:px-[1.6cqw] lg:py-[0.66cqw] lg:text-[1.85cqw]">
