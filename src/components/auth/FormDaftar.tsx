@@ -3,7 +3,7 @@ import Link from "next/link";
 import { KolomIsian } from "./KolomIsian";
 
 /**
- * Kartu formulir Daftar Akun (Figma `355:4566`).
+ * Kartu formulir Daftar Akun (Figma `824:1117`).
  *
  * ---------------------------------------------------------------------------
  * Tombol "Daftar" SENGAJA dimatikan
@@ -34,13 +34,13 @@ import { KolomIsian } from "./KolomIsian";
  */
 export function FormDaftar() {
   return (
-    <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center gap-6 rounded-3xl bg-bkui-navbar px-6 py-10 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:px-9 sm:py-16">
+    <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center rounded-3xl bg-bkui-navbar px-6 py-10 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[641px] sm:px-12 sm:py-14 lg:px-24 lg:pt-16">
       <h1 className="text-center font-display text-4xl leading-[1.4] text-bkui-teks-tua sm:text-5xl lg:text-[72px]">
         Daftar
       </h1>
 
-      <form className="flex w-full max-w-[808px] flex-col items-center gap-8">
-        <div className="grid w-full gap-6 md:grid-cols-2">
+      <form className="mt-6 flex w-full max-w-[808px] flex-col items-center gap-8">
+        <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
           <KolomIsian label="Nama Lengkap" name="nama" placeholder="Contoh: Kasandra Putri" autoComplete="name" />
           <KolomIsian label="Sekolah" name="sekolah" placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" />
           <KolomIsian label="Nomor HP" name="telepon" type="tel" placeholder="Contoh: 0812 3456 7890" autoComplete="tel" />
@@ -62,26 +62,20 @@ export function FormDaftar() {
         </div>
 
         <div className="flex flex-col items-center gap-3">
-          {/*
-            Keterangan ini di ATAS tombol, bukan di bawah — supaya terbaca
-            sebelum orang mulai mengisi, bukan setelah menyerah menekan tombol.
-          */}
-          <p className="max-w-[520px] text-center font-body text-sm leading-[1.4] text-bkui-teks/70">
-            Pendaftaran belum bisa diproses. Layanan akun di server belum tersedia,
-            jadi tombolnya sengaja dimatikan sampai siap.
-          </p>
-
+          <p id="status-daftar" className="sr-only">Pendaftaran belum tersedia di web ini.</p>
           <button
             type="submit"
             disabled
-            className="h-16 cursor-not-allowed rounded-full bg-bkui-button px-9 font-ui text-lg font-medium capitalize text-bkui-teks opacity-60 lg:text-xl"
+            aria-describedby="status-daftar"
+            title="Pendaftaran belum tersedia"
+            className="h-16 cursor-not-allowed rounded-full bg-bkui-button px-6 font-ui text-lg font-medium capitalize text-bkui-teks lg:text-xl"
           >
             Daftar
           </button>
         </div>
       </form>
 
-      <p className="flex flex-wrap items-center justify-center gap-3 text-center text-base">
+      <p className="mt-14 flex flex-wrap items-center justify-center gap-2 text-center text-sm">
         <span className="font-body font-medium leading-[1.2] text-bkui-teks-tua">
           Sudah punya akun?
         </span>

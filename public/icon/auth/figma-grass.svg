@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="2501.39" height="829.648" viewBox="0 0 2501.39 829.648" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="rumput1">
+<path id="Vector 21" d="M7.39932 0.000109532C503.215 49.7732 1176.47 427.47 1457.97 793.079L9.92254e-05 802.232L7.39932 0.000109532Z" fill="url(#paint0_linear_0_119)"/>
+<path id="Vector 67" d="M2501.39 333.326C2075.24 212.614 1413.44 415.777 1076.16 829.648H2501.39V333.326Z" fill="url(#paint1_linear_0_119)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_119" x1="736.281" y1="6.72284" x2="110.259" y2="902.392" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFFF00"/>
+<stop offset="1" stop-color="#30A78B"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_119" x1="1788.78" y1="298.812" x2="2123.35" y2="1020.17" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFFF00"/>
+<stop offset="1" stop-color="#30A78B"/>
+</linearGradient>
+</defs>
+</svg>

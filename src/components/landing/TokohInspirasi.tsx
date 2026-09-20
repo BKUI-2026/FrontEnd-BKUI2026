@@ -9,13 +9,12 @@ import { Timeline } from "./Timeline";
 /**
  * Section "Tokoh Inspirasi" — Speakers di daftar fitur AGENTS.md bagian 4.
  *
- * Di Figma grid-nya 4 kolom x 2 baris. Di sini kolomnya turun bertahap
- * (1 → 2 → 3 → 4) mengikuti lebar layar; jumlah kartunya sendiri ikut data,
- * bukan dipatok delapan.
+ * Enam narasumber dari dokumen tim ditata tiga kolom x dua baris di desktop;
+ * jumlah kartu selalu mengikuti data, tanpa slot tambahan.
  */
 export function TokohInspirasi() {
   return (
-    <SectionLangit className="min-h-[2188px] pb-16 pt-[max(150px,12vw)]">
+    <SectionLangit className="pb-16 pt-[max(120px,12vw)]">
       <DekorBendera />
 
       <div className="relative mx-auto flex w-full max-w-[1360px] flex-col items-center px-5 sm:px-8">
@@ -25,13 +24,13 @@ export function TokohInspirasi() {
           </JudulSticker>
         </Muncul>
 
-        <ul className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {DAFTAR_TOKOH.map((tokoh, i) => (
             <li key={tokoh.id}>
-              {/* Jeda dibatasi 4 langkah (sepanjang satu baris grid) lalu
+              {/* Jeda dibatasi 3 langkah (sepanjang satu baris grid) lalu
                   berulang — kalau terus bertambah, kartu terakhir baru muncul
                   jauh setelah yang pertama dan malah terasa lambat. */}
-              <Muncul jeda={(i % 4) * 90} className="h-full">
+              <Muncul jeda={(i % 3) * 90} className="h-full">
                 <KartuTokoh tokoh={tokoh} />
               </Muncul>
             </li>
@@ -46,9 +45,8 @@ export function TokohInspirasi() {
 /**
  * Satu kartu tokoh: foto berbingkai membulat, nama, lalu keterangan singkat.
  *
- * Selama `foto` masih null, yang tampil siluet cokelat polos — sama seperti
- * placeholder di Figma. Foto asli nanti datang dari Admin (AGENTS.md bagian 7),
- * jadi jangan taruh file foto siapa pun di repo ini.
+ * Foto berasal dari dokumen tim. Siluet tetap menjadi fallback jika kelak
+ * ada entri yang belum memiliki foto.
  */
 function KartuTokoh({ tokoh }: { tokoh: Tokoh }) {
   return (

@@ -5,12 +5,12 @@ import { Muncul } from "@/components/ui/Muncul";
 import { DESKRIPSI_BKUI } from "@/lib/landing-content";
 
 /**
- * Section "Apa itu ... BKUI 2026" — ilustrasi tenda maskot di kiri, judul
+ * Section "Apa itu ... BKUI 2026" — Bikun di kiri, judul
  * bertumpuk dan deskripsi acara di kanan.
  *
  * Judulnya tidak memakai komponen `JudulSticker` karena susunannya khas: baris
- * "Apa itu ..." kecil di atas, "BKUI 2026" besar di bawah dengan angka memakai
- * Delight Extra Bold, plus tiga tanda tanya miring di kanan. Semua dibangun
+ * "Apa itu ..." kecil di atas, "BKUI 2026" besar di bawah memakai
+ * Talina, plus tiga tanda tanya miring di kanan. Semua dibangun
  * dari teks sungguhan, bukan gambar.
  */
 
@@ -31,20 +31,11 @@ export function ApaItuBKUI() {
   return (
     <SectionLangit
       id="apa-itu-bkui"
-      // Jarak atas mengikuti Figma: judul mulai di y=215 dari 1512 lebar frame
-      // (≈14vw). Ini yang bikin isinya lewat di BAWAH balok kayu mendatar,
-      // bukan ketabrak — sama seperti di desain.
+      // Jarak atas mengikuti posisi judul di frame Figma.
       className="min-h-[58.53vw] pb-14 pt-[max(140px,14.22vw)] sm:pb-20"
       dekorasi={
         /*
-          Rangka kayu + dedaunan & bunga yang membingkai section ini di Figma.
-          Menggantung dari tepi atas, jadi balok mendatarnya melintasi seluruh
-          lebar layar dan balok tegaknya turun di sisi kiri.
-
-          `min-w-[900px]` menahan gambarnya supaya tidak ikut mengecil habis di
-          layar sempit — kalau dibiarkan menyusut, baloknya jadi setipis garis
-          dan dedaunannya tidak terbaca lagi. Kelebihannya dibiarkan meluber ke
-          kanan lalu terpotong oleh `overflow-hidden` milik section.
+          Cabang dan bunga yang membingkai section ini di Figma.
 
           Kelopak sakura yang di Figma menempel di sini sengaja dihapus dari
           gambarnya: di web kelopaknya sudah jadi animasi (`SakuraBerjatuhan`),
@@ -68,13 +59,13 @@ export function ApaItuBKUI() {
       }
     >
       <Muncul className="relative mx-auto flex w-full max-w-[1144px] flex-col items-center gap-8 px-5 sm:px-8 lg:flex-row lg:gap-12">
-        {/* Logo ilustratif asli BKUI, berbasis vektor — bukan foto. */}
+        {/* Bikun diekstrak dari ilustrasi vektor hero, tanpa foto. */}
         <Image
-          src="/logo/mainLogoBKUI2026.svg"
+          src="/icon/landing/bikun-extracted.svg"
           alt=""
           aria-hidden
-          width={439}
-          height={435}
+          width={363}
+          height={309}
           // Terdeteksi sebagai LCP di halaman ini — dimuat lebih awal supaya
           // section pertama setelah hero tidak kosong dulu sesaat.
           priority
@@ -104,12 +95,12 @@ export function ApaItuBKUI() {
             <div className="-mt-[0.35em] flex items-center text-[clamp(1.7rem,4.6vw,5.34rem)]">
               <h2 className="judul-sticker text-[inherit]">
                 <span aria-hidden className="judul-sticker__pink">
-                  BKUI 2026
+                  BKUI <span>2026</span>
                 </span>
                 <span aria-hidden className="judul-sticker__krem">
-                  BKUI 2026
+                  BKUI <span>2026</span>
                 </span>
-                <span className="judul-sticker__isi">BKUI 2026</span>
+                <span className="judul-sticker__isi">BKUI <span>2026</span></span>
               </h2>
 
               {/*
@@ -125,7 +116,7 @@ export function ApaItuBKUI() {
                 {TANDA_TANYA.map((t) => (
                   <span
                     key={t.putar}
-                    className="inline-block"
+                    className="tanda-tanya-hidup inline-block"
                     style={{
                       fontSize: t.ukuran,
                       transform: `translateY(${t.turun}) rotate(${t.putar})`,
@@ -145,6 +136,20 @@ export function ApaItuBKUI() {
           </p>
         </div>
       </Muncul>
+      <div className="relative mx-auto mt-12 grid w-full max-w-[1144px] gap-4 px-5 sm:px-8 lg:grid-cols-3">
+        <Sorotan angka="12.000+" teks="Peserta Sudah Ikut Ekspedisi bersama BKUI pada Tahun Sebelumnya" />
+        <Sorotan angka="100+" teks="Kunjungan Sekolah sudah Kami Sapa" />
+        <Sorotan angka="Lebih dari 10 tahun" teks="telah Hadir Menemani Siswa/i se-Indonesia" />
+      </div>
     </SectionLangit>
+  );
+}
+
+function Sorotan({ angka, teks }: { angka: string; teks: string }) {
+  return (
+    <Muncul className="rounded-[28px] border-4 border-bkui-hijau-tua bg-bkui-krem-kartu px-6 py-5 text-center shadow-[7px_8px_0_#134921]">
+      <p className="font-ui text-3xl font-extrabold leading-none text-bkui-hijau-tua sm:text-4xl">{angka}</p>
+      <p className="mt-3 font-body text-sm font-semibold leading-snug text-bkui-teks sm:text-base">{teks}</p>
+    </Muncul>
   );
 }

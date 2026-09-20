@@ -7,10 +7,10 @@ import { motion, useReducedMotion } from "framer-motion";
  * Header halaman Explore UI — ilustrasi perkemahan pada Figma node 729:6531.
  *
  * Rasionya dikunci ke 1512:885 (ukuran frame Figma) supaya ilustrasinya tidak
- * pernah terpotong. Asset yang dipakai adalah ekspor SVG utuh dari frame Figma,
- * sehingga seluruh ornamen kecil, maskot, serta outline judul ikut terbawa tanpa
- * mengubahnya menjadi screenshot raster. Animasi per kelompok elemen disimpan
- * langsung di dalam SVG agar susunan layer tetap identik dengan desain sumber.
+ * pernah terpotong. Aset SVG mempertahankan ornamen, maskot, dan baris judul
+ * lain. Baris lama "1 Pendidikan Vokasi" disembunyikan dan diganti "Sekolah
+ * Vokasi" dengan font, outline, serta shadow yang senada dengan ekspor Figma.
+ * Animasi elemen tetap disimpan di SVG.
  */
 export function HeaderExplore() {
   const kurangiGerak = useReducedMotion();
@@ -37,8 +37,12 @@ export function HeaderExplore() {
           unoptimized
           className="object-contain"
         />
-        <div aria-hidden className="pointer-events-none absolute left-1/2 top-[48%] z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display text-[clamp(1.1rem,5vw,5rem)] leading-none text-[#155125] [paint-order:stroke_fill] [-webkit-text-stroke:0.12em_#f3fbe6] [text-shadow:4px_5px_0_#ec81ab,6px_8px_3px_rgba(0,0,0,.35)]">
-          Sekolah Vokasi
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 -rotate-3 whitespace-nowrap">
+          <span className="judul-sticker font-display text-[clamp(1.2rem,6.5vw,6.1rem)]" style={{ filter: "drop-shadow(0.06em 0.09em 0.01em rgb(0 0 0 / 0.4))" }}>
+            <span className="judul-sticker__pink">Sekolah Vokasi</span>
+            <span className="judul-sticker__krem">Sekolah Vokasi</span>
+            <span className="judul-sticker__isi">Sekolah Vokasi</span>
+          </span>
         </div>
       </motion.div>
 

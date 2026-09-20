@@ -55,6 +55,21 @@ export function JalurTimeline({
         strokeDasharray="12 12"
         className="jalur-mengalir"
       />
+      <image
+        href="/icon/landing/bikun-extracted.svg"
+        width="60"
+        height="51"
+        x="-30"
+        y="-26"
+        className="bikun-di-jalur"
+      >
+        <animateMotion
+          path={d}
+          dur={jalur === "dua" ? "8s" : "12s"}
+          begin={jalur === "dua" ? "0s" : "8s"}
+          repeatCount="indefinite"
+        />
+      </image>
     </svg>
   );
 }

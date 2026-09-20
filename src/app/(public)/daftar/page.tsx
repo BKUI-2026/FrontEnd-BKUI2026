@@ -1,12 +1,11 @@
-import { LatarHalaman } from "@/components/explore/LatarHalaman";
-import { HiasanDaftar } from "@/components/auth/HiasanDaftar";
+import { AuthScene } from "@/components/auth/AuthScene";
 import { FormDaftar } from "@/components/auth/FormDaftar";
 
 /**
  * Daftar Akun — `/daftar`
  *
- * Mengikuti desain Figma node 358:4779: kartu formulir enam kolom di atas
- * ilustrasi pohon, bukit rumput, dan maskot.
+ * Mengikuti desain Figma terbaru node 824:1117: kartu enam kolom di atas
+ * ilustrasi pohon dan bukit tanpa maskot.
  *
  * BELUM TERHUBUNG KE BE. Endpoint auth belum ada dan shape request-nya tidak
  * dikarang duluan (README boundary nomor 4), jadi tombol "Daftar" dimatikan —
@@ -19,15 +18,13 @@ import { FormDaftar } from "@/components/auth/FormDaftar";
 export default function DaftarAkunPage() {
   return (
     <main className="flex-1">
-      <LatarHalaman>
         <section
           aria-label="Daftar akun"
-          className="relative grid min-h-[calc(100svh-6rem)] place-items-center overflow-hidden px-5 py-12 lg:px-8 lg:py-16"
+          className="relative isolate grid min-h-[982px] place-items-center overflow-hidden px-5 py-12 max-sm:min-h-[100svh] lg:px-8"
         >
-          <HiasanDaftar />
+          <AuthScene variant="daftar" />
           <FormDaftar />
         </section>
-      </LatarHalaman>
     </main>
   );
 }

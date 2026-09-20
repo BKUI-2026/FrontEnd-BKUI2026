@@ -6,7 +6,7 @@ import { useState, type FormEvent } from "react";
 import { KolomIsian } from "./KolomIsian";
 
 /**
- * Kartu formulir Masuk (Figma `359:4815`), lengkap dengan status galatnya.
+ * Kartu formulir Masuk (Figma `707:3918` / `824:744`), lengkap dengan status galatnya.
  *
  * ---------------------------------------------------------------------------
  * Kenapa tombolnya HIDUP di sini, padahal di halaman Daftar dimatikan
@@ -58,12 +58,12 @@ export function FormMasuk() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[600px] flex-col items-center gap-6 rounded-3xl bg-bkui-navbar px-6 py-10 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:px-16 sm:py-16">
+    <div className="mx-auto flex w-full max-w-[600px] flex-col items-center rounded-3xl bg-bkui-navbar px-6 py-10 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[550px] sm:px-16 sm:py-14">
       <h1 className="text-center font-display text-4xl leading-[1.4] text-bkui-teks-tua sm:text-5xl lg:text-[72px]">
         Masuk
       </h1>
 
-      <form onSubmit={kirim} noValidate className="flex w-full flex-col items-center gap-8">
+      <form onSubmit={kirim} noValidate className="mt-6 flex w-full flex-col items-center gap-8">
         <div className="flex w-full flex-col gap-6 sm:max-w-[392px]">
           <KolomIsian label="Email" name="email" type="email" placeholder="Contoh: nama@email.com" autoComplete="email" />
           <KolomIsian
@@ -75,7 +75,7 @@ export function FormMasuk() {
           />
         </div>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-4">
           {/*
             `role="alert"` bukan hiasan: pembaca layar mengumumkan isinya begitu
             muncul, tanpa pengguna harus menyusuri halaman untuk menemukannya.
@@ -84,7 +84,7 @@ export function FormMasuk() {
           */}
           <p
             role="alert"
-            className="min-h-6 max-w-[440px] text-center font-body text-base font-medium leading-[1.4] text-bkui-galat"
+            className="min-h-6 max-w-[440px] text-center font-body text-sm font-medium leading-[1.4] text-bkui-galat"
           >
             {pesanGalat}
           </p>
@@ -98,7 +98,7 @@ export function FormMasuk() {
         </div>
       </form>
 
-      <p className="flex flex-wrap items-center justify-center gap-3 text-center text-base">
+      <p className="mt-9 flex flex-wrap items-center justify-center gap-2 text-center text-sm">
         <span className="font-body font-medium leading-[1.2] text-bkui-teks-tua">
           Belum punya akun?
         </span>

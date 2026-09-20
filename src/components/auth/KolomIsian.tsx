@@ -38,18 +38,18 @@ export function KolomIsian({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <label htmlFor={id} className="font-body text-base font-medium leading-[1.2] text-bkui-teks">
+      <label htmlFor={id} className="font-body text-sm font-medium leading-[1.35] text-bkui-teks">
         {label}
       </label>
 
-      <div className="flex min-h-11 items-center gap-1 rounded-xl border-2 border-bkui-teks px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau sm:gap-3">
+      <div className="flex h-10 items-center gap-1 rounded-lg border border-bkui-teks px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau sm:gap-3">
         <input
           id={id}
           name={name}
           type={sandi && terlihat ? "text" : type}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className="h-6 min-w-0 flex-1 bg-transparent font-body text-base font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-none"
+          className="h-6 min-w-0 flex-1 bg-transparent font-body text-sm font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-none"
         />
 
         {sandi && (
@@ -58,7 +58,7 @@ export function KolomIsian({
             onClick={() => setTerlihat((v) => !v)}
             aria-label={terlihat ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
             aria-pressed={terlihat}
-            className="-my-0.5 -mr-3 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            className="-my-0.5 -mr-3 inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
           >
             <Image
               src={terlihat ? "/icon/auth/mata.svg" : "/icon/auth/mata-tutup.svg"}

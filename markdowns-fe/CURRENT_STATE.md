@@ -46,7 +46,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Masih Dummy Data** (FAQ resmi; copy dummy sudah dibersihkan) | TBD (entity `Content` — video, tokoh, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
+| Landing Page | `/` | **Sebagian konten resmi** (FAQ dan Previous Speakers sudah dari dokumen tim) | TBD (entity `Content` — video, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
 | Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
 | Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
@@ -191,9 +191,10 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Integrasi Profile & Dashboard.** UI sudah selesai, tetapi data profil,
   penyimpanan, logout, daftar acara, pengumuman, dan tautan Zoom masih menunggu
   kontrak API. Informasi mentoring wajib tetap dinamis dari Admin.
-- **Konten Landing Page.** Deskripsi BKUI sudah memakai copy yang relevan dan
-  FAQ memakai dokumen tim. Identitas tokoh, testimoni asli, daftar sponsor, dan
-  URL video tetap menunggu konten resmi; UI menampilkannya secara transparan.
+- **Konten Landing Page.** Deskripsi BKUI sudah memakai copy yang relevan;
+  FAQ dan enam Previous Speakers beserta fotonya memakai dokumen tim.
+  Testimoni asli, daftar sponsor, dan URL video tetap menunggu konten resmi;
+  UI menampilkannya secara transparan.
 
 ## Pekerjaan Visual yang Belum Selesai
 
@@ -208,6 +209,25 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
   kayu, dan bukit/tanaman dari aset desain terbaru. CTA dan copy tetap HTML,
   dengan responsif 390px sudah diperiksa. Lihat
   [FE-0025](./features/FE-0025_Codex_Update-Landing-Bus-Arah.md).
+- **Audit landing `776:2541` lanjutan (FE-0027).** Ruang kosong berlebih di
+  Previous Speakers dihapus. Pohon kanan testimoni dilengkapi, bagian
+  FAQ diberi ornamen biru selebar layar, serta enam pertanyaan utama tampil
+  sesuai komposisi desain; sisanya tetap tersedia lewat ekspansi. Tampilan
+  mobile 390px untuk Arah, Speakers, Testimoni, dan FAQ diperiksa di browser.
+  Figma MCP mencapai batas Starter saat audit ini, jadi kesesuaian piksel
+  terakhir belum bisa diklaim tanpa akses konteks desain kembali.
+- **Koreksi visual landing akhir.** Balok kayu tambahan di Apa Itu dilepas
+  karena tidak ada pada frame Figma; angka 2026 memakai Delight Extra Bold.
+  Strip sponsor kini hanya memakai lingkaran dari SVG Figma (sebelumnya
+  terduplikasi), latar SVG diperpanjang sampai tepi kanvas, dan tinggi minimum
+  FAQ/padding bawah yang menimbulkan celah besar ke footer dihapus.
+- **Previous Speakers:** enam kartu berisi nama, profesi, dan foto dari
+  dokumen tim “Prev speaker” (2026-09-14). Grid desktop kini 3 × 2; tidak ada
+  dua slot dummy atau label “Segera Diumumkan” tambahan.
+- **Visual auth mengikuti frame Figma terbaru.** Daftar `824:1117`, Masuk
+  `707:3918`, dan state galat `824:744` memakai komposisi pohon/bukit terbaru.
+  Form masih HTML interaktif, tetapi endpoint auth belum terhubung di checkout
+  FE ini. Lihat [FE-0026](./features/FE-0026_Codex_Revisi-Auth-Figma.md).
 - **Explore UI sudah dicek visual di desktop dan mobile** serta memakai
   komposisi SVG lengkap dari frame Figma terbaru (FE-0022).
 - **After Movie masih memakai sebagian dekorasi WebP lama.** Pemutar videonya
@@ -216,4 +236,4 @@ Cek lain: `npm run typecheck`, `npm run lint`, `npm run build`.
 - **Belum dicek:** browser selain Chromium. Seluruh rute sudah diperiksa pada
   lebar HP kecil 320px, HP 390px, dan tablet 768px (FE-0023).
 
-_Terakhir diubah: 2026-09-20 (FE-0025)_
+_Terakhir diubah: 2026-09-20 (FE-0027)_

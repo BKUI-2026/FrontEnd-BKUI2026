@@ -35,10 +35,6 @@ export default function SchoolRoadshowRegistrationPage() {
             </p>
           </div>
 
-          <p className="rounded-3xl bg-[#cc0000] px-3 py-1 text-center font-body text-sm font-medium leading-[1.2] text-bkui-netral sm:text-base">
-            Form ini hanya dapat diisi oleh perwakilan guru pada sekolah yang didaftarkan.
-          </p>
-
           <FormRoadshow />
         </div>
       </section>

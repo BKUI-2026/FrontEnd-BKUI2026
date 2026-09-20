@@ -290,6 +290,34 @@
     var(--naik-mulai, 0s) infinite alternate;
 }
 
+/* Bikun muncul dari kanan, menunggu sebentar di tengah, lalu parkir di hero. */
+@keyframes bikun-masuk {
+  0% { transform: translateX(100vw); opacity: 0; }
+  25% { opacity: 1; }
+  36%, 60% { transform: translateX(-160%); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.bikun-masuk {
+  animation: bikun-masuk 3.4s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.bikun-melayang {
+  animation: naik-turun 2.8s ease-in-out 3.4s infinite alternate;
+}
+
+@keyframes tanda-tanya-hidup {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -0.12em; }
+}
+
+.tanda-tanya-hidup {
+  animation: tanda-tanya-hidup 2.4s ease-in-out infinite;
+}
+
+.tanda-tanya-hidup:nth-child(2) { animation-delay: .3s; }
+.tanda-tanya-hidup:nth-child(3) { animation-delay: .6s; }
+
 /*
  * ---------------------------------------------------------------------------
  * Jalur timeline mengalir
@@ -769,6 +797,9 @@ body:has(dialog[open]) {
 
   .bendera-goyang,
   .naik-turun,
+  .bikun-masuk,
+  .bikun-melayang,
+  .tanda-tanya-hidup,
   .jalur-mengalir,
   .overlay-detail,
   .halaman-masuk,
@@ -783,4 +814,10 @@ body:has(dialog[open]) {
   .hero-ilustrasi [id="Vector 93"] {
     animation: none;
   }
+
+  .bikun-di-jalur { display: none; }
+}
+/* The auth frames do not have falling sakura over their form controls. */
+body:has(.auth-scene) .sakura-layer {
+  display: none;
 }

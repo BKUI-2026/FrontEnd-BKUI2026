@@ -71,6 +71,16 @@ export function Hero() {
           unoptimized
           className="object-contain"
         />
+        <div aria-hidden className="bikun-masuk pointer-events-none absolute left-[76%] top-[41.6%] w-[24%]">
+          <Image
+            src="/icon/landing/bikun-extracted.svg"
+            alt=""
+            width={363}
+            height={309}
+            unoptimized
+            className="bikun-melayang h-auto w-full"
+          />
+        </div>
 
         {/*
           Posisi tombol mengikuti Figma (tengah, 86.9% dari atas frame). Karena

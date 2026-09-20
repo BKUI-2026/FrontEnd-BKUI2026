@@ -110,6 +110,9 @@ export function FormRoadshow() {
       </div>
 
       <div className="mt-12 flex min-h-16 flex-col items-center justify-end gap-3">
+        <p className="rounded-3xl bg-[#cc0000] px-3 py-1 text-center font-body text-sm font-medium leading-[1.2] text-bkui-netral sm:text-base">
+          Form ini hanya dapat diisi oleh perwakilan guru pada sekolah yang didaftarkan.
+        </p>
         <button
           type="submit"
           className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium capitalize leading-none text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang"

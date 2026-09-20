@@ -2,9 +2,10 @@ import Image from "next/image";
 
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JalurTimeline } from "@/components/landing/JalurTimeline";
+import { PilTahap } from "@/components/landing/PilTahap";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
-import { TAHAP_TIMELINE, type TahapTimeline } from "@/lib/landing-content";
+import { TAHAP_TIMELINE } from "@/lib/landing-content";
 
 /**
  * Section Timeline — rangkaian acara BKUI 2026 dari Roadshow sampai Puncak Acara.
@@ -33,13 +34,6 @@ const POSISI: Record<string, { kiri: string; atas: string; lebar: string }> = {
   mentoring: { kiri: "56.68%", atas: "36.38%", lebar: "28.04%" },
   puncak: { kiri: "66.87%", atas: "73.56%", lebar: "25.93%" },
 };
-
-/**
- * Gradien pil hijau, disalin dari Figma (Gradient/11).
- * Ditulis sekali di sini karena dipakai di dua susunan sekaligus.
- */
-const GRADIEN_PIL =
-  "linear-gradient(-57.688deg, #0E4700 9.79%, #018B01 111.06%)";
 
 export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
   const isi = (
@@ -75,7 +69,7 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
             return (
               <li
                 key={tahap.id}
-                className="absolute"
+                className="group absolute hover:z-10 focus-within:z-10"
                 style={{
                   left: posisi?.kiri,
                   top: posisi?.atas,
@@ -96,7 +90,7 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
           // dibedakan lewat `hidden`, bukan dirender bersamaan.
         >
           {TAHAP_TIMELINE.map((tahap, i) => (
-            <li key={tahap.id}>
+            <li key={tahap.id} className="group">
               <Muncul jeda={i * 110}>
                 <PilTahap tahap={tahap} />
               </Muncul>
@@ -114,36 +108,6 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
     <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(48px,5.89vw)] sm:pb-24">
       {isi}
     </SectionLangit>
-  );
-}
-
-/**
- * Satu tahap: pil hijau berisi judul, plus kartu krem berisi tanggal kalau ada.
- *
- * Kartu tanggalnya di Figma menyembul di belakang pil (lebih lebar dan lebih
- * tinggi), jadi di sini pil ditaruh DI DALAM kartu dengan margin negatif —
- * bukan dua elemen bertumpuk absolut, supaya tingginya tetap ikut isi teks.
- */
-function PilTahap({ tahap }: { tahap: TahapTimeline }) {
-  const pil = (
-    <p
-      className="rounded-full px-6 py-4 text-center font-ui text-lg font-semibold leading-[1.2] text-bkui-terang shadow-[0_2px_10px_rgba(0,0,0,0.25)] sm:text-[28px]"
-      style={{ backgroundImage: GRADIEN_PIL }}
-    >
-      {tahap.judul}
-    </p>
-  );
-
-  if (!tahap.detail) return pil;
-
-  return (
-    <div className="rounded-[47px] border-2 border-bkui-hijau-tua bg-gradient-to-b from-bkui-kartu-atas to-bkui-kartu-bawah p-2 pb-3">
-      {/* Pil sedikit lebih sempit dari kartunya, sesuai Figma (392 vs 424). */}
-      <div className="-mx-1 -mt-3">{pil}</div>
-      <p className="mt-2 text-center font-body text-sm leading-[1.4] text-bkui-teks sm:text-xl">
-        {tahap.detail}
-      </p>
-    </div>
   );
 }
 

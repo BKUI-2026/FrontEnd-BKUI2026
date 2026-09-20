@@ -1,42 +1,19 @@
 import Image from "next/image";
 
-import { DAFTAR_SPONSOR } from "@/lib/landing-content";
-
-/**
- * Deretan sponsor & partner, tepat di atas Footer.
- *
- * Di Figma isinya masih lingkaran hijau kosong — logo aslinya belum diberikan,
- * jadi di sini pun tetap lingkaran placeholder. Menebak sponsor mana saja yang
- * ikut jelas tidak boleh.
- *
- * Meski namanya "carousel" di daftar fitur, yang dibuat adalah baris yang bisa
- * digeser (scroll horizontal), bukan slideshow otomatis:
- * - bisa digeser pakai jari, trackpad, roda mouse, maupun Tab
- * - tidak ada yang bergerak sendiri, jadi logo tidak pernah kabur saat dibaca
- * - kalau logonya sedikit, barisnya otomatis rata tengah tanpa perlu diatur
- *
- * Begitu logo aslinya ada, cukup isi `logo` di `DAFTAR_SPONSOR`; komponen ini
- * tidak perlu diubah.
- */
+/** Strip Figma sudah memuat lingkaran placeholder; jangan digambar dua kali. */
 export function SponsorCarousel({ tergabung = false }: { tergabung?: boolean }) {
   const isi = (
     <>
-      <Image src="/icon/landing/latest/sponsor-strip.svg" alt="" aria-hidden width={1696} height={208} sizes="100vw" className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-auto w-full min-w-[900px]" />
       <h2 id="judul-sponsor" className="sr-only">Sponsor dan partner BKUI 2026</h2>
-      <ul className="flex snap-x snap-mandatory gap-12 overflow-x-auto px-8 py-10 [scrollbar-width:none] sm:justify-center sm:py-14 [&::-webkit-scrollbar]:hidden">
-        {DAFTAR_SPONSOR.map((sponsor) => (
-          <li key={sponsor.id} className="shrink-0 snap-center">
-            {sponsor.logo ? <Image src={sponsor.logo} alt={sponsor.nama} width={160} height={160} className="size-24 rounded-full object-contain sm:size-40" /> : <div aria-hidden className="size-24 rounded-full bg-bkui-hijau sm:size-40" />}
-          </li>
-        ))}
-      </ul>
+      <Image src="/icon/landing/latest/sponsor-strip.svg" alt="" aria-hidden width={1696} height={208} sizes="(max-width: 900px) 900px, 100vw" className="pointer-events-none absolute left-1/2 top-0 h-auto w-[max(900px,100%)] max-w-none -translate-x-1/2" />
     </>
   );
-  if (tergabung) return <div aria-labelledby="judul-sponsor" className="relative isolate mt-16 min-h-[208px] overflow-hidden">{isi}</div>;
+  const className = "relative isolate h-[max(110px,12.264vw)] overflow-hidden";
+  if (tergabung) return <div aria-labelledby="judul-sponsor" className={className}>{isi}</div>;
   return (
     <section
       aria-labelledby="judul-sponsor"
-      className="relative isolate min-h-[18.52vw] overflow-hidden"
+      className={className}
     >
       {isi}
     </section>

@@ -36,8 +36,9 @@ export function VideoBKUI() {
           gambar, supaya isinya bisa berupa <video>/<iframe> sungguhan begitu
           URL-nya ada, dan rasionya tetap 16:9 di semua lebar layar.
         */}
-        <Muncul jeda={120} className="w-full max-w-[996px] rounded-xl border-[10px] border-bkui-kuning-bingkai bg-bkui-krem-kartu p-2 shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px] sm:p-3">
-          <div className="flex aspect-video w-full items-center justify-center rounded-sm bg-bkui-krem-kartu">
+        <Muncul jeda={120} className="w-full max-w-[996px] rounded-xl border-[10px] border-bkui-kuning-bingkai bg-[url('/image/landing/hero/kayu-tekstur.webp')] bg-cover p-2 shadow-[0_6px_18px_rgba(0,0,0,0.18)] sm:border-[14px] sm:p-3">
+          <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-sm bg-bkui-krem-kartu">
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[url('/image/landing/awan-tekstur.webp')] bg-cover opacity-25 mix-blend-multiply" />
             {VIDEO_LANDING.url ? (
               <iframe
                 src={VIDEO_LANDING.url}
@@ -47,7 +48,7 @@ export function VideoBKUI() {
                 className="h-full w-full rounded-sm"
               />
             ) : (
-              <p className="px-6 text-center font-display text-4xl leading-[1.4] text-bkui-coklat sm:text-6xl lg:text-7xl">
+              <p className="relative px-6 text-center font-display text-4xl leading-[1.4] text-bkui-coklat sm:text-6xl lg:text-7xl">
                 Coming Soon
               </p>
             )}

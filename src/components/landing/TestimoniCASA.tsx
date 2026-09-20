@@ -86,9 +86,9 @@ export function TestimoniCASA() {
           <TombolPanah arah="kanan" onClick={() => pindah(1)} />
         </Muncul>
 
-        {/* Penanda posisi — tidak ada di Figma, tapi tanpa ini pengunjung tidak
-            tahu ada berapa testimoni dan sedang di nomor berapa. */}
-        <p className="mt-4 font-body text-sm text-bkui-teks">
+        {/* Tetap diumumkan ke pembaca layar tanpa menambah elemen visual di
+            luar komposisi Figma. */}
+        <p className="sr-only" aria-live="polite">
           Testimoni {indeks + 1} dari {jumlah}
         </p>
       </div>

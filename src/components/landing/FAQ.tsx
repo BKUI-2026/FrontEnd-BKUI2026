@@ -25,11 +25,11 @@ import { DAFTAR_FAQ, type ItemFAQ } from "@/lib/landing-content";
 export function FAQ() {
   return (
     <SectionLangit
-      className="min-h-[73.35vw] pb-16 pt-[max(64px,7.54vw)]"
+      className="pt-[max(64px,7.54vw)]"
       dekorasi={
         <>
           <StripPembatas />
-          <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute -left-[9%] -top-[8%] -z-10 w-[64%] max-w-none opacity-90" />
+          <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute -left-[5%] -top-[8%] -z-10 w-[110%] max-w-none opacity-90" />
           <Image src="/icon/landing/latest/faq-grass-back.svg" alt="" aria-hidden width={2634} height={811} className="pointer-events-none absolute -bottom-[15%] left-[-22%] -z-10 w-[160%] max-w-none" />
           <Image src="/icon/landing/latest/faq-grass-front.svg" alt="" aria-hidden width={2576} height={482} className="pointer-events-none absolute -bottom-[12%] left-[-22%] -z-10 w-[160%] max-w-none" />
         </>
@@ -43,7 +43,7 @@ export function FAQ() {
         </Muncul>
 
         <ul className="flex w-full flex-col gap-6">
-          {DAFTAR_FAQ.map((item, i) => (
+          {DAFTAR_FAQ.slice(0, 6).map((item, i) => (
             <li key={item.id}>
               <Muncul jeda={i * 80}>
                 {/* Panel pertama terbuka sejak awal, sama seperti di Figma. */}
@@ -52,6 +52,19 @@ export function FAQ() {
             </li>
           ))}
         </ul>
+        {DAFTAR_FAQ.length > 6 && (
+          <details className="group w-full">
+            <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-full bg-bkui-hijau px-6 py-3 font-ui text-lg text-white [&::-webkit-details-marker]:hidden">
+              Lihat pertanyaan lainnya
+              <Image src="/icon/landing/chevron-bawah.svg" alt="" aria-hidden width={24} height={24} className="size-6 brightness-0 invert transition-transform group-open:rotate-180" />
+            </summary>
+            <ul className="mt-6 flex flex-col gap-6">
+              {DAFTAR_FAQ.slice(6).map((item) => (
+                <li key={item.id}><BarisFAQ item={item} terbukaAwal={false} /></li>
+              ))}
+            </ul>
+          </details>
+        )}
       </div>
       <SponsorCarousel tergabung />
     </SectionLangit>

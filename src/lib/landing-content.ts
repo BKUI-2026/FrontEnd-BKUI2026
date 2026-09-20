@@ -25,24 +25,19 @@ export interface Tokoh {
   id: string;
   nama: string;
   keterangan: string;
-  /** Foto dari Admin. `null` → tampil siluet placeholder seperti di Figma. */
+  /** Foto narasumber yang diberikan tim; `null` hanya untuk konten tanpa foto. */
   foto: string | null;
 }
 
-/**
- * Delapan kartu, sesuai grid 4x2 di Figma.
- *
- * Nama tokohnya SENGAJA tidak memakai nama orang sungguhan. Di Figma
- * placeholder-nya memakai nama seorang publik figur; menampilkan nama orang
- * asli sebagai pembicara yang belum tentu diundang bisa terbaca sebagai klaim
- * palsu, jadi diganti penomoran netral sampai daftar aslinya diberikan PM.
- */
-export const DAFTAR_TOKOH: readonly Tokoh[] = Array.from({ length: 8 }, (_, i) => ({
-  id: `tokoh-${i + 1}`,
-  nama: "Segera Diumumkan",
-  keterangan: "Nantikan tokoh inspiratif BKUI 2026",
-  foto: null,
-}));
+/** Enam previous speakers dan foto dari dokumen tim "Prev speaker". */
+export const DAFTAR_TOKOH: readonly Tokoh[] = [
+  { id: "rossa", nama: "Rossa", keterangan: "Penyanyi", foto: "/image/landing/speakers/rossa.png" },
+  { id: "jovial-da-lopez", nama: "Jovial Da Lopez", keterangan: "YouTuber, aktor, komedian", foto: "/image/landing/speakers/jovial-da-lopez.png" },
+  { id: "sri-mulyani", nama: "Sri Mulyani", keterangan: "Mantan Menteri Keuangan", foto: "/image/landing/speakers/sri-mulyani.png" },
+  { id: "najwa-shihab", nama: "Najwa Shihab", keterangan: "Jurnalis", foto: "/image/landing/speakers/najwa-shihab.png" },
+  { id: "fathia-izzati", nama: "Fathia Izzati", keterangan: "Vokalis dan musisi", foto: "/image/landing/speakers/fathia-izzati.png" },
+  { id: "shakira-amirah", nama: "Shakira Amirah", keterangan: "Dokter dan content creator", foto: "/image/landing/speakers/shakira-amirah.png" },
+];
 
 /** Satu tahap di section Timeline. */
 export interface TahapTimeline {
@@ -53,20 +48,20 @@ export interface TahapTimeline {
 }
 
 /**
- * Empat tahap, label & tanggalnya diambil apa adanya dari Figma.
+ * Empat tahap dengan rentang waktu terbaru yang diberikan tim BKUI.
  *
  * Ini satu-satunya bagian Landing Page yang isinya benar-benar berurutan, jadi
  * di UI-nya boleh ditandai sebagai urutan (nomor + `<ol>`).
  */
 export const TAHAP_TIMELINE: readonly TahapTimeline[] = [
-  { id: "roadshow", judul: "Roadshow", detail: null },
-  { id: "ambassador", judul: "Campus & Student Ambassador", detail: null },
+  { id: "roadshow", judul: "Roadshow", detail: "Agustus – Desember" },
+  { id: "ambassador", judul: "Campus & Student Ambassador", detail: "September – Desember" },
   {
     id: "mentoring",
     judul: "Program Mentoring",
-    detail: "13 September 2026 - Sekolah Pilihan",
+    detail: "September – Desember",
   },
-  { id: "puncak", judul: "Puncak Acara BKUI 2026", detail: null },
+  { id: "puncak", judul: "Puncak Acara BKUI 2026", detail: "Desember" },
 ] as const;
 
 /** Satu testimoni di section "Apa Kata Mereka". */
