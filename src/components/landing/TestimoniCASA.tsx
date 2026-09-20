@@ -34,7 +34,7 @@ export function TestimoniCASA() {
     setIndeks((i) => (i + langkah + jumlah) % jumlah);
 
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(140px,12.37vw)]">
+    <SectionLangit className="min-h-[70vw] pb-20 pt-">
       <HiasanTestimoni />
 
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
@@ -54,10 +54,10 @@ export function TestimoniCASA() {
           */}
           <article
             aria-live="polite"
-            className="flex min-w-0 flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:min-h-[min(480px,31.75vw)] lg:flex-row lg:p-[50px]"
+            className="flex h-[500px] min-w-0 flex-1 flex-col items-center gap-5  overscroll-contain rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
           >
             {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
-            <div className="relative aspect-square w-full max-w-[348px] shrink-0 lg:max-w-[38.7%]">
+            <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
               <Image
                 src="/icon/landing/bingkai-foto-besar.svg"
                 alt=""
@@ -67,7 +67,7 @@ export function TestimoniCASA() {
               />
             </div>
 
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 overflow-y-auto">
               <div>
                 <h3 className="font-display text-2xl leading-[1.4] sm:text-[32px]">
                   {testimoni.nama}
