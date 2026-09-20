@@ -2,7 +2,7 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-15 00:25 WIB
+Terakhir diperbarui: 2026-09-20 15:40 WIB
 
 ## Status Integrasi per Fitur
 
@@ -26,16 +26,26 @@ status sudah profesional; harga/stok palsu dihapus (FE-0020).
 ke event Yesplis resmi (FE-0015), tanpa payment gateway. Nama tier mengikuti
 Figma; harga, stok, dan benefit menunggu informasi resmi (FE-0020).
 
-**Halaman Daftar Akun & Masuk sudah dislicing** (FE-0011, FE-0012) dan saling
-terhubung, tapi belum bisa dipakai — endpoint auth BE belum ada.
+**Halaman Daftar Akun & Masuk sudah terhubung ke API** (FE-0026). Sesi
+sungguhan sudah jalan: access token disimpan di memori, refresh token di cookie
+httpOnly milik BE, dan sesi dipulihkan otomatis tiap halaman dimuat.
 
-**School Roadshow Registration sudah dislicing** (FE-0013, FE-0014) dengan form
-publik, validasi client, dan halaman success. Submit belum terhubung karena
-kontrak endpoint BE belum ada; halaman success belum dipanggil otomatis.
+**School Roadshow Registration sudah terhubung ke API** (FE-0026). Submit
+mengirim ke BE dan halaman success kini dipanggil otomatis setelah datanya
+tersimpan.
 
-**Profile dan Student Dashboard sudah dislicing dari tiga state Figma**
-(FE-0018): profil, edit profil, dan Acara Saya. Data akun, simpan profil,
-logout, serta detail/tautan mentoring belum terhubung ke API.
+**Profile dan Student Dashboard sudah terhubung ke API** (FE-0026): data akun,
+simpan profil, dan logout berjalan sungguhan, dan "Acara Saya" membaca status
+pendaftaran mentoring dari BE. Jadwal sesi serta tautan Zoom masih menunggu —
+isi seperti itu dikelola Admin lewat entity Content, dan slug-nya belum
+disepakati.
+
+> **Belum ada jalan bagi pengguna untuk menjadi Student.** Role itu hanya bisa
+> didapat dari jawaban "Are you a high school student?", dan pertanyaan tersebut
+> tidak ada di layar mana pun — tidak di form Daftar, tidak di Profil. Jalur
+> teknisnya sudah siap dan teruji; yang kurang satu keputusan PM: di layar mana
+> pertanyaan itu diajukan. Selama itu belum diputuskan, fitur Mentoring tidak
+> bisa dijangkau siapa pun. Detailnya di [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md).
 
 Dua halaman lain masih **rute + placeholder** (FE-0002). Navbar & Footer sudah sesuai desain Figma (FE-0004).
 
@@ -47,16 +57,16 @@ disesuaikan untuk penggunaan di layar sentuh.
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
 | Landing Page | `/` | **Sebagian konten resmi** (FAQ dan Previous Speakers sudah dari dokumen tim) | TBD (entity `Content` — video, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
-| Daftar Akun | `/daftar` | **Belum Dikerjakan** (UI selesai, tombol mati) | TBD — endpoint auth BE belum ada | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md) |
-| Masuk | `/masuk` | **Belum Dikerjakan** (UI selesai, hanya validasi format) | TBD — endpoint auth BE belum ada | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md) |
+| Daftar Akun | `/daftar` | **Terhubung ke API** | `POST /auth/register` | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
+| Masuk | `/masuk` | **Terhubung ke API** | `POST /auth/login` | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
 | Merchandise Catalog | `/merchandise` | **Masih Dummy Data** (copy layak tampil; harga/stok/foto menunggu) | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif; harga/stok/benefit menunggu) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
-| Profile | `/profile` | **Masih Dummy Data** (UI view/edit selesai; data & simpan belum terhubung) | TBD — endpoint auth/profil BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
-| Student Dashboard | `/dashboard` | **Masih Dummy Data** (UI Acara Saya selesai; detail & link mentoring dummy) | TBD — endpoint dashboard/content BE belum ada | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
-| School Roadshow Registration | `/school-roadshow`, `/school-roadshow/success` | **Masih Dummy Data** (UI form + success selesai) | TBD — endpoint registrasi & email belum ada | [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md), [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
-| Daftar CASA | `/daftar-casa` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
-| Daftar Mentoring | `/daftar-mentoring` | Belum Dikerjakan | TBD | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
+| Profile | `/profile` | **Terhubung ke API** | `GET` & `PATCH /users/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
+| Student Dashboard | `/dashboard` | **Terhubung ke API** (status mentoring nyata; jadwal & link sesi menunggu Content dari Admin) | `GET /mentoring-registrations/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
+| School Roadshow Registration | `/school-roadshow`, `/school-roadshow/success` | **Terhubung ke API** | `POST /school-roadshow-registrations` | [FE-0013](./features/FE-0013_Codex_Slicing-School-Roadshow.md), [FE-0014](./features/FE-0014_Codex_Success-School-Roadshow.md) |
+| Daftar CASA | `/daftar-casa` | **Belum Dikerjakan** (endpoint BE siap, desain Figma belum ada) | `POST /casa-registrations` | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
+| Daftar Mentoring | `/daftar-mentoring` | **Belum Dikerjakan** (endpoint BE siap, desain Figma belum ada) | `POST /mentoring-registrations` | [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md) |
 
 > Tambah baris "Referensi" berupa link ke file `features/FE-000X_...md` yang relevan begitu ada progress.
 
@@ -68,7 +78,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 - Animasi: Framer Motion (`framer-motion`) — dipakai di Explore UI, lihat [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md)
 - Linting: ESLint (`next/core-web-vitals`)
 - Font: Talina DEMO (display), Delight (UI), Inter (body) — via `next/font`, lihat `src/lib/fonts.ts`
-- Auth: konsumsi Email/Password + Google SSO dari BE — **belum diimplementasi**, endpoint auth BE belum ada
+- Auth: Email/Password dari BE — **sudah terhubung** (FE-0026). Access token di memori, refresh token di cookie httpOnly. Google SSO: halaman callback `/auth/callback` sudah ada, tombol pemicunya belum
 - Dev server: **port 3001** (BE pakai 3000, dan 3001 sudah masuk whitelist CORS di BE)
 
 Keputusan & alasan lengkap: [FE-0002](./features/FE-0002_Salman_Pilih-Tech-Stack-Frontend.md)

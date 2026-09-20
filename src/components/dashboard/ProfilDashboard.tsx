@@ -3,28 +3,85 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 
+import { ApiError, NetworkError, simpanProfil } from "@/lib/api";
+import { useSesi } from "@/lib/auth-state";
+
 import { LatarDashboard } from "./LatarDashboard";
 import { SidebarDashboard } from "./SidebarDashboard";
 
+/**
+ * Empat kolom dari Figma, dipetakan ke field profil di BE.
+ *
+ * Email sengaja `hanyaBaca`: BE tidak menerima perubahan email lewat
+ * `PATCH /users/me` — mengganti alamat masuk seseorang butuh verifikasi
+ * kepemilikan alamat barunya, dan alur itu belum ada. Kolomnya tetap
+ * ditampilkan sesuai desain, hanya tidak bisa disunting.
+ */
 const KOLOM_PROFIL = [
-  { label: "Nama Lengkap", name: "nama", type: "text", autoComplete: "name", placeholder: "Contoh: Kasandra Putri" },
-  { label: "Sekolah", name: "sekolah", type: "text", autoComplete: "organization", placeholder: "Contoh: SMA Negeri 8 Jakarta" },
-  { label: "Nomor HP", name: "telepon", type: "tel", autoComplete: "tel", placeholder: "Contoh: 0812 3456 7890" },
-  { label: "Email", name: "email", type: "email", autoComplete: "email", placeholder: "Contoh: nama@email.com" },
+  { label: "Nama Lengkap", name: "fullName", type: "text", autoComplete: "name", placeholder: "Contoh: Kasandra Putri", wajib: true, hanyaBaca: false },
+  { label: "Sekolah", name: "institution", type: "text", autoComplete: "organization", placeholder: "Contoh: SMA Negeri 8 Jakarta", wajib: false, hanyaBaca: false },
+  { label: "Nomor HP", name: "phoneNumber", type: "tel", autoComplete: "tel", placeholder: "Contoh: 0812 3456 7890", wajib: false, hanyaBaca: false },
+  { label: "Email", name: "email", type: "email", autoComplete: "email", placeholder: "—", wajib: false, hanyaBaca: true },
 ] as const;
 
 export function ProfilDashboard() {
+  const { user, perbaruiProfil } = useSesi();
   const [sedangEdit, setSedangEdit] = useState(false);
+  const [sedangSimpan, setSedangSimpan] = useState(false);
   const [pesan, setPesan] = useState("");
+  const [galat, setGalat] = useState("");
 
-  function simpan(event: FormEvent<HTMLFormElement>) {
+  // PenjagaSesi memastikan halaman ini hanya dirender saat sudah masuk, jadi
+  // `user` praktis selalu ada di sini. Penjagaan ini untuk meyakinkan compiler.
+  if (!user) return null;
+
+  const nilaiAwal: Record<string, string> = {
+    fullName: user.fullName,
+    institution: user.institution ?? "",
+    phoneNumber: user.phoneNumber ?? "",
+    email: user.email,
+  };
+
+  async function simpan(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (sedangSimpan) return;
+
     const form = event.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
-    setPesan("Perubahan belum dikirim karena layanan profil di server belum tersedia.");
+
+    const data = new FormData(form);
+    const teks = (nama: string) => String(data.get(nama) ?? "").trim();
+
+    setGalat("");
+    setPesan("");
+    setSedangSimpan(true);
+
+    try {
+      const terbaru = await simpanProfil({
+        fullName: teks("fullName"),
+        // Dikirim apa adanya termasuk saat dikosongkan — itu cara pengguna
+        // menghapus isian yang sebelumnya terisi.
+        institution: teks("institution"),
+        phoneNumber: teks("phoneNumber").replace(/\s/g, ""),
+      });
+
+      perbaruiProfil(terbaru);
+      setSedangEdit(false);
+      setPesan("Perubahan profil tersimpan.");
+    } catch (kesalahan) {
+      if (kesalahan instanceof ApiError) {
+        setGalat(kesalahan.messages.join(" "));
+      } else if (kesalahan instanceof NetworkError) {
+        setGalat(kesalahan.message);
+      } else {
+        setGalat("Terjadi kesalahan tak terduga. Coba lagi.");
+      }
+    } finally {
+      setSedangSimpan(false);
+    }
   }
 
   return (
@@ -37,38 +94,54 @@ export function ProfilDashboard() {
             <h1 className="font-display text-4xl leading-[1.4] text-bkui-teks sm:text-5xl">Profil Saya</h1>
 
             <div className="flex w-full flex-col gap-6">
-              {KOLOM_PROFIL.map((kolom) => (
-                <label key={kolom.name} className="flex flex-col gap-2 font-body text-base font-medium leading-[1.2] text-bkui-teks">
-                  {kolom.label}
-                  <input
-                    name={kolom.name}
-                    type={kolom.type}
-                    autoComplete={kolom.autoComplete}
-                    placeholder={sedangEdit ? kolom.placeholder : "Belum diisi"}
-                    readOnly={!sedangEdit}
-                    required={sedangEdit}
-                    className={`h-11 rounded-xl border-2 border-bkui-teks bg-transparent px-4 font-body text-base font-medium text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${!sedangEdit ? "cursor-default" : ""}`}
-                  />
-                </label>
-              ))}
+              {KOLOM_PROFIL.map((kolom) => {
+                const bisaDisunting = sedangEdit && !kolom.hanyaBaca;
+                return (
+                  <label key={kolom.name} className="flex flex-col gap-2 font-body text-base font-medium leading-[1.2] text-bkui-teks">
+                    {kolom.label}
+                    <input
+                      // `key` pada nilai awal: saat keluar dari mode edit,
+                      // input dipasang ulang supaya isiannya kembali ke data
+                      // tersimpan — pembatalan yang tidak menyisakan ketikan.
+                      key={`${kolom.name}-${sedangEdit}`}
+                      name={kolom.name}
+                      type={kolom.type}
+                      autoComplete={kolom.autoComplete}
+                      defaultValue={nilaiAwal[kolom.name]}
+                      placeholder={bisaDisunting ? kolom.placeholder : "Belum diisi"}
+                      readOnly={!bisaDisunting}
+                      required={bisaDisunting && kolom.wajib}
+                      aria-describedby={kolom.hanyaBaca && sedangEdit ? "ket-email" : undefined}
+                      className={`h-11 rounded-xl border-2 border-bkui-teks bg-transparent px-4 font-body text-base font-medium text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${!bisaDisunting ? "cursor-default" : ""} ${kolom.hanyaBaca && sedangEdit ? "opacity-70" : ""}`}
+                    />
+                  </label>
+                );
+              })}
+
+              {sedangEdit && (
+                <p id="ket-email" className="-mt-3 font-body text-sm leading-[1.4] text-bkui-teks/70">
+                  Email tidak bisa diubah sendiri. Hubungi panitia bila alamatmu salah.
+                </p>
+              )}
             </div>
           </div>
 
           {sedangEdit ? (
             <div className="flex flex-wrap justify-center gap-4">
-              <button type="button" onClick={() => { setSedangEdit(false); setPesan(""); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks">
+              <button type="button" disabled={sedangSimpan} onClick={() => { setSedangEdit(false); setPesan(""); setGalat(""); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks disabled:opacity-60">
                 Batal
               </button>
-              <button type="submit" className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium text-bkui-coklat">
-                Simpan
+              <button type="submit" disabled={sedangSimpan} aria-busy={sedangSimpan} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium text-bkui-coklat disabled:cursor-wait disabled:opacity-70">
+                {sedangSimpan ? "Menyimpan…" : "Simpan"}
               </button>
             </div>
           ) : (
-            <button type="button" onClick={() => setSedangEdit(true)} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks">
+            <button type="button" onClick={() => { setSedangEdit(true); setPesan(""); setGalat(""); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks">
               Edit Profil
             </button>
           )}
 
+          {galat && <p role="alert" className="-mt-6 max-w-md text-center font-body text-sm font-medium text-bkui-galat">{galat}</p>}
           {pesan && <p role="status" className="-mt-6 max-w-md text-center font-body text-sm font-medium text-bkui-teks">{pesan}</p>}
         </form>
       </div>

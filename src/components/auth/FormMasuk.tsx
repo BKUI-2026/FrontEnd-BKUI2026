@@ -1,41 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+
+import { ApiError, NetworkError } from "@/lib/api";
+import { useSesi } from "@/lib/auth-state";
 
 import { KolomIsian } from "./KolomIsian";
 
 /**
  * Kartu formulir Masuk (Figma `707:3918` / `824:744`), lengkap dengan status galatnya.
  *
- * ---------------------------------------------------------------------------
- * Kenapa tombolnya HIDUP di sini, padahal di halaman Daftar dimatikan
- * ---------------------------------------------------------------------------
- * Bukan karena endpoint auth sudah ada — belum. Bedanya: desain halaman ini
- * punya status galat, dan status itu tidak bisa ditinjau kalau tombolnya mati.
+ * Sejak endpoint auth BE tersedia (BE ARCH-0003), formulir ini benar-benar
+ * mengirim ke `POST /auth/login`.
  *
- * Jadi tombolnya hidup dan menjalankan pemeriksaan yang MEMANG milik frontend:
- * email kosong, format email salah, kata sandi kosong. Itu aturan universal,
- * bukan tebakan soal aturan BE (panjang sandi minimum, misalnya, tetap tidak
- * saya tebak).
- *
- * Kalau isiannya lolos pemeriksaan itu, yang muncul bukan pesan "email atau
- * kata sandi salah" — pesan itu jawaban server, dan mengarangnya berarti
- * berbohong kepada pengguna. Yang muncul keterangan jujur bahwa layanan akunnya
- * memang belum tersedia.
- *
- * Halaman Daftar tetap tombolnya mati karena isiannya enam kolom berisi data
- * pribadi; membiarkan orang mengisi semuanya untuk dibuang lebih merugikan
- * daripada dua kolom di sini.
- *
- * Begitu endpoint-nya ada: ganti isi `kirim` dengan panggilan sungguhan, dan
- * `pesanGalat` tinggal diisi pesan dari server.
+ * Pemeriksaan di sisi klien sengaja dibatasi pada yang memang milik frontend —
+ * kolom kosong dan bentuk email — supaya pengguna tidak perlu menunggu
+ * perjalanan ke server untuk kesalahan sesederhana itu. Sisanya, termasuk
+ * "email atau kata sandi salah", adalah jawaban server dan ditampilkan apa
+ * adanya; menebaknya di sini berarti berbohong kepada pengguna.
  */
 export function FormMasuk() {
-  const [pesanGalat, setPesanGalat] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { masuk } = useSesi();
 
-  const kirim = (e: FormEvent<HTMLFormElement>) => {
+  const [pesanGalat, setPesanGalat] = useState<string | null>(null);
+  const [sedangKirim, setSedangKirim] = useState(false);
+
+  const kirim = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (sedangKirim) return;
+
     const data = new FormData(e.currentTarget);
     const email = String(data.get("email") ?? "").trim();
     const sandi = String(data.get("sandi") ?? "");
@@ -52,9 +49,40 @@ export function FormMasuk() {
       return;
     }
 
-    setPesanGalat(
-      "Masuk belum bisa diproses. Layanan akun di server belum tersedia.",
-    );
+    setPesanGalat(null);
+    setSedangKirim(true);
+
+    try {
+      const user = await masuk(email, sandi);
+
+      // Kembalikan ke halaman yang tadi dijaga, kalau memang datang dari sana.
+      // Hanya path internal yang diterima — string dari URL tidak boleh bisa
+      // mengarahkan pengguna ke domain lain setelah masuk.
+      const tujuan = searchParams.get("next");
+      const tujuanAman =
+        tujuan && tujuan.startsWith("/") && !tujuan.startsWith("//")
+          ? tujuan
+          : null;
+
+      router.replace(
+        tujuanAman ?? (user.role === "STUDENT" ? "/dashboard" : "/profile"),
+      );
+    } catch (galat) {
+      if (galat instanceof ApiError) {
+        setPesanGalat(
+          galat.terlaluSering
+            ? "Terlalu banyak percobaan masuk. Coba lagi sebentar lagi."
+            : galat.message,
+        );
+      } else if (galat instanceof NetworkError) {
+        setPesanGalat(galat.message);
+      } else {
+        setPesanGalat("Terjadi kesalahan tak terduga. Coba lagi.");
+      }
+      setSedangKirim(false);
+    }
+    // Sengaja tidak menyalakan ulang tombol setelah berhasil: halamannya
+    // sedang berpindah, dan tombol yang hidup lagi mengundang klik kedua.
   };
 
   return (
@@ -91,9 +119,11 @@ export function FormMasuk() {
 
           <button
             type="submit"
-            className="tombol-kertas h-16 cursor-pointer rounded-full bg-bkui-button px-9 font-ui text-lg font-medium capitalize text-bkui-teks focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau lg:text-xl"
+            disabled={sedangKirim}
+            aria-busy={sedangKirim}
+            className="tombol-kertas h-16 cursor-pointer rounded-full bg-bkui-button px-9 font-ui text-lg font-medium capitalize text-bkui-teks focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau disabled:cursor-wait disabled:opacity-70 lg:text-xl"
           >
-            Masuk
+            {sedangKirim ? "Memproses…" : "Masuk"}
           </button>
         </div>
       </form>

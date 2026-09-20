@@ -8,7 +8,7 @@ import { AvatarProfil } from "@/components/ui/AvatarProfil";
 import { ButtonMasukSiswa } from "@/components/ui/ButtonMasukSiswa";
 import { ButtonPesanTiket } from "@/components/ui/ButtonPesanTiket";
 import { LogoBKUI } from "@/components/ui/LogoBKUI";
-import { useAkses } from "@/lib/auth-state";
+import { useAkses, useSudahMasuk } from "@/lib/auth-state";
 import { menuUntuk } from "@/lib/navigation";
 
 /**
@@ -25,16 +25,20 @@ import { menuUntuk } from "@/lib/navigation";
 export function Navbar() {
   const pathname = usePathname();
   const akses = useAkses();
+  const sudahLogin = useSudahMasuk();
   const [menuTerbuka, setMenuTerbuka] = useState(false);
 
   /*
-   * Ketiga rute ini memang hanya milik Student. Sampai session BE tersedia,
-   * pathname dipakai untuk menampilkan state navbar Student sesuai desain
-   * layar Dashboard; ini bukan pengganti guard autentikasi.
+   * Sejak sesi BE terhubung, keadaan navbar dibaca dari sesi sungguhan — bukan
+   * lagi ditebak dari pathname seperti saat slicing.
+   *
+   * Dua hal yang berbeda dan sengaja dipisah:
+   * - `sudahLogin` (punya sesi) menentukan avatar vs tombol "Masuk".
+   * - `akses` (role STUDENT) menentukan isi menu. Akun yang sudah masuk tapi
+   *   belum berstatus siswa tidak melihat menu Mentoring, karena memang belum
+   *   bisa memakainya.
    */
-  const ruteStudent = ["/profile", "/dashboard", "/daftar-mentoring"].includes(pathname);
-  const sudahLogin = akses === "Student" || ruteStudent;
-  const menu = menuUntuk(sudahLogin ? "Student" : akses);
+  const menu = menuUntuk(akses);
 
   // Tutup menu mobile tiap pindah halaman — kalau tidak, panelnya tetap terbuka
   // menutupi konten halaman baru.

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SakuraBerjatuhan } from "@/components/ui/SakuraBerjatuhan";
+import { AuthProvider } from "@/lib/auth-state";
 import { fontBody, fontDisplay, fontUi } from "@/lib/fonts";
 
 import "./globals.css";
@@ -36,10 +37,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`h-full antialiased ${fontDisplay.variable} ${fontUi.variable} ${fontBody.variable} ${fontBody.className}`}
     >
       <body className="flex min-h-full flex-col bg-bkui-navbar">
-        <SakuraBerjatuhan />
-        <Navbar />
-        {children}
-        <Footer />
+        {/*
+          AuthProvider membungkus seluruh aplikasi karena Navbar (yang tampil di
+          semua halaman) ikut bergantung pada keadaan sesi.
+        */}
+        <AuthProvider>
+          <SakuraBerjatuhan />
+          <Navbar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

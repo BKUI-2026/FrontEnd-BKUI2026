@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import type { FormEvent } from "react";
+
+import { ApiError, NetworkError, daftarRoadshow } from "@/lib/api";
 
 interface KolomRoadshowProps {
   label: string;
@@ -59,25 +62,62 @@ function KolomRoadshow({
 
 /**
  * Form publik School Roadshow dari Figma node 691:1896.
- * Endpoint BE belum didefinisikan, jadi submit hanya memvalidasi input lalu
- * memberi feedback jujur; tidak ada data pribadi yang dikirim atau disimpan.
+ *
+ * Terhubung ke `POST /school-roadshow-registrations` (BE ARCH-0003). Tetap
+ * publik tanpa akun: PRD menegaskan PJ Sekolah tidak butuh role khusus.
+ *
+ * Yang terjadi setelah submit: BE menyimpan datanya, mengirim email konfirmasi
+ * ke email sekolah, lalu meneruskan datanya ke Admin Web — semuanya di luar
+ * jalur permintaan ini, jadi halaman success muncul begitu datanya tersimpan.
  */
 export function FormRoadshow() {
+  const router = useRouter();
   const [pesan, setPesan] = useState("");
+  const [sedangKirim, setSedangKirim] = useState(false);
 
-  function kirim(event: FormEvent<HTMLFormElement>) {
+  async function kirim(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
+    if (sedangKirim) return;
 
+    const form = event.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
       setPesan("Lengkapi seluruh data sekolah dan penanggung jawab terlebih dahulu.");
       return;
     }
 
-    setPesan(
-      "Pendaftaran belum dapat dikirim karena layanan School Roadshow di server belum tersedia.",
-    );
+    const data = new FormData(form);
+    const teks = (nama: string) => String(data.get(nama) ?? "").trim();
+
+    setPesan("");
+    setSedangKirim(true);
+
+    try {
+      await daftarRoadshow({
+        schoolName: teks("namaSekolah"),
+        schoolAddress: teks("alamatSekolah"),
+        schoolEmail: teks("emailSekolah"),
+        targetStudentCount: Number(teks("jumlahTargetSiswa")),
+        pjName: teks("namaPenanggungJawab"),
+        pjEmail: teks("emailPenanggungJawab"),
+        pjPhone: teks("nomorHp").replace(/\s/g, ""),
+      });
+
+      router.push("/school-roadshow/success");
+    } catch (galat) {
+      if (galat instanceof ApiError) {
+        setPesan(
+          galat.terlaluSering
+            ? "Terlalu banyak pendaftaran dari jaringan ini. Coba lagi sebentar lagi."
+            : galat.messages.join(" "),
+        );
+      } else if (galat instanceof NetworkError) {
+        setPesan(galat.message);
+      } else {
+        setPesan("Terjadi kesalahan tak terduga. Coba lagi.");
+      }
+      setSedangKirim(false);
+    }
   }
 
   return (
@@ -115,9 +155,11 @@ export function FormRoadshow() {
         </p>
         <button
           type="submit"
-          className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium capitalize leading-none text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang"
+          disabled={sedangKirim}
+          aria-busy={sedangKirim}
+          className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium capitalize leading-none text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang disabled:cursor-wait disabled:opacity-70"
         >
-          Daftar
+          {sedangKirim ? "Mengirim…" : "Daftar"}
         </button>
         <p role="alert" className="max-w-[620px] text-center font-body text-sm font-medium text-bkui-teks">
           {pesan}

@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { AuthScene } from "@/components/auth/AuthScene";
 import { FormMasuk } from "@/components/auth/FormMasuk";
 
@@ -8,10 +10,11 @@ import { FormMasuk } from "@/components/auth/FormMasuk";
  * (Email, Kata Sandi) di atas ilustrasi pohon dan bukit, lengkap dengan status
  * galatnya.
  *
- * BELUM TERHUBUNG KE BE. Endpoint auth belum ada dan shape request-nya tidak
- * dikarang duluan (README boundary nomor 4). Tombolnya tetap hidup supaya
- * status galat di desain bisa ditinjau; yang dijalankan cuma pemeriksaan format
- * milik frontend — alasan lengkapnya di `components/auth/FormMasuk.tsx`.
+ * SUDAH TERHUBUNG ke `POST /auth/login` (BE ARCH-0003).
+ *
+ * `Suspense` mengelilingi formulirnya karena `FormMasuk` membaca query `next`
+ * (halaman yang tadi dijaga) lewat `useSearchParams`, dan Next mensyaratkan
+ * pembacaan itu berada di dalam batas Suspense.
  */
 export default function MasukPage() {
   return (
@@ -21,7 +24,15 @@ export default function MasukPage() {
           className="relative isolate grid min-h-[982px] place-items-center overflow-hidden px-5 py-12 max-sm:min-h-[100svh] lg:px-8"
         >
           <AuthScene variant="masuk" />
-          <FormMasuk />
+          <Suspense
+            fallback={
+              <p role="status" className="font-body text-base font-medium text-bkui-teks">
+                Memuat formulir…
+              </p>
+            }
+          >
+            <FormMasuk />
+          </Suspense>
         </section>
     </main>
   );
