@@ -20,11 +20,15 @@ const JALUR = {
     lebar: 615.011,
     tinggi: 359.485,
     d: "M353.406 356.316C180.1 363.579 210.407 159.756 387.906 203.816C599.407 256.316 700.407 -25.1836 515.407 12.3164C449.252 25.7261 234.061 28.0994 160.407 12.3164C-42.1027 -31.0785 -16.7923 90.86 56.6259 96.8164C142.907 103.816 102.407 266.317 3.40667 255.816",
+    durasi: "12s",
+    mulai: "3s",
   },
   dua: {
     lebar: 376.803,
     tinggi: 424.491,
     d: "M223.109 50.9978C390.994 57.3765 330.109 258.498 204.109 224.722C52.6089 184.111 -18.391 362.997 141.609 373.498",
+    durasi: "8s",
+    mulai: "0s",
   },
 } as const;
 
@@ -37,7 +41,7 @@ export function JalurTimeline({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const { lebar, tinggi, d } = JALUR[jalur];
+  const { lebar, tinggi, d, durasi, mulai } = JALUR[jalur];
 
   return (
     <svg
@@ -47,6 +51,7 @@ export function JalurTimeline({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       style={style}
+      overflow="visible"
     >
       <path
         d={d}
@@ -55,6 +60,12 @@ export function JalurTimeline({
         strokeDasharray="12 12"
         className="jalur-mengalir"
       />
+      {/*
+       * Jalur boleh menyentuh tepi viewBox. Bus harus tetap utuh saat lewat
+       * di sana, maka clipping SVG dimatikan di elemen <svg> di atas.
+       * `rotate="0"` menjaga kedua bus tetap menghadap arah yang sama,
+       * alih-alih ikut berputar saat melewati tikungan.
+       */}
       <image
         href="/icon/landing/bikun-extracted.svg"
         width="60"
@@ -65,9 +76,10 @@ export function JalurTimeline({
       >
         <animateMotion
           path={d}
-          dur={jalur === "dua" ? "8s" : "12s"}
-          begin={jalur === "dua" ? "0s" : "8s"}
+          dur={durasi}
+          begin={mulai}
           repeatCount="indefinite"
+          rotate="0"
         />
       </image>
     </svg>
