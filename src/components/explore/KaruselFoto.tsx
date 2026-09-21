@@ -9,14 +9,9 @@ import { SENTUHAN } from "./gerak";
 /**
  * Carousel foto fakultas — bingkai persegi + titik navigasi di bawahnya.
  *
- * FOTONYA BELUM ADA. Di Figma pun bingkainya masih kosong, dan foto fakultas
- * termasuk konten yang dikelola Admin (endpoint `Content` belum tersedia).
- * Jadi yang dibangun di sini kerangkanya: jumlah slide, perpindahan, dan
- * titik navigasinya sudah jalan, tinggal isinya diganti `<Image>` sungguhan
- * begitu datanya turun.
- *
- * Slide kosongnya diberi label "Foto resmi segera hadir" — kotak yang benar-benar kosong
- * terbaca sebagai gambar gagal dimuat, bukan sebagai konten yang belum ada.
+ * Fotonya belum ada, jadi untuk sementara area visual ini menampilkan logo
+ * fakultas dari Drive. Jika logo belum tersedia, fallback placeholder tetap
+ * dipakai supaya kotak tidak terbaca sebagai gambar gagal dimuat.
  *
  * ---------------------------------------------------------------------------
  * Kenapa bingkainya SVG, bukan `border` CSS
@@ -25,9 +20,22 @@ import { SENTUHAN } from "./gerak";
  * digambar tangan (`Rectangle 797 (Stroke)`). `border` CSS selalu rata, jadi
  * hasilnya akan kehilangan karakter gambar tangan yang jadi ciri desain ini.
  */
-export function KaruselFoto({ jumlah, namaFakultas }: { jumlah: number; namaFakultas: string }) {
+export function KaruselFoto({
+  jumlah,
+  logoSrc,
+  namaFakultas,
+}: {
+  jumlah: number;
+  logoSrc: string | null;
+  namaFakultas: string;
+}) {
   const [aktif, setAktif] = useState(0);
   const kurangiGerak = useReducedMotion();
+  const logoBesar =
+    logoSrc?.includes("/fk-") ||
+    logoSrc?.includes("/fh-") ||
+    logoSrc?.includes("/ff-") ||
+    logoSrc?.includes("/fisip-");
 
   return (
     <div className="flex w-full max-w-[400px] flex-col items-center gap-4">
@@ -50,9 +58,22 @@ export function KaruselFoto({ jumlah, namaFakultas }: { jumlah: number; namaFaku
             exit={kurangiGerak ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
-              Foto resmi {namaFakultas} segera hadir
-            </span>
+            {logoSrc ? (
+              <div className={`relative ${logoBesar ? "h-[76%] w-[76%]" : "h-[62%] w-[62%]"}`}>
+                <Image
+                  src={logoSrc}
+                  alt={`Logo ${namaFakultas}`}
+                  fill
+                  sizes="(min-width: 1024px) 248px, 56vw"
+                  className="object-contain drop-shadow-[0_10px_16px_rgba(70,50,27,0.18)]"
+                  priority={aktif === 0}
+                />
+              </div>
+            ) : (
+              <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
+                Logo {namaFakultas} segera hadir
+              </span>
+            )}
           </motion.div>
         </AnimatePresence>
 

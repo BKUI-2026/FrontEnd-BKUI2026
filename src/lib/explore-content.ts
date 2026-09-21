@@ -22,6 +22,7 @@
  *
  * PLACEHOLDER (WAJIB diganti konten resmi sebelum live):
  *   - foto fakultas (di Figma pun masih bingkai kosong)
+ *   - sebagian logo fakultas: folder Drive FMIPA dan FIA masih kosong
  */
 
 /**
@@ -49,6 +50,8 @@ export interface Fakultas {
   ringkasan: string;
   /** Chip hijau berisi nama program studi. */
   prodi: readonly string[];
+  /** Logo fakultas dari aset Drive yang sudah disalin ke `public/`. */
+  logoSrc: string | null;
   /** Sorotan tambahan; null jika konten resmi belum ada. */
   sorotanJudul: string | null;
   sorotanIsi: string | null;
@@ -74,6 +77,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "FKUI merupakan fakultas tertua dan pertama di UI yang berdiri sejak tahun 1950. FKUI menjadi pusat pendidikan kedokteran terkemuka di Indonesia serta mencetak dokter umum maupun spesialis yang tersebar di seluruh penjuru negeri.",
+    logoSrc: "/image/fakultas-logo/fk-nobg.png",
     prodi: ["Pendidikan Dokter"],
   },
   {
@@ -82,6 +86,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Kedokteran Gigi Universitas Indonesia merupakan fakultas kedokteran gigi pertama dan terbaik di Indonesia yang berdiri sejak tahun 1960.",
+    logoSrc: "/image/fakultas-logo/fkg-nobg-fix.png",
     prodi: ["Pendidikan Dokter Gigi"],
   },
   {
@@ -108,6 +113,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "FTUI menawarkan berbagai program studi teknik, mulai dari teknik sipil, teknik mesin, teknik elektro, teknik kimia, teknik industri, hingga arsitektur. Fakultas ini mencetak insinyur-insinyur andal yang terlibat langsung dalam pembangunan infrastruktur di Indonesia.",
+    logoSrc: "/image/fakultas-logo/ft-nobg.png",
     prodi: [
       "Teknik Sipil",
       "Teknik Mesin",
@@ -130,6 +136,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Ilmu Komputer Universitas Indonesia (Fasilkom UI) adalah salah satu fakultas ilmu komputer terbaik di Indonesia yang berfokus pada bidang ilmu komputer dan sistem informasi.",
+    logoSrc: "/image/fakultas-logo/fasilkom.png",
     prodi: ["Sistem Informasi", "Kecerdasan Artifisial", "Ilmu Komputer"],
   },
   {
@@ -138,6 +145,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Kesehatan Masyarakat Universitas Indonesia (FKM UI) merupakan bagian dari Rumpun Ilmu Kesehatan UI (RIK UI). Fakultas ini bertujuan mencetak ahli dan profesional kesehatan masyarakat yang dapat berkontribusi dalam meningkatkan derajat kesehatan masyarakat.",
+    logoSrc: "/image/fakultas-logo/fkm-nobg.png",
     prodi: [
       "Kesehatan Masyarakat",
       "Gizi",
@@ -151,6 +159,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Ilmu Keperawatan Universitas Indonesia (FIK UI) merupakan Fakultas Ilmu Keperawatan pertama dan terbaik di Indonesia. Saat ini FIK UI berfungsi sebagai pusat pendidikan keperawatan dan berperan sebagai pembina beberapa institusi pendidikan tinggi keperawatan di Indonesia.",
+    logoSrc: "/image/fakultas-logo/fik.png",
     prodi: ["Ilmu Keperawatan"],
   },
   {
@@ -159,6 +168,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Farmasi mempelajari ilmu pembuatan obat dari bahan alam maupun sintetis yang cocok dan nyaman untuk didistribusikan serta digunakan dalam pencegahan dan pengobatan penyakit.",
+    logoSrc: "/image/fakultas-logo/ff-nobg.png",
     prodi: ["Farmasi"],
   },
   {
@@ -167,6 +177,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "FH UI merupakan fakultas hukum tertua di Indonesia. Fakultas ini menghasilkan praktisi hukum, hakim, jaksa, pengacara, notaris, hingga akademisi hukum yang tersebar di berbagai institusi penegak hukum dan lembaga negara.",
+    logoSrc: "/image/fakultas-logo/fh-nobg.png",
     prodi: ["Ilmu Hukum"],
   },
   {
@@ -175,6 +186,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "Fakultas Ekonomi dan Bisnis Universitas Indonesia (FEB UI) adalah salah satu fakultas ekonomi paling bergengsi di Indonesia yang berfokus pada kajian ekonomi, akuntansi, manajemen, dan bisnis.",
+    logoSrc: "/image/fakultas-logo/feb-nobg.png",
     prodi: [
       "Ilmu Ekonomi",
       "Manajemen",
@@ -189,6 +201,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "Fakultas Ilmu Pengetahuan Budaya Universitas Indonesia (FIB UI) adalah fakultas di rumpun sosial dan humaniora yang berfokus pada kajian kebudayaan, sastra, sejarah, dan filsafat.",
+    logoSrc: "/image/fakultas-logo/fib-nobg.png",
     prodi: [
       "Bahasa dan Kebudayaan Korea",
       "Sastra Belanda",
@@ -213,6 +226,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "Fakultas Psikologi UI adalah Fakultas Psikologi yang pertama kali berdiri di Indonesia dan menjadi acuan pengembangan fakultas-fakultas psikologi lain di Indonesia. Fakultas ini menjadi pusat unggulan dalam pendidikan, pengembangan, dan penerapan psikologi yang berorientasi lintas budaya, perkotaan, dan ulayat (indigenous).",
+    logoSrc: "/image/fakultas-logo/fpsi.png",
     prodi: ["Psikologi"],
   },
   {
@@ -221,6 +235,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "Fakultas Ilmu Sosial dan Ilmu Politik Universitas Indonesia (FISIP UI) didirikan pada tahun 1968 dan berfokus pada kajian dinamika masyarakat, negara, dan hubungan internasional. Beberapa jurusannya adalah sosiologi, hubungan internasional, kriminologi, dan ilmu komunikasi.",
+    logoSrc: "/image/fakultas-logo/fisip-nobg.png",
     prodi: [
       "Ilmu Komunikasi",
       "Ilmu Politik",
@@ -249,6 +264,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Vokasi",
     ringkasan:
       "Sekolah Vokasi UI adalah perguruan tinggi yang bertujuan mempersiapkan tenaga yang dapat menerapkan keahlian dan keterampilan di bidang tertentu, siap kerja, dan mampu bersaing secara global.",
+    logoSrc: "/image/fakultas-logo/vokasi.png",
     prodi: [
       "Administrasi Rumah Sakit",
       "Akuntansi",
@@ -271,6 +287,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
 
 export const FAKULTAS: readonly Fakultas[] = DAFTAR_DASAR.map((f) => ({
   prodi: [],
+  logoSrc: null,
   sorotanJudul: null,
   sorotanIsi: null,
   jumlahFoto: 4,
