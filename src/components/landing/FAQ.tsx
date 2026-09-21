@@ -39,7 +39,7 @@ export function FAQ() {
             aria-hidden
             width={296}
             height={307}
-            className="faq-gap-flower pointer-events-none absolute right-[2%] top-4 z-10 h-auto w-[clamp(88px,10vw,148px)]"
+            className="faq-gap-flower pointer-events-none absolute right-[2%] top-1 z-10 h-auto w-[clamp(108px,12vw,180px)]"
           />
         </>
       }
