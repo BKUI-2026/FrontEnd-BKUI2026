@@ -52,6 +52,13 @@ export function Navbar() {
    *   bisa memakainya.
    */
   const menu = menuUntuk(akses);
+  const halamanAktif = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+
+  const transisiSpotlight = {
+    duration: kurangiGerak ? 0 : 0.48,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  };
 
   // Tutup menu mobile tiap pindah halaman — kalau tidak, panelnya tetap terbuka
   // menutupi konten halaman baru.
@@ -81,24 +88,19 @@ export function Navbar() {
           {/* Menu desktop */}
           <ul className="hidden flex-1 items-center justify-center gap-5 px-5 lg:flex">
             {menu.map((item) => {
-              const aktif = pathname === item.href;
+              const aktif = halamanAktif(item.href);
               return (
                 <motion.li key={item.href} layout="position" className="relative">
                   <Link
                     href={item.href}
                     aria-current={aktif ? "page" : undefined}
-                    className={`relative inline-flex h-16 items-center justify-center rounded-full px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau ${
-                      aktif ? "border-2 border-bkui-teks" : "border-2 border-transparent hover:border-bkui-teks/25"
-                    }`}
+                    className="relative inline-flex h-16 items-center justify-center rounded-full px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-colors duration-200 hover:bg-bkui-button/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
                   >
                     {aktif && (
                       <motion.span
-                        layoutId="desktop-active-nav"
-                        transition={{
-                          duration: kurangiGerak ? 0 : 0.36,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                        className="absolute inset-0 rounded-full border-2 border-bkui-teks"
+                        layoutId="navbar-active-spotlight"
+                        transition={transisiSpotlight}
+                        className="absolute inset-0 rounded-full border-2 border-bkui-teks bg-bkui-button/55 shadow-[0_5px_14px_rgba(26,39,49,0.16)]"
                       />
                     )}
                     <span className="relative z-10">{item.label}</span>
@@ -110,13 +112,32 @@ export function Navbar() {
 
           {/* Aksi kanan — desktop */}
           <div className="hidden items-center gap-5 lg:flex">
-            <ButtonPesanTiket />
-            <Link
-              href="/school-roadshow"
-              className="inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
-            >
-              Kunjungan Sekolah
-            </Link>
+            <div className="relative">
+              <ButtonPesanTiket className="relative z-10" />
+              {halamanAktif("/ticket") && (
+                <motion.span
+                  layoutId="navbar-active-spotlight"
+                  transition={transisiSpotlight}
+                  className="pointer-events-none absolute inset-0 z-20 rounded-full border-2 border-bkui-teks shadow-[0_5px_14px_rgba(26,39,49,0.18)]"
+                />
+              )}
+            </div>
+            <div className="relative">
+              <Link
+                href="/school-roadshow"
+                aria-current={halamanAktif("/school-roadshow") ? "page" : undefined}
+                className="relative z-10 inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+              >
+                Kunjungan Sekolah
+              </Link>
+              {halamanAktif("/school-roadshow") && (
+                <motion.span
+                  layoutId="navbar-active-spotlight"
+                  transition={transisiSpotlight}
+                  className="pointer-events-none absolute inset-0 z-20 rounded-full border-2 border-bkui-teks shadow-[0_5px_14px_rgba(26,39,49,0.18)]"
+                />
+              )}
+            </div>
           </div>
 
           {/* Tombol menu mobile */}
@@ -152,20 +173,25 @@ export function Navbar() {
               <div id="menu-mobile" className="border-t border-black/10 px-8 pb-6 pt-2">
                 <ul className="flex flex-col py-2">
                   {menu.map((item) => {
-                    const aktif = pathname === item.href;
+                    const aktif = halamanAktif(item.href);
                     return (
-                      <li key={item.href}>
+                      <li key={item.href} className="relative">
                         <Link
                           href={item.href}
                           aria-current={aktif ? "page" : undefined}
-                          className={
-                            aktif
-                              ? "block py-2.5 text-base font-semibold text-black"
-                              : "block py-2.5 text-base text-black/80"
-                          }
+                          className={`relative z-10 block rounded-lg px-3 py-2.5 text-base ${
+                            aktif ? "font-semibold text-black" : "text-black/80"
+                          }`}
                         >
                           {item.label}
                         </Link>
+                        {aktif && (
+                          <motion.span
+                            layoutId="mobile-active-spotlight"
+                            transition={transisiSpotlight}
+                            className="absolute inset-0 rounded-lg bg-bkui-button/55"
+                          />
+                        )}
                       </li>
                     );
                   })}
