@@ -95,6 +95,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Saintek",
     ringkasan:
       "Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Indonesia, atau disingkat FMIPA UI, adalah salah satu fakultas pada Rumpun Ilmu Sains dan Teknologi. Fakultas ini berfokus pada bidang matematika dan ilmu pengetahuan alam.",
+    logoSrc: "/image/fakultas-logo/mipa-nobg.png",
     prodi: [
       "Matematika",
       "Kimia",
@@ -252,6 +253,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     rumpun: "Soshum",
     ringkasan:
       "Fakultas Ilmu Administrasi Universitas Indonesia, atau disingkat FIA UI, adalah fakultas dalam Rumpun Ilmu Sosial dan Humaniora yang dibentuk pada tahun 2015. Sebelumnya, FIA UI merupakan Departemen Ilmu Administrasi yang bernaung di bawah FISIP UI.",
+    logoSrc: "/image/fakultas-logo/fia-nobg.png",
     prodi: [
       "Ilmu Administrasi Niaga",
       "Ilmu Administrasi Negara",

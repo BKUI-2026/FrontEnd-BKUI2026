@@ -16,14 +16,15 @@ export function ButtonPesanTiket({ className }: { className?: string }) {
   return (
     <Link
       href="/ticket"
-      className={`tombol-kertas inline-flex items-center gap-2 rounded-full bg-bkui-oren px-6 py-3 text-base  text-black ${className ?? ""}`}
+      className={`inline-flex h-16 items-center justify-center gap-3 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium leading-none text-bkui-coklat transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau ${className ?? ""}`}
     >
       <Image
         src="/icon/lucide/Vector.svg"
         alt=""
-        width={26}
-        height={19}
+        width={28}
+        height={28}
         aria-hidden
+        className="size-7 object-contain"
       />
       Pesan Tiket
     </Link>

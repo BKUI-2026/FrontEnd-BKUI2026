@@ -306,6 +306,141 @@
   animation: naik-turun 2.8s ease-in-out 3.4s infinite alternate;
 }
 
+/*
+ * ---------------------------------------------------------------------------
+ * Auth scene masuk/daftar
+ * ---------------------------------------------------------------------------
+ *
+ * Background halaman auth dibuat terasa hidup tanpa mengganggu formulir:
+ * elemen dekoratif bergerak pelan, sementara kartu muncul sekali saat halaman
+ * dibuka. Semua animasi berhenti saat pengguna memilih reduced motion.
+ */
+@keyframes auth-card-enter {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+    scale: 0.98;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+.auth-card-enter {
+  animation: auth-card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes auth-scene-pan {
+  from {
+    scale: 1.02;
+    translate: -8px 0;
+  }
+  to {
+    scale: 1.04;
+    translate: 8px -4px;
+  }
+}
+
+.auth-scene-pan {
+  animation: auth-scene-pan 11s ease-in-out infinite alternate;
+}
+
+@keyframes auth-clouds {
+  from {
+    opacity: 0.28;
+    translate: -18px 0;
+  }
+  to {
+    opacity: 0.42;
+    translate: 18px -10px;
+  }
+}
+
+.auth-clouds {
+  animation: auth-clouds 9s ease-in-out infinite alternate;
+}
+
+@keyframes auth-rise {
+  from {
+    translate: 0 18px;
+    opacity: 0.94;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+.auth-rise {
+  animation: auth-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes auth-sway-left {
+  from { transform: rotate(-1.2deg); }
+  to { transform: rotate(1.2deg); }
+}
+
+@keyframes auth-sway-right {
+  from { transform: rotate(1deg); }
+  to { transform: rotate(-1deg); }
+}
+
+.auth-sway-left,
+.auth-sway-right,
+.auth-float-slow,
+.auth-grass {
+  transform-origin: bottom center;
+}
+
+.auth-sway-left {
+  animation: auth-sway-left 7s ease-in-out -1.8s infinite alternate;
+}
+
+.auth-sway-right {
+  animation: auth-sway-right 8s ease-in-out -2.6s infinite alternate;
+}
+
+.auth-float-slow {
+  animation: naik-turun 6s ease-in-out -2s infinite alternate;
+}
+
+.auth-grass {
+  animation: tertiup-angin 4.8s ease-in-out -1.2s infinite alternate;
+  --goyang: 1.4deg;
+}
+
+@keyframes auth-flower-sway {
+  from {
+    translate: 0 0;
+    rotate: -1.2deg;
+  }
+  to {
+    translate: 0 -5px;
+    rotate: 1.2deg;
+  }
+}
+
+.auth-flower-sway {
+  transform-origin: bottom center;
+  animation: auth-flower-sway 3.8s ease-in-out -1.4s infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-card-enter,
+  .auth-scene-pan,
+  .auth-clouds,
+  .auth-rise,
+  .auth-sway-left,
+  .auth-sway-right,
+  .auth-float-slow,
+  .auth-grass,
+  .auth-flower-sway {
+    animation: none;
+  }
+}
+
 @keyframes tanda-tanya-hidup {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -0.12em; }

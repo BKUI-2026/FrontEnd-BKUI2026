@@ -5,28 +5,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { AvatarProfil } from "@/components/ui/AvatarProfil";
-import { ButtonMasukSiswa } from "@/components/ui/ButtonMasukSiswa";
 import { ButtonPesanTiket } from "@/components/ui/ButtonPesanTiket";
 import { LogoBKUI } from "@/components/ui/LogoBKUI";
-import { useAkses, useSudahMasuk } from "@/lib/auth-state";
+import { useAkses } from "@/lib/auth-state";
 import { menuUntuk } from "@/lib/navigation";
 
 /**
  * Navbar utama — mengikuti desain Figma (FE-0004).
- *
- * Dua kondisi, sesuai RBAC linear:
- * - General Public → menu tanpa "Mentoring", plus tombol "Masuk sebagai Siswa"
- * - Student        → menu dengan "Mentoring", plus ikon avatar ke Profile
- *
- * Keduanya sama-sama menampilkan CTA "Pesan Tiket".
  *
  * Daftar menunya diambil dari lib/navigation.ts, tidak di-hardcode di sini.
  */
 export function Navbar() {
   const pathname = usePathname();
   const akses = useAkses();
-  const sudahLogin = useSudahMasuk();
   const kurangiGerak = useReducedMotion();
   const [menuTerbuka, setMenuTerbuka] = useState(false);
   const [navbarTersembunyi, setNavbarTersembunyi] = useState(false);
@@ -79,16 +70,16 @@ export function Navbar() {
     // Shadow sengaja lebar & tipis (blur besar, opacity kecil) biar terbaca
     // sebagai bayangan lembut, bukan garis tegas di bawah navbar.
     <header
-      className={`sticky top-0 z-50 bg-bkui-navbar shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-transform duration-300 ease-out motion-reduce:transition-none ${
+      className={`sticky top-0 z-50 bg-bkui-navbar shadow-[0_4px_15px_rgba(26,116,142,0.10)] transition-transform duration-300 ease-out motion-reduce:transition-none ${
         navbarTersembunyi && !menuTerbuka ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <nav aria-label="Navigasi utama" className="relative w-full px-8">
-        <div className="flex h-20 items-center gap-4">
-          <LogoBKUI ukuran={56} />
+      <nav aria-label="Navigasi utama" className="relative w-full px-5 py-3 lg:px-8">
+        <div className="flex min-h-[73px] items-center justify-between gap-4">
+          <LogoBKUI ukuran={65} className="flex h-[73px] items-center justify-center rounded-[10px]" />
 
           {/* Menu desktop */}
-          <ul className="hidden flex-1 items-center justify-center gap-1 border-2 border-transparent px-5 py-3 lg:flex">
+          <ul className="hidden flex-1 items-center justify-center gap-5 px-5 lg:flex">
             {menu.map((item) => {
               const aktif = pathname === item.href;
               return (
@@ -96,8 +87,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     aria-current={aktif ? "page" : undefined}
-                    className={`relative inline-flex rounded-full px-5 py-3 text-base transition-colors duration-200 ${
-                      aktif ? "text-black" : "text-black/80 hover:text-black"
+                    className={`relative inline-flex h-16 items-center justify-center rounded-full px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau ${
+                      aktif ? "border-2 border-bkui-teks" : "border-2 border-transparent hover:border-bkui-teks/25"
                     }`}
                   >
                     {aktif && (
@@ -107,7 +98,7 @@ export function Navbar() {
                           duration: kurangiGerak ? 0 : 0.36,
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="absolute inset-0 rounded-full border-2 border-black"
+                        className="absolute inset-0 rounded-full border-2 border-bkui-teks"
                       />
                     )}
                     <span className="relative z-10">{item.label}</span>
@@ -118,10 +109,14 @@ export function Navbar() {
           </ul>
 
           {/* Aksi kanan — desktop */}
-          <div className="ml-auto hidden items-center gap-3 lg:flex">
-            {sudahLogin ? <AvatarProfil /> : <ButtonMasukSiswa />}
+          <div className="hidden items-center gap-5 lg:flex">
             <ButtonPesanTiket />
-
+            <Link
+              href="/school-roadshow"
+              className="inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            >
+              Kunjungan Sekolah
+            </Link>
           </div>
 
           {/* Tombol menu mobile */}
@@ -131,7 +126,7 @@ export function Navbar() {
             aria-expanded={menuTerbuka}
             aria-controls="menu-mobile"
             aria-label={menuTerbuka ? "Tutup menu" : "Buka menu"}
-            className="ml-auto rounded-full bg-bkui-button px-5 py-2.5 text-base font-medium text-black lg:hidden"
+            className="ml-auto rounded-full bg-bkui-button px-5 py-2.5 font-ui text-base font-medium text-bkui-teks lg:hidden"
           >
             {menuTerbuka ? "Tutup" : "Menu"}
           </button>
@@ -178,16 +173,12 @@ export function Navbar() {
 
                 <div className="flex flex-col gap-3">
                   <ButtonPesanTiket className="justify-center" />
-                  {sudahLogin ? (
-                    <Link
-                      href="/profile"
-                      className="rounded-full bg-bkui-button px-6 py-3 text-center text-base font-medium text-black"
-                    >
-                      Profile
-                    </Link>
-                  ) : (
-                    <ButtonMasukSiswa className="w-full" />
-                  )}
+                  <Link
+                    href="/school-roadshow"
+                    className="rounded-full bg-bkui-button px-6 py-3 text-center font-ui text-base font-medium text-bkui-teks"
+                  >
+                    Kunjungan Sekolah
+                  </Link>
                 </div>
               </div>
             </motion.div>

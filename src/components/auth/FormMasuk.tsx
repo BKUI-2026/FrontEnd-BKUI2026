@@ -86,7 +86,7 @@ export function FormMasuk() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[600px] flex-col items-center rounded-3xl bg-bkui-navbar px-6 py-10 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[550px] sm:px-16 sm:py-14">
+    <div className="auth-card-enter mx-auto flex w-full max-w-[600px] flex-col items-center rounded-3xl bg-bkui-navbar px-6 py-10 shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-transform duration-300 ease-out hover:-translate-y-1 sm:min-h-[550px] sm:px-16 sm:py-14">
       <h1 className="text-center font-display text-4xl leading-[1.4] text-bkui-teks-tua sm:text-5xl lg:text-[72px]">
         Masuk
       </h1>
