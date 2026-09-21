@@ -178,20 +178,6 @@ export function ApaItuBKUI() {
           </p>
         </div>
       </Muncul>
-      {/* <div className="relative mx-auto mt-12 grid w-full max-w-[1144px] gap-4 px-5 sm:px-8 lg:grid-cols-3">
-        <Sorotan angka="12.000+" teks="Peserta Sudah Ikut Ekspedisi bersama BKUI pada Tahun Sebelumnya" />
-        <Sorotan angka="100+" teks="Kunjungan Sekolah sudah Kami Sapa" />
-        <Sorotan angka="Lebih dari 10 tahun" teks="telah Hadir Menemani Siswa/i se-Indonesia" />
-      </div> */}
     </SectionLangit>
-  );
-}
-
-function Sorotan({ angka, teks }: { angka: string; teks: string }) {
-  return (
-    <Muncul className="rounded-[28px] border-4 border-bkui-hijau-tua bg-bkui-krem-kartu px-6 py-5 text-center shadow-[7px_8px_0_#134921]">
-      <p className="font-ui text-3xl font-extrabold leading-none text-bkui-hijau-tua sm:text-4xl">{angka}</p>
-      <p className="mt-3 font-body text-sm font-semibold leading-snug text-bkui-teks sm:text-base">{teks}</p>
-    </Muncul>
   );
 }
