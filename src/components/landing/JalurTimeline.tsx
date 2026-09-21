@@ -98,6 +98,46 @@ export function BusTimeline() {
         y="-36"
         className="bikun-di-jalur"
       >
+        <animate
+          attributeName="opacity"
+          dur="32s"
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.035;0.29;0.32;0.35;0.39;0.53;0.57;0.73;0.77;0.94;0.98;1"
+          values="0;1;1;0;0;1;1;0;0;1;1;0;0"
+        />
+        <animate
+          attributeName="width"
+          dur="32s"
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.035;0.29;0.32;0.35;0.39;0.53;0.57;0.73;0.77;0.94;0.98;1"
+          values="10;84;84;10;10;84;84;10;10;84;84;10;10"
+        />
+        <animate
+          attributeName="height"
+          dur="32s"
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.035;0.29;0.32;0.35;0.39;0.53;0.57;0.73;0.77;0.94;0.98;1"
+          values="9;72;72;9;9;72;72;9;9;72;72;9;9"
+        />
+        <animate
+          attributeName="x"
+          dur="32s"
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.035;0.29;0.32;0.35;0.39;0.53;0.57;0.73;0.77;0.94;0.98;1"
+          values="-5;-42;-42;-5;-5;-42;-42;-5;-5;-42;-42;-5;-5"
+        />
+        <animate
+          attributeName="y"
+          dur="32s"
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.035;0.29;0.32;0.35;0.39;0.53;0.57;0.73;0.77;0.94;0.98;1"
+          values="-4.5;-36;-36;-4.5;-4.5;-36;-36;-4.5;-4.5;-36;-36;-4.5;-4.5"
+        />
         <animateMotion
           path={JALUR_BUS_UTUH}
           dur="32s"

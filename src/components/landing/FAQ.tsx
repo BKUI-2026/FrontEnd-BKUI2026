@@ -21,29 +21,30 @@ import { DAFTAR_FAQ } from "@/lib/landing-content";
 export function FAQ() {
   return (
     <SectionLangit
+      tanpaAwan
       className="pt-[max(48px,4.5vw)]"
       dekorasi={
         <>
-          {/* <Image src="/icon/landing/latest/faq-decoration.svg" alt="" aria-hidden width={965} height={424} className="pointer-events-none absolute left-1/2 top-0 -z-10 h-auto w-[max(100%,965px)] max-w-none -translate-x-1/2" />
-          <Image src="/image/landing/faq-star.png" alt="" aria-hidden width={296} height={307} className="pointer-events-none absolute -left-[3%] top-[2%] w-[clamp(100px,17vw,260px)] rotate-[-7deg]" />
-          <Image src="/icon/landing/latest/faq-grass-back.svg" alt="" aria-hidden width={2634} height={811} className="pointer-events-none absolute bottom-[10%] left-1/2 -z-10 h-auto w-[max(120%,1512px)] max-w-none -translate-x-1/2" />
-          <div aria-hidden className="pointer-events-none absolute bottom-[10%] -left-[12%] -z-10 h-[28%] w-[65%] bg-[#064618] [clip-path:polygon(0_0,65%_8%,100%_100%,0_100%)]" />
-          <Image src="/icon/landing/latest/faq-grass-front.svg" alt="" aria-hidden width={2576} height={482} className="pointer-events-none absolute bottom-[10%] left-1/2 -z-10 h-auto w-[max(120%,1512px)] max-w-none -translate-x-1/2" /> */}
-
-           <Image
-            src="/icon/landing/latest/testi-faq-transition.webp"
+          <Image
+            src="/image/landing/faq-background.png"
             alt=""
-            width={1700}
-            height={1300}
-            className="absolute top-0 left-0 h-[45vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
-          ></Image>
-
-
-
+            aria-hidden
+            fill
+            sizes="100vw"
+            className="pointer-events-none -z-10 object-fill"
+          />
+          <Image
+            src="/image/landing/faq-star.png"
+            alt=""
+            aria-hidden
+            width={296}
+            height={307}
+            className="faq-gap-flower pointer-events-none absolute right-[2%] top-4 z-10 h-auto w-[clamp(88px,10vw,148px)]"
+          />
         </>
       }
     >
-      <div className="relative mx-auto flex w-full max-w-[1072px] flex-col items-center gap-8 px-5 pb-[max(48px,5vw)] sm:gap-10 sm:px-8 pt-30">
+      <div className="relative mx-auto flex w-full max-w-[1072px] flex-col items-center gap-8 px-5 pb-[max(48px,5vw)] pt-40 sm:gap-10 sm:px-8 sm:pt-44 lg:pt-48">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1" className="text-center">
             Frequently Asked Questions

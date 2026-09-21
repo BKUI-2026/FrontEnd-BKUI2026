@@ -13,7 +13,10 @@ export function HiasanTestimoni() {
   const base = "/icon/landing/latest/";
   const leftTree = "absolute -left-[12%] top-[5%] h-[84%] w-auto max-w-none sm:-left-[3%] hidden lg:block";
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 bottom-0 top-16 -z-10 sm:top-20 lg:top-24"
+    >
       <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className="absolute -right-[12%] top-[5%] h-[84%] w-auto max-w-none -scale-x-100 sm:-right-[3%] hidden lg:block lg:block" />
       <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className={leftTree} />
       <Image

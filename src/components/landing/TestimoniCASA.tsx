@@ -44,7 +44,7 @@ export function TestimoniCASA() {
   };
 
   return (
-    <SectionLangit className="min-h-[70vw] pb-20 pt-">
+    <SectionLangit className="min-h-[70vw] pb-20 pt-20 sm:pt-28 lg:pt-32">
       <HiasanTestimoni />
 
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">

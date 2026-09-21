@@ -590,6 +590,17 @@ body:has(dialog[open]) {
   animation: overlay-muncul 0.22s ease-out;
 }
 
+@keyframes faq-gap-flower-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.faq-gap-flower {
+  transform-origin: center;
+  animation: faq-gap-flower-spin 14s linear infinite;
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Hiasan halaman Tiket yang berputar & bergoyang
@@ -942,6 +953,7 @@ body:has(dialog[open]) {
   .tiket-bunga,
   .tiket-matahari,
   .tiket-kelopak,
+  .faq-gap-flower,
   .tiket-air,
   .hero-ilustrasi [id="daun"],
   .hero-ilustrasi [id="Igris Happy 1"],
