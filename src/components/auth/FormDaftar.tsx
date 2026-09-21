@@ -51,11 +51,11 @@ const PROVINSI_INDONESIA = [
 ] as const;
 
 const FASE = [
-  { judul: "Akun", keterangan: "Identitas dasar" },
-  { judul: "Sekolah", keterangan: "Data siswa" },
-  { judul: "Kartu", keterangan: "Bukti pelajar" },
-  { judul: "Esai", keterangan: "Motivasi" },
-  { judul: "Sosial", keterangan: "Bukti follow" },
+  "Akun",
+  "Sekolah",
+  "Kartu Pelajar",
+  "Esai",
+  "Media Sosial",
 ] as const;
 
 const FIELD_PER_FASE = [
@@ -89,7 +89,7 @@ export function FormDaftar() {
       const nilai = data.get(field);
       const kosong = nilai instanceof File ? nilai.size === 0 : !String(nilai ?? "").trim();
       if (kosong) {
-        setPesanGalat("Lengkapi semua kolom di fase ini sebelum lanjut.");
+        setPesanGalat("Lengkapi semua kolom di langkah ini sebelum lanjut.");
         return false;
       }
     }
@@ -264,30 +264,43 @@ export function FormDaftar() {
 
 function RoadmapFase({ faseAktif }: { faseAktif: number }) {
   return (
-    <ol className="mt-3 grid w-full max-w-[860px] grid-cols-5 gap-2">
+    <ol className="mt-5 flex w-full max-w-[760px] items-start" aria-label="Progres pendaftaran">
       {FASE.map((fase, i) => {
         const aktif = i === faseAktif;
         const selesai = i < faseAktif;
 
         return (
-          <li key={fase.judul} className="min-w-0">
+          <li
+            key={fase}
+            aria-current={aktif ? "step" : undefined}
+            className="relative flex min-w-0 flex-1 flex-col items-center text-center"
+          >
+            {i > 0 && (
+              <span
+                aria-hidden
+                className={`absolute right-1/2 top-[18px] h-1 w-full -translate-y-1/2 transition-colors sm:top-[22px] ${
+                  selesai ? "bg-bkui-button" : "bg-bkui-teks/15"
+                }`}
+              />
+            )}
             <div
-              className={`flex min-h-[74px] flex-col items-center justify-center rounded-2xl border px-2 text-center transition-colors ${
-                aktif || selesai
-                  ? "border-bkui-teks bg-bkui-button text-bkui-teks"
-                  : "border-bkui-teks/25 bg-white/30 text-bkui-teks/65"
+              className={`relative z-10 flex size-9 items-center justify-center rounded-full border-2 font-ui text-sm font-semibold transition-all sm:size-11 sm:text-base ${
+                aktif
+                  ? "border-bkui-teks bg-bkui-button text-bkui-teks shadow-[0_0_0_5px_rgba(132,194,246,0.25)]"
+                  : selesai
+                    ? "border-bkui-button bg-bkui-button text-bkui-teks"
+                    : "border-bkui-teks/25 bg-bkui-navbar text-bkui-teks/55"
               }`}
             >
-              <span className="font-ui text-sm font-semibold leading-none sm:text-base">
-                {i + 1}
-              </span>
-              <span className="mt-1 truncate font-ui text-xs font-medium sm:text-sm">
-                {fase.judul}
-              </span>
-              <span className="hidden font-body text-[11px] leading-tight sm:block">
-                {fase.keterangan}
-              </span>
+              {i + 1}
             </div>
+            <span
+              className={`mt-2 max-w-[90px] font-ui text-[11px] font-medium leading-tight sm:text-sm ${
+                aktif || selesai ? "text-bkui-teks" : "text-bkui-teks/55"
+              }`}
+            >
+              {fase}
+            </span>
           </li>
         );
       })}
@@ -297,10 +310,7 @@ function RoadmapFase({ faseAktif }: { faseAktif: number }) {
 
 function FaseAkun() {
   return (
-    <PanelFase
-      judul="Phase 1"
-      keterangan="Isi identitas utama dan buat kata sandi akun."
-    >
+    <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
         <KolomIsian label="Nama Lengkap" name="nama" placeholder="Contoh: MUHAMMAD ALIF" autoComplete="name" />
         <KolomIsian label="Asal Sekolah" name="sekolah" placeholder="Contoh: SMA NEGERI 8 JAKARTA" autoComplete="organization" />
@@ -324,10 +334,7 @@ function FaseAkun() {
 
 function FaseSekolah() {
   return (
-    <PanelFase
-      judul="Phase 2"
-      keterangan="Lengkapi data siswa dan asal sekolah."
-    >
+    <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
         <RadioGroup label="Jenis Kelamin" name="jenis-kelamin" options={["Laki-Laki", "Perempuan", "Non-binary"]} />
         <KolomAngka label="Usia" name="usia" placeholder="Contoh: 17" />
@@ -341,10 +348,7 @@ function FaseSekolah() {
 
 function FaseKartuPelajar() {
   return (
-    <PanelFase
-      judul="Phase 3"
-      keterangan="Unggah bukti kartu pelajar yang masih berlaku."
-    >
+    <PanelFase>
       <KolomFile label="Lampirkan bukti kartu pelajar" name="kartu-pelajar" />
     </PanelFase>
   );
@@ -352,10 +356,7 @@ function FaseKartuPelajar() {
 
 function FaseEsai() {
   return (
-    <PanelFase
-      judul="Phase 4"
-      keterangan="Ceritakan motivasi, refleksi diri, dan komitmenmu."
-    >
+    <PanelFase>
       <div className="grid w-full gap-6">
         <KolomTeksArea label="Apa yang membuatmu berminat mengikuti program ini?" name="minat" placeholder="Ceritakan alasan dan harapanmu mengikuti Mentoring BKUI 2026." />
         <KolomTeksArea label="Apa kelebihan dan kekurangan yang kamu miliki?" name="kelebihan-kekurangan" placeholder="Tulis kelebihan yang bisa kamu bawa dan kekurangan yang sedang kamu perbaiki." />
@@ -372,10 +373,7 @@ function FaseEsai() {
 
 function FaseSosial() {
   return (
-    <PanelFase
-      judul="Phase 5"
-      keterangan="Unggah bukti follow dan unggahan story sesuai ketentuan."
-    >
+    <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
         <KolomFile label="Bukti Follow Instagram bkui.official" name="bukti-instagram" />
         <KolomFile label="Bukti Follow Tiktok bkui.official" name="bukti-tiktok" />
@@ -387,24 +385,12 @@ function FaseSosial() {
 }
 
 function PanelFase({
-  judul,
-  keterangan,
   children,
 }: {
-  judul: string;
-  keterangan: string;
   children: ReactNode;
 }) {
   return (
     <section className="auth-card-enter flex w-full flex-col gap-6">
-      <div className="text-center">
-        <p className="font-ui text-xl font-semibold leading-[1.2] text-bkui-teks">
-          {judul}
-        </p>
-        <p className="mt-1 font-body text-sm font-medium leading-[1.4] text-bkui-teks/70">
-          {keterangan}
-        </p>
-      </div>
       {children}
     </section>
   );

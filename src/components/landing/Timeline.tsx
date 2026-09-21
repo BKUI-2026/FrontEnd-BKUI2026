@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { SectionLangit } from "@/components/landing/SectionLangit";
-import { JalurTimeline } from "@/components/landing/JalurTimeline";
+import { BusTimeline, JalurTimeline } from "@/components/landing/JalurTimeline";
 import { PilTahap } from "@/components/landing/PilTahap";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
@@ -57,6 +57,7 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
             jalur="satu"
             className="absolute left-[48.26%] top-[40.08%] w-[40.67%]"
           />
+          <BusTimeline />
 
           {/* Bunga dekoratif */}
           <Bunga src="bunga-besar" kiri="6.04%" atas="67.2%" lebar="10.12%" />

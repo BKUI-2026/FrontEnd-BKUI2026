@@ -41,7 +41,7 @@ export function JalurTimeline({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const { lebar, tinggi, d, durasi, mulai } = JALUR[jalur];
+  const { lebar, tinggi, d } = JALUR[jalur];
 
   return (
     <svg
@@ -60,26 +60,50 @@ export function JalurTimeline({
         strokeDasharray="12 12"
         className="jalur-mengalir"
       />
-      {/*
-       * Jalur boleh menyentuh tepi viewBox. Bus harus tetap utuh saat lewat
-       * di sana, maka clipping SVG dimatikan di elemen <svg> di atas.
-       * `rotate="0"` menjaga kedua bus tetap menghadap arah yang sama,
-       * alih-alih ikut berputar saat melewati tikungan.
-       */}
+    </svg>
+  );
+}
+
+/*
+ * Satu lintasan gerak utuh pada koordinat frame Timeline 1512x885.
+ * Dua path Figma di atas tetap dipakai untuk gambar garisnya, sedangkan path
+ * ini menyambungkan keduanya agar hanya ada satu bus dari Roadshow ke Puncak.
+ */
+const JALUR_BUS_UTUH = [
+  "M461.55 299.25",
+  "C629.44 305.63 568.55 506.75 442.55 472.97",
+  "C291.05 432.36 220.05 611.25 380.05 621.75",
+  "L733.1 610.5",
+  "C832.1 621 872.61 458.5 786.33 451.5",
+  "C712.91 445.55 687.79 323.61 890.99 367",
+  "C964.64 382.78 1179.83 380.41 1245.99 367",
+  "C1430.99 329.5 1329.99 611 1118.49 558.5",
+  "C940.99 514.44 910.69 718.26 1083.99 711",
+].join(" ");
+
+export function BusTimeline() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 1512 885"
+      fill="none"
+      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+      overflow="visible"
+    >
       <image
         href="/icon/landing/bikun-extracted.svg"
-        width="60"
-        height="51"
-        x="-30"
-        y="-26"
+        width="84"
+        height="72"
+        x="-42"
+        y="-36"
         className="bikun-di-jalur"
       >
         <animateMotion
-          path={d}
-          dur={durasi}
-          begin={mulai}
+          path={JALUR_BUS_UTUH}
+          dur="32s"
           repeatCount="indefinite"
           rotate="0"
+          calcMode="paced"
         />
       </image>
     </svg>
