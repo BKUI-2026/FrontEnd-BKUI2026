@@ -40,9 +40,6 @@ export function Hero() {
   const labelTombol = (
     <>
       Jelajahi Lebih Lanjut
-      <span aria-hidden className="naik-turun text-xl leading-none">
-        ↓
-      </span>
     </>
   );
 

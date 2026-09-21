@@ -16,7 +16,7 @@ export function ButtonPesanTiket({ className }: { className?: string }) {
   return (
     <Link
       href="/ticket"
-      className={`tombol-kertas inline-flex items-center gap-2 rounded-full bg-bkui-oren px-6 py-3 text-base font-medium text-black ${className ?? ""}`}
+      className={`tombol-kertas inline-flex items-center gap-2 rounded-full bg-bkui-oren px-6 py-3 text-base  text-black ${className ?? ""}`}
     >
       <Image
         src="/icon/lucide/Vector.svg"

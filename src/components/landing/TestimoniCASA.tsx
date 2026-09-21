@@ -2,12 +2,19 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { HiasanTestimoni } from "@/components/landing/HiasanTestimoni";
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
+
+const GERAK_TESTIMONI = {
+  masuk: (arah: number) => ({ x: `${arah * 100}%`, opacity: 0 }),
+  tampil: { x: "0%", opacity: 1 },
+  keluar: (arah: number) => ({ x: `${arah * -100}%`, opacity: 0 }),
+};
 
 /**
  * Section "Apa Kata Mereka" — testimoni peserta CASA, ditampilkan satu per satu
@@ -26,15 +33,18 @@ import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
  */
 export function TestimoniCASA() {
   const [indeks, setIndeks] = useState(0);
+  const [arah, setArah] = useState<1 | -1>(1);
   const jumlah = DAFTAR_TESTIMONI.length;
   const testimoni = DAFTAR_TESTIMONI[indeks];
 
   // Modulo dua arah supaya dari testimoni pertama bisa mundur ke yang terakhir.
-  const pindah = (langkah: number) =>
+  const pindah = (langkah: 1 | -1) => {
+    setArah(langkah);
     setIndeks((i) => (i + langkah + jumlah) % jumlah);
+  };
 
   return (
-    <SectionLangit className="min-h-[58.53vw] pb-20 pt-[max(140px,12.37vw)]">
+    <SectionLangit className="min-h-[70vw] pb-20 pt-">
       <HiasanTestimoni />
 
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
@@ -52,35 +62,46 @@ export function TestimoniCASA() {
             berganti setelah menekan panah — tanpa ini, tombolnya terasa tidak
             melakukan apa-apa.
           */}
-          <article
-            aria-live="polite"
-            className="flex min-w-0 flex-1 flex-col items-center gap-5 rounded-3xl bg-bkui-krem-kartu p-6 text-bkui-teks sm:gap-7 sm:p-10 lg:min-h-[min(480px,31.75vw)] lg:flex-row lg:p-[50px]"
-          >
-            {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
-            <div className="relative aspect-square w-full max-w-[348px] shrink-0 lg:max-w-[38.7%]">
-              <Image
-                src="/icon/landing/bingkai-foto-besar.svg"
-                alt=""
-                aria-hidden
-                fill
-                className="pointer-events-none"
-              />
-            </div>
+          <div className="relative h-[500px] min-w-0 flex-1 overflow-hidden rounded-3xl">
+            <AnimatePresence custom={arah} initial={false}>
+              <motion.article
+                key={testimoni.nama}
+                custom={arah}
+                variants={GERAK_TESTIMONI}
+                initial="masuk"
+                animate="tampil"
+                exit="keluar"
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                aria-live="polite"
+                className="absolute inset-0 flex flex-col items-center gap-5 overscroll-contain bg-bkui-krem-kartu p-6 text-bkui-teks will-change-transform sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
+              >
+                {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
+                <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
+                  <Image
+                    src="/icon/landing/bingkai-foto-besar.svg"
+                    alt=""
+                    aria-hidden
+                    fill
+                    className="pointer-events-none"
+                  />
+                </div>
 
-            <div className="flex flex-col gap-5">
-              <div>
-                <h3 className="font-display text-2xl leading-[1.4] sm:text-[32px]">
-                  {testimoni.nama}
-                </h3>
-                <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
-                  {testimoni.asalSekolah}
-                </p>
-              </div>
-              <p className="font-body text-base leading-[1.4] sm:text-xl">
-                {testimoni.isi}
-              </p>
-            </div>
-          </article>
+                <div className="flex flex-col gap-5 overflow-y-auto">
+                  <div>
+                    <h3 className="font-display text-2xl leading-[1.4] sm:text-[32px]">
+                      {testimoni.nama}
+                    </h3>
+                    <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
+                      {testimoni.asalSekolah}
+                    </p>
+                  </div>
+                  <p className="font-body text-base leading-[1.4] sm:text-xl">
+                    {testimoni.isi}
+                  </p>
+                </div>
+              </motion.article>
+            </AnimatePresence>
+          </div>
 
           <TombolPanah arah="kanan" onClick={() => pindah(1)} />
         </Muncul>

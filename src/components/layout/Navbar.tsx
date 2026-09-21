@@ -1,8 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AvatarProfil } from "@/components/ui/AvatarProfil";
 import { ButtonMasukSiswa } from "@/components/ui/ButtonMasukSiswa";
@@ -26,7 +27,28 @@ export function Navbar() {
   const pathname = usePathname();
   const akses = useAkses();
   const sudahLogin = useSudahMasuk();
+  const kurangiGerak = useReducedMotion();
   const [menuTerbuka, setMenuTerbuka] = useState(false);
+  const [navbarTersembunyi, setNavbarTersembunyi] = useState(false);
+  const scrollSebelumnya = useRef(0);
+
+  useEffect(() => {
+    scrollSebelumnya.current = window.scrollY;
+
+    const tanganiScroll = () => {
+      const scrollSekarang = window.scrollY;
+      const selisihScroll = scrollSekarang - scrollSebelumnya.current;
+
+      // Abaikan gerakan kecil supaya navbar tidak berkedip saat scroll berhenti.
+      if (Math.abs(selisihScroll) < 8) return;
+
+      setNavbarTersembunyi(selisihScroll > 0 && scrollSekarang > 80);
+      scrollSebelumnya.current = scrollSekarang;
+    };
+
+    window.addEventListener("scroll", tanganiScroll, { passive: true });
+    return () => window.removeEventListener("scroll", tanganiScroll);
+  }, []);
 
   /*
    * Sejak sesi BE terhubung, keadaan navbar dibaca dari sesi sungguhan — bukan
@@ -56,37 +78,50 @@ export function Navbar() {
   return (
     // Shadow sengaja lebar & tipis (blur besar, opacity kecil) biar terbaca
     // sebagai bayangan lembut, bukan garis tegas di bawah navbar.
-    <header className="sticky top-0 z-50 bg-bkui-navbar shadow-[0_4px_16px_rgba(0,0,0,0.10)]">
-      <nav aria-label="Navigasi utama" className="w-full px-8">
+    <header
+      className={`sticky top-0 z-50 bg-bkui-navbar shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-transform duration-300 ease-out motion-reduce:transition-none ${
+        navbarTersembunyi && !menuTerbuka ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
+      <nav aria-label="Navigasi utama" className="relative w-full px-8">
         <div className="flex h-20 items-center gap-4">
           <LogoBKUI ukuran={56} />
 
           {/* Menu desktop */}
-          <ul className="hidden flex-1 items-center justify-center gap-10 lg:flex">
+          <ul className="hidden flex-1 items-center justify-center gap-1 border-2 border-transparent px-5 py-3 lg:flex">
             {menu.map((item) => {
               const aktif = pathname === item.href;
               return (
-                <li key={item.href}>
+                <motion.li key={item.href} layout="position" className="relative">
                   <Link
                     href={item.href}
                     aria-current={aktif ? "page" : undefined}
-                    className={
-                      aktif
-                        ? "text-base font-semibold text-black"
-                        : "text-base text-black/80 transition-colors hover:text-black"
-                    }
+                    className={`relative inline-flex rounded-full px-5 py-3 text-base transition-colors duration-200 ${
+                      aktif ? "text-black" : "text-black/80 hover:text-black"
+                    }`}
                   >
-                    {item.label}
+                    {aktif && (
+                      <motion.span
+                        layoutId="desktop-active-nav"
+                        transition={{
+                          duration: kurangiGerak ? 0 : 0.36,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="absolute inset-0 rounded-full border-2 border-black"
+                      />
+                    )}
+                    <span className="relative z-10">{item.label}</span>
                   </Link>
-                </li>
+                </motion.li>
               );
             })}
           </ul>
 
           {/* Aksi kanan — desktop */}
           <div className="ml-auto hidden items-center gap-3 lg:flex">
-            <ButtonPesanTiket />
             {sudahLogin ? <AvatarProfil /> : <ButtonMasukSiswa />}
+            <ButtonPesanTiket />
+
           </div>
 
           {/* Tombol menu mobile */}
@@ -107,44 +142,57 @@ export function Navbar() {
           diberikan — layout di bawah ini turunan dari versi desktop, perlu
           dicek ke designer.
         */}
-        {menuTerbuka && (
-          <div id="menu-mobile" className="border-t border-black/10 pb-4 lg:hidden">
-            <ul className="flex flex-col py-2">
-              {menu.map((item) => {
-                const aktif = pathname === item.href;
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      aria-current={aktif ? "page" : undefined}
-                      className={
-                        aktif
-                          ? "block py-2.5 text-base font-semibold text-black"
-                          : "block py-2.5 text-base text-black/80"
-                      }
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+        <AnimatePresence initial={false}>
+          {menuTerbuka && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{
+                duration: kurangiGerak ? 0 : 0.36,
+                ease: [0.22, 1, 0.22, 1],
+              }}
+              className="absolute inset-x-0 top-full z-10 overflow-hidden bg-bkui-navbar shadow-[0_8px_16px_rgba(0,0,0,0.10)] lg:hidden"
+            >
+              <div id="menu-mobile" className="border-t border-black/10 px-8 pb-6 pt-2">
+                <ul className="flex flex-col py-2">
+                  {menu.map((item) => {
+                    const aktif = pathname === item.href;
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          aria-current={aktif ? "page" : undefined}
+                          className={
+                            aktif
+                              ? "block py-2.5 text-base font-semibold text-black"
+                              : "block py-2.5 text-base text-black/80"
+                          }
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
 
-            <div className="flex flex-col gap-3">
-              <ButtonPesanTiket className="justify-center" />
-              {sudahLogin ? (
-                <Link
-                  href="/profile"
-                  className="rounded-full bg-bkui-button px-6 py-3 text-center text-base font-medium text-black"
-                >
-                  Profile
-                </Link>
-              ) : (
-                <ButtonMasukSiswa className="w-full" />
-              )}
-            </div>
-          </div>
-        )}
+                <div className="flex flex-col gap-3">
+                  <ButtonPesanTiket className="justify-center" />
+                  {sudahLogin ? (
+                    <Link
+                      href="/profile"
+                      className="rounded-full bg-bkui-button px-6 py-3 text-center text-base font-medium text-black"
+                    >
+                      Profile
+                    </Link>
+                  ) : (
+                    <ButtonMasukSiswa className="w-full" />
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   );

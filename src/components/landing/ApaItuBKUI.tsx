@@ -24,7 +24,7 @@ import { DESKRIPSI_BKUI } from "@/lib/landing-content";
  */
 const TANDA_TANYA = [
   { ukuran: "1.44em", putar: "9.48deg", turun: "-0.12em", tumpuk: "0" },
-  { ukuran: "1.94em", putar: "13.5deg", turun: "0.06em", tumpuk: "-0.42em" },
+  // { ukuran: "1.94em", putar: "13.5deg", turun: "0.06em", tumpuk: "-0.42em" },
   { ukuran: "0.93em", putar: "28.49deg", turun: "0.42em", tumpuk: "-0.36em" },
 ] as const;
 
@@ -45,12 +45,20 @@ export function ApaItuBKUI() {
         <>
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
             <Image
+              src="/icon/landing/latest/hero-about-transition.svg"
+              alt=""
+              width={1000}
+              height={1300}
+              className="absolute top-0 left-0 h-[30vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
+            >
+            </Image>
+            {/* <Image
               src="/icon/landing/latest/apaitu-branch-left.svg"
               alt=""
               width={587}
               height={329}
               className="absolute -left-16 -top-10 w-[min(48vw,587px)] -rotate-12"
-            />
+            /> */}
             {/*
               Dedaunan pojok kiri atas. Namanya "flower-left", tapi isinya
               rumpun daun — bunganya file terpisah di bawah.
@@ -60,13 +68,13 @@ export function ApaItuBKUI() {
               layar 1512px jatuh ~154px terlalu ke kanan dan ke bawah, sehingga
               sudutnya terlihat kosong.
             */}
-            <Image
+            {/* <Image
               src="/icon/landing/latest/apaitu-flower-left.svg"
               alt=""
               width={226}
               height={184}
               className="absolute left-[1.8%] top-[min(1.8vw,27px)] w-[min(16.4vw,248px)]"
-            />
+            /> */}
             {/*
               Bunga pink yang duduk di atas dedaunan pojok kiri. Sempat hilang
               karena asetnya memang belum pernah diekspor dari Figma.
@@ -80,7 +88,7 @@ export function ApaItuBKUI() {
               sungguhan yang lebih panjang) — dengan persen, bunganya akan
               melorot jauh dari sudut.
             */}
-            <Image
+            {/* <Image
               src="/icon/landing/latest/apaitu-bunga-pink.svg"
               alt=""
               width={141}
@@ -88,7 +96,7 @@ export function ApaItuBKUI() {
               className="absolute left-[3.7%] top-[min(5.2vw,78px)] w-[min(6.3vw,95px)]"
             />
             <Image src="/icon/landing/latest/apaitu-flower-right.svg" alt="" width={73} height={84} className="absolute right-[10%] top-[16%] w-[min(8vw,73px)]" />
-            <Image src="/icon/landing/latest/apaitu-flower-small.svg" alt="" width={87} height={95} className="absolute bottom-[16%] left-[6%] w-[min(8vw,87px)]" />
+            <Image src="/icon/landing/latest/apaitu-flower-small.svg" alt="" width={87} height={95} className="absolute bottom-[16%] left-[6%] w-[min(8vw,87px)]" /> */}
           </div>
         </>
       }
@@ -170,20 +178,6 @@ export function ApaItuBKUI() {
           </p>
         </div>
       </Muncul>
-      <div className="relative mx-auto mt-12 grid w-full max-w-[1144px] gap-4 px-5 sm:px-8 lg:grid-cols-3">
-        <Sorotan angka="12.000+" teks="Peserta Sudah Ikut Ekspedisi bersama BKUI pada Tahun Sebelumnya" />
-        <Sorotan angka="100+" teks="Kunjungan Sekolah sudah Kami Sapa" />
-        <Sorotan angka="Lebih dari 10 tahun" teks="telah Hadir Menemani Siswa/i se-Indonesia" />
-      </div>
     </SectionLangit>
-  );
-}
-
-function Sorotan({ angka, teks }: { angka: string; teks: string }) {
-  return (
-    <Muncul className="rounded-[28px] border-4 border-bkui-hijau-tua bg-bkui-krem-kartu px-6 py-5 text-center shadow-[7px_8px_0_#134921]">
-      <p className="font-ui text-3xl font-extrabold leading-none text-bkui-hijau-tua sm:text-4xl">{angka}</p>
-      <p className="mt-3 font-body text-sm font-semibold leading-snug text-bkui-teks sm:text-base">{teks}</p>
-    </Muncul>
   );
 }
