@@ -29,7 +29,7 @@ export function VideoBKUI() {
         <Muncul className="relative z-10">
           {/* Ukuran "title" (72px), bukan "h2" (48px): di Figma judul ini
               selebar 446px pada frame 1512, dan h2 cuma menghasilkan ~302px. */}
-          <JudulSticker as="h2" ukuran="title">
+          <JudulSticker as="h2" ukuran="title" className="-mb-15">
             {VIDEO_LANDING.judul}
           </JudulSticker>
         </Muncul>

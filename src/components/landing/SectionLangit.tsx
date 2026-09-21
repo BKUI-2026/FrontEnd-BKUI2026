@@ -147,7 +147,7 @@ export function DekorBendera({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden ${className ?? ""}`}
+      className={`pointer-events-none absolute inset-x-0 -top-1 -z-10 overflow-hidden ${className ?? ""}`}
     >
       <Image
         src="/icon/landing/bendera.svg"

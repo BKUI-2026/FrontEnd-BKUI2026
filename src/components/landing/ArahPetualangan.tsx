@@ -29,9 +29,9 @@ const MATA_ACARA = [
  * bikin papan atas nyaris menempel ke pil "Mata Acara".
  */
 const POSISI_PAPAN = [
-  "lg:left-[7.21%] lg:top-[26.57%]",
-  "lg:left-[51.65%] lg:top-[25.87%]",
-  "lg:left-[29.43%] lg:top-[58.10%]",
+  "lg:left-[7.21%] lg:top-[32%]",
+  "lg:left-[51.65%] lg:top-[29%]",
+  "lg:left-[29.43%] lg:top-[64%]",
 ] as const;
 
 /**
@@ -56,14 +56,22 @@ export function ArahPetualangan() {
     <SectionLangit tanpaAwan>
       <div className="relative min-h-[1100px] w-full overflow-hidden pb-28 pt-20 [container-type:inline-size] lg:aspect-[1512/1148] lg:min-h-0 lg:p-0">
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 hidden h-[12%] bg-gradient-to-b from-[#add919] via-[#add919] to-transparent lg:block" />
-        <Image
+        {/* <Image
           src="/icon/landing/latest/arah-hijau-atas.svg"
           alt=""
           aria-hidden
           width={1924}
           height={773}
           className="pointer-events-none absolute -left-[33.93%] -top-[43.95%] h-auto w-[135.33%] max-w-none -rotate-[12.55deg]"
-        />
+        /> */}
+        <Image
+          src="/icon/landing/latest/movie-petualangan-transition.png"
+          alt=""
+          width={1000}
+          height={1300}
+          className="absolute top-0 left-0 h-[30vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
+        >
+        </Image>
         <div
           aria-hidden
           className="pointer-events-none absolute -left-[33.93%] -top-[43.95%] aspect-[1924/773] w-[135.33%] -rotate-[12.55deg] bg-[url('/image/landing/hero/rumput-tekstur.webp')] bg-cover opacity-25 mix-blend-soft-light [mask-image:url('/icon/landing/latest/arah-hijau-atas.svg')] [mask-repeat:no-repeat] [mask-size:100%_100%]"
@@ -128,7 +136,7 @@ export function ArahPetualangan() {
             sumbangannya ke tinggi baris. Hasilnya teks judul mulai di y=91 dan
             pil di y=200, sama dengan Figma.
           */}
-          <JudulSticker as="h2" ukuran="title" className="-my-[0.28em] text-[clamp(22px,4.76cqw,72px)] lg:whitespace-nowrap lg:text-[4.76cqw]">
+          <JudulSticker as="h1" ukuran="title" className="my-2 lg:whitespace-nowrap lg:text-[4.76cqw]">
             Tentukan Arah Petualanganmu
           </JudulSticker>
           <p className="rounded-full bg-gradient-to-r from-bkui-hijau-daun to-bkui-hijau-tua px-4 py-2 font-ui text-sm font-semibold leading-[1.2] text-bkui-netral sm:text-lg lg:px-[1.6cqw] lg:py-[0.66cqw] lg:text-[1.85cqw]">
@@ -153,7 +161,7 @@ export function ArahPetualangan() {
                 yang hilang cuma transisinya.
               */}
               <article
-                className={`relative flex h-full w-full flex-col items-center justify-center px-[10%] pb-[3%] text-center text-bkui-terang ${ROTASI_PAPAN[index]} drop-shadow-[0_6px_10px_rgba(0,0,0,0.25)] transition-[transform,filter] duration-300 ease-out motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.03] motion-safe:hover:drop-shadow-[0_16px_22px_rgba(0,0,0,0.35)]`}
+                className={`relative flex h-full w-full flex-col items-center justify-center px-[10%] pb-[3%] text-center text-bkui-terang ${ROTASI_PAPAN[index]} drop-shadow-[0_6px_10px_rgba(0,0,0,0.25)] transition-[transform,filter] duration-300  motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.03] motion-safe:hover:drop-shadow-[0_16px_22px_rgba(0,0,0,0.35)] ease-in-out transition-all`}
               >
                 <Image
                   src="/icon/landing/latest/arah-board.svg"

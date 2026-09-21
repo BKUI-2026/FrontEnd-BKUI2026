@@ -17,7 +17,7 @@ export function HiasanTestimoni() {
       <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className="absolute -right-[12%] top-[5%] h-[84%] w-auto max-w-none -scale-x-100 sm:-right-[3%] hidden lg:block lg:block" />
       <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className={leftTree} />
       <Image
-        src={`${base}testi-bottom-part.svg`}
+        src={`${base}bottom-part-testi.webp`}
         alt=""
         width={1512}
         height={1138}
