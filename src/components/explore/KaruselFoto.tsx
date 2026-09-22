@@ -79,7 +79,7 @@ export function KaruselFoto({
                 alt={`Suasana ${namaFakultas}, foto ${aktif}`}
                 fill
                 sizes="(min-width: 1024px) 400px, 90vw"
-                className="object-cover"
+                className="object-contain p-[5%]"
               />
             ) : (
               <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">

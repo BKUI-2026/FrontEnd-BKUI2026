@@ -179,9 +179,9 @@ export function ApaItuBKUI() {
         </div>
       </Muncul>
       <div className="relative mx-auto mt-12 grid w-full max-w-[1144px] gap-4 px-5 sm:px-8 lg:grid-cols-3">
-        <Sorotan angka="12.000+" teks="Peserta Sudah Ikut Ekspedisi bersama BKUI pada Tahun Sebelumnya" />
-        <Sorotan angka="100+" teks="Kunjungan Sekolah sudah Kami Sapa" />
-        <Sorotan angka="Lebih dari 10 tahun" teks="telah Hadir Menemani Siswa/i se-Indonesia" />
+        <Sorotan angka="12.000+" teks="Peserta sudah ikut ekspedisi bersama BKUI pada tahun sebelumnya" />
+        <Sorotan angka="100+" teks="Kunjungan sekolah sudah kami sapa" />
+        <Sorotan angka="Lebih dari 10 tahun" teks="Telah hadir menemani siswa/i se-Indonesia" />
       </div>
     </SectionLangit>
   );
