@@ -50,7 +50,7 @@ export function TestimoniCASA() {
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1">
-            Apa Kata Mereka
+            Apa Kata CASA
           </JudulSticker>
         </Muncul>
 
@@ -75,29 +75,38 @@ export function TestimoniCASA() {
                 aria-live="polite"
                 className="absolute inset-0 flex flex-col items-center gap-5 overscroll-contain bg-bkui-krem-kartu p-6 text-bkui-teks will-change-transform sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
               >
-                {/* Bingkai ilustratif desain; tidak memakai foto peserta. */}
+                {/* Siluet peserta sebagai placeholder visual hingga foto CASA
+                    yang sudah dikurasi tersedia dari Admin. */}
                 <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
+                  <Image
+                    src="/icon/landing/latest/siluet-orang.png"
+                    alt=""
+                    aria-hidden
+                    fill
+                    sizes="(min-width: 1024px) 39vw, 200px"
+                    className="object-contain "
+                  />
                   <Image
                     src="/icon/landing/bingkai-foto-besar.svg"
                     alt=""
                     aria-hidden
                     fill
-                    className="pointer-events-none"
+                    className="pointer-events-none z-10"
                   />
                 </div>
 
                 <div className="flex flex-col gap-5 overflow-y-auto">
                   <div>
                     <h3 className="font-display text-2xl leading-[1.4] sm:text-[32px]">
-                      {testimoni.nama}
+                      Nantikan Campuss dan Student Ambassador BKUI <span className="font-extrabold font-ui">2026 </span>!!
                     </h3>
-                    <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
+                    {/* <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
                       {testimoni.asalSekolah}
-                    </p>
+                    </p> */}
                   </div>
-                  <p className="font-body text-base leading-[1.4] sm:text-xl">
+                  {/* <p className="font-body text-base leading-[1.4] sm:text-xl">
                     {testimoni.isi}
-                  </p>
+                  </p> */}
                 </div>
               </motion.article>
             </AnimatePresence>

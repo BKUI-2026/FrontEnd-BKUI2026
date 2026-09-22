@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { BarisFAQ } from "@/components/landing/BarisFAQ";
+import { FAQTambahan } from "@/components/landing/FAQTambahan";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 import { SponsorCarousel } from "@/components/landing/SponsorCarousel";
@@ -31,7 +32,7 @@ export function FAQ() {
             aria-hidden
             fill
             sizes="100vw"
-            className="pointer-events-none -z-10 object-fill"
+            className="pointer-events-none -z-10 object-contain object-top sm:object-fill"
           />
           <Image
             src="/image/landing/faq-star.png"
@@ -62,17 +63,7 @@ export function FAQ() {
           ))}
         </ul>
         {DAFTAR_FAQ.length > 6 && (
-          <details className="group w-full">
-            <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-full bg-bkui-hijau px-6 py-3 font-ui text-lg text-white [&::-webkit-details-marker]:hidden">
-              Lihat pertanyaan lainnya
-              <Image src="/icon/landing/chevron-bawah.svg" alt="" aria-hidden width={24} height={24} className="size-6 brightness-0 invert transition-transform group-open:rotate-180" />
-            </summary>
-            <ul className="mt-6 flex flex-col gap-3 sm:gap-4">
-              {DAFTAR_FAQ.slice(6).map((item) => (
-                <li key={item.id}><BarisFAQ item={item} terbukaAwal={false} /></li>
-              ))}
-            </ul>
-          </details>
+          <FAQTambahan items={DAFTAR_FAQ.slice(6)} />
         )}
       </div>
       <SponsorCarousel tergabung />

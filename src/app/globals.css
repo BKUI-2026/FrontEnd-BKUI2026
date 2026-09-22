@@ -784,6 +784,82 @@ body:has(dialog[open]) {
   animation: judul-ditempel 0.62s cubic-bezier(0.2, 0.75, 0.3, 1) both;
 }
 
+/* Placeholder video bergerak seperti stiker yang mengambang ringan. Jarak
+   dan putarannya kecil agar teks tetap mudah dibaca selama berulang. */
+@keyframes coming-soon-melayang {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -0.7deg;
+  }
+  50% {
+    translate: 0 -0.13em;
+    rotate: 0.7deg;
+  }
+}
+
+.coming-soon-melayang {
+  animation: coming-soon-melayang 4.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Gelombang huruf memberi energi lebih besar tanpa membuat tiga lapisan
+   stiker saling lepas: setiap lapisan memakai urutan dan delay yang sama. */
+@keyframes coming-soon-huruf {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  30% {
+    translate: 0 -0.19em;
+    rotate: -2.5deg;
+  }
+  56% {
+    translate: 0 -0.06em;
+    rotate: 1.5deg;
+  }
+  76% {
+    translate: 0 -0.12em;
+    rotate: -1deg;
+  }
+}
+
+.coming-soon__huruf {
+  display: inline-block;
+  animation: coming-soon-huruf 2.5s cubic-bezier(0.38, 0.02, 0.42, 1) infinite;
+  transform-origin: center bottom;
+}
+
+.coming-soon__huruf:nth-child(2) { animation-delay: 0.09s; }
+.coming-soon__huruf:nth-child(3) { animation-delay: 0.18s; }
+.coming-soon__huruf:nth-child(4) { animation-delay: 0.27s; }
+.coming-soon__huruf:nth-child(5) { animation-delay: 0.36s; }
+.coming-soon__huruf:nth-child(6) { animation-delay: 0.45s; }
+.coming-soon__huruf:nth-child(7) { animation-delay: 0.54s; }
+.coming-soon__huruf:nth-child(8) { animation-delay: 0.63s; }
+.coming-soon__huruf:nth-child(9) { animation-delay: 0.72s; }
+.coming-soon__huruf:nth-child(10) { animation-delay: 0.81s; }
+.coming-soon__huruf:nth-child(11) { animation-delay: 0.9s; }
+
+/* Ornamen bunga countdown berputar sangat pelan seperti roda kompas. Angka
+   ditempatkan di elemen terpisah, jadi tetap diam dan mudah dibaca. Delay
+   negatif membuat tiap bunga memulai rotasinya dari sudut yang berbeda. */
+@keyframes countdown-ornamen-berputar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.countdown-ornamen-berputar {
+  animation: countdown-ornamen-berputar 30s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
 /* Tanpa JavaScript, pengamat viewport tidak pernah jalan — judulnya harus
    tetap terbaca, bukan tersembunyi selamanya. */
 @media (scripting: none) {
@@ -983,6 +1059,9 @@ body:has(dialog[open]) {
   .naik-turun,
   .bikun-masuk,
   .bikun-melayang,
+  .coming-soon-melayang,
+  .coming-soon__huruf,
+  .countdown-ornamen-berputar,
   .tanda-tanya-hidup,
   .jalur-mengalir,
   .overlay-detail,
