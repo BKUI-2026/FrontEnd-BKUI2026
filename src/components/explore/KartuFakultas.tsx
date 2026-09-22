@@ -90,8 +90,8 @@ export function KartuFakultas({ fakultas, terbalik }: { fakultas: Fakultas; terb
 
         <motion.div variants={MUNCUL} className="flex w-full justify-center lg:w-[400px] lg:shrink-0">
           <KaruselFoto
-            jumlah={fakultas.jumlahFoto}
             logoSrc={fakultas.logoSrc}
+            fotoSrc={fakultas.fotoSrc}
             namaFakultas={fakultas.nama}
           />
         </motion.div>

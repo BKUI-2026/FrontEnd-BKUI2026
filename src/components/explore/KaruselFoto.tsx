@@ -9,9 +9,8 @@ import { SENTUHAN } from "./gerak";
 /**
  * Carousel foto fakultas — bingkai persegi + titik navigasi di bawahnya.
  *
- * Fotonya belum ada, jadi untuk sementara area visual ini menampilkan logo
- * fakultas dari Drive. Jika logo belum tersedia, fallback placeholder tetap
- * dipakai supaya kotak tidak terbaca sebagai gambar gagal dimuat.
+ * Slide pertama menampilkan logo fakultas, disusul seluruh foto suasana yang
+ * tersedia di folder Drive fakultas tersebut.
  *
  * ---------------------------------------------------------------------------
  * Kenapa bingkainya SVG, bukan `border` CSS
@@ -21,16 +20,21 @@ import { SENTUHAN } from "./gerak";
  * hasilnya akan kehilangan karakter gambar tangan yang jadi ciri desain ini.
  */
 export function KaruselFoto({
-  jumlah,
   logoSrc,
+  fotoSrc,
   namaFakultas,
 }: {
-  jumlah: number;
   logoSrc: string | null;
+  fotoSrc: readonly string[];
   namaFakultas: string;
 }) {
   const [aktif, setAktif] = useState(0);
   const kurangiGerak = useReducedMotion();
+  const slide = logoSrc
+    ? [{ src: logoSrc, jenis: "logo" as const }, ...fotoSrc.map((src) => ({ src, jenis: "foto" as const }))]
+    : fotoSrc.map((src) => ({ src, jenis: "foto" as const }));
+  const jumlah = Math.max(slide.length, 1);
+  const slideAktif = slide[aktif];
   const logoBesar =
     logoSrc?.includes("/fk-") ||
     logoSrc?.includes("/fh-") ||
@@ -58,10 +62,10 @@ export function KaruselFoto({
             exit={kurangiGerak ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            {logoSrc ? (
+            {slideAktif?.jenis === "logo" ? (
               <div className={`relative ${logoBesar ? "h-[76%] w-[76%]" : "h-[62%] w-[62%]"}`}>
                 <Image
-                  src={logoSrc}
+                  src={slideAktif.src}
                   alt={`Logo ${namaFakultas}`}
                   fill
                   sizes="(min-width: 1024px) 248px, 56vw"
@@ -69,6 +73,14 @@ export function KaruselFoto({
                   priority={aktif === 0}
                 />
               </div>
+            ) : slideAktif ? (
+              <Image
+                src={slideAktif.src}
+                alt={`Suasana ${namaFakultas}, foto ${aktif}`}
+                fill
+                sizes="(min-width: 1024px) 400px, 90vw"
+                className="object-cover"
+              />
             ) : (
               <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
                 Logo {namaFakultas} segera hadir
