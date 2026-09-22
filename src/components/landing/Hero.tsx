@@ -59,14 +59,14 @@ export function Hero() {
           waktu masih berupa gambar.
         */}
         <Image
-          src="/icon/landing/landing-hero-latest.svg"
+          src="/icon/landing/landing-hero-latest.png"
           alt=""
           aria-hidden
           fill
           sizes="100vw"
           priority
           unoptimized
-          className="object-contain"
+          className="select-none [user-drag:none] [-webkit-user-drag:none]"
         />
         <div aria-hidden className="bikun-masuk pointer-events-none absolute left-[76%] top-[41.6%] w-[24%]">
           <Image
