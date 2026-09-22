@@ -11,13 +11,13 @@ import Image from "next/image";
  */
 export function HiasanTestimoni() {
   const base = "/icon/landing/latest/";
-  const leftTree = "absolute -left-[12%] top-[5%] h-[84%] w-auto max-w-none sm:-left-[3%] hidden lg:block";
+  const leftTree = "absolute -left-[12%] top-[50%] h-[70%] w-auto max-w-none sm:-left-[3%] hidden lg:block";
   return (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-x-0 bottom-0 top-16 -z-10 sm:top-20 lg:top-24"
     >
-      <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className="absolute -right-[12%] top-[5%] h-[84%] w-auto max-w-none -scale-x-100 sm:-right-[3%] hidden lg:block lg:block" />
+      <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className="absolute -right-[12%] top-[50%] h-[70%] w-auto max-w-none -scale-x-100 sm:-right-[3%] hidden lg:block lg:block" />
       <Image src={`${base}testi-tree-trunk.svg`} alt="" width={646} height={1321} className={leftTree} />
       <Image
         src={`${base}bottom-part-testi.webp`}
@@ -28,11 +28,11 @@ export function HiasanTestimoni() {
         className="absolute bottom-0 right-0 h-[45vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
       />
 
-      <Image src={`${base}testi-tree-canopy-1.svg`} alt="" width={482} height={300} className="absolute -left-[12%] -top-[1%] w-[38%] max-w-none sm:-left-[8%] sm:w-[50%] hidden lg:block" />
-      <Image src={`${base}testi-tree-canopy-3.svg`} alt="" width={722} height={310} className="absolute -left-[15%] top-[2%] w-[40%] max-w-none sm:-left-[11%] sm:w-[52%] hidden lg:block" />
+      <Image src={`${base}testi-tree-canopy-1.png`} alt="" width={482} height={300} className="absolute -left-[12%] -top-[1%] w-[20%] max-w-none sm:-left-[8%] sm:w-[50%] hidden lg:block" />
+      <Image src={`${base}testi-tree-canopy-1.png`} alt="" width={600} height={200} className="absolute -left-[15%] -top-[20%] w-[20%] max-w-none sm:-left-[11%] sm:w-[52%] hidden lg:block" />
 
-      <Image src={`${base}testi-tree-canopy-1.svg`} alt="" width={482} height={300} className="absolute -right-[12%] -top-[1%] w-[38%] max-w-none -scale-x-100 sm:-right-[8%] sm:w-[50%] hidden lg:block" />
-      <Image src={`${base}testi-tree-canopy-3.svg`} alt="" width={722} height={310} className="absolute -right-[15%] top-[2%] w-[40%] max-w-none -scale-x-100 sm:-right-[11%] sm:w-[52%] hidden lg:block" />
+      <Image src={`${base}testi-tree-canopy-1.png`} alt="" width={482} height={300} className="absolute -right-[12%] -top-[1%] w-[20%] max-w-none -scale-x-100 sm:-right-[8%] sm:w-[50%] hidden lg:block" />
+      <Image src={`${base}testi-tree-canopy-1.png`} alt="" width={600} height={310} className="absolute -right-[15%] -top-[15%] w-[20%] max-w-none -scale-x-100 sm:-right-[11%] sm:w-[52%] hidden lg:block" />
     {/* <Image src="/icon/landing/testi/tanah-1.svg" alt="" width={1744} height={431} className="absolute bottom-0 left-[12%] h-[16%] w-[82%] max-w-none" />
       <Image src="/icon/landing/testi/tanah-2.svg" alt="" width={1544} height={250} className="absolute bottom-[1%] left-1/2 h-auto w-[105%] max-w-none -translate-x-1/2" />
       <Image src={`${base}testi-orange-swoop.svg`} alt="" width={1786} height={951} className="absolute -bottom-[78%] -left-[28%] w-[126%] max-w-none rotate-[20deg]" />
