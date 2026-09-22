@@ -111,7 +111,7 @@ export function KaruselFoto({
               onClick={() => pindah(-1)}
               whileTap={kurangiGerak ? undefined : { scale: 0.88 }}
               aria-label={`Foto sebelumnya dari ${namaFakultas}`}
-              className="absolute left-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:-left-14"
+              className="absolute left-3 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:left-4"
             >
               <Image src="/icon/merch/chevron.svg" alt="" aria-hidden width={28} height={28} className="size-7" />
             </motion.button>
@@ -120,7 +120,7 @@ export function KaruselFoto({
               onClick={() => pindah(1)}
               whileTap={kurangiGerak ? undefined : { scale: 0.88 }}
               aria-label={`Foto berikutnya dari ${namaFakultas}`}
-              className="absolute right-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:-right-14"
+              className="absolute right-3 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:right-4"
             >
               <Image src="/icon/merch/chevron.svg" alt="" aria-hidden width={28} height={28} className="size-7 rotate-180" />
             </motion.button>
