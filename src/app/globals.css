@@ -293,27 +293,36 @@
 /* Bikun melaju sekali dari kanan ke kiri, lalu muncul kembali dan parkir kanan. */
 @keyframes bikun-masuk {
   0% {
-    transform: translateX(110%);
+    transform: translate(110%, -4%) rotate(-1deg);
     opacity: 0;
   }
   5% {
-    transform: translateX(0);
+    transform: translate(0, 0) rotate(-1deg);
     opacity: 1;
   }
+  24% {
+    transform: translate(-100%, 10%) rotate(-2.5deg);
+  }
+  45% {
+    transform: translate(-215%, 31%) rotate(-4deg);
+  }
+  65% {
+    transform: translate(-325%, 52%) rotate(-4.5deg);
+  }
   84% {
-    transform: translateX(-430%);
+    transform: translate(-430%, 68%) rotate(-2deg);
     opacity: 1;
   }
   87% {
-    transform: translateX(-430%);
+    transform: translate(-430%, 68%) rotate(-2deg);
     opacity: 0;
   }
   88% {
-    transform: translateX(0);
+    transform: translate(0, 0) rotate(0);
     opacity: 0;
   }
   100% {
-    transform: translateX(0);
+    transform: translate(0, 0) rotate(0);
     opacity: 1;
   }
 }
