@@ -5,7 +5,6 @@ import { BarisFAQ } from "@/components/landing/BarisFAQ";
 import { FAQTambahan } from "@/components/landing/FAQTambahan";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
-import { SponsorCarousel } from "@/components/landing/SponsorCarousel";
 import { DAFTAR_FAQ } from "@/lib/landing-content";
 
 /**
@@ -66,7 +65,6 @@ export function FAQ() {
           <FAQTambahan items={DAFTAR_FAQ.slice(6)} />
         )}
       </div>
-      <SponsorCarousel tergabung />
     </SectionLangit>
   );
 }

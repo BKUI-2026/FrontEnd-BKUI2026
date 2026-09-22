@@ -35,6 +35,9 @@ export function KaruselFoto({
     : fotoSrc.map((src) => ({ src, jenis: "foto" as const }));
   const jumlah = Math.max(slide.length, 1);
   const slideAktif = slide[aktif];
+  const pindah = (arah: number) => {
+    setAktif((sekarang) => (sekarang + arah + jumlah) % jumlah);
+  };
   const logoBesar =
     logoSrc?.includes("/fk-") ||
     logoSrc?.includes("/fh-") ||
@@ -48,56 +51,81 @@ export function KaruselFoto({
         tidak melompat saat slide berganti — perpindahan slide di dalam kotak
         yang ukurannya sudah pasti tidak menggeser apapun di sekitarnya.
       */}
-      <div
-        className="relative aspect-square w-full overflow-hidden rounded-3xl"
-        aria-live="polite"
-        aria-label={`Foto ${namaFakultas}`}
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={aktif}
-            className="absolute inset-0 flex items-center justify-center"
-            initial={kurangiGerak ? false : { opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={kurangiGerak ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            {slideAktif?.jenis === "logo" ? (
-              <div className={`relative ${logoBesar ? "h-[76%] w-[76%]" : "h-[62%] w-[62%]"}`}>
+      <div className="relative w-full">
+        <div
+          className="relative aspect-square w-full overflow-hidden rounded-3xl"
+          aria-live="polite"
+          aria-label={`Foto ${namaFakultas}`}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={aktif}
+              className="absolute inset-0 flex items-center justify-center"
+              initial={kurangiGerak ? false : { opacity: 0, scale: 1.03 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={kurangiGerak ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              {slideAktif?.jenis === "logo" ? (
+                <div className={`relative ${logoBesar ? "h-[76%] w-[76%]" : "h-[62%] w-[62%]"}`}>
+                  <Image
+                    src={slideAktif.src}
+                    alt={`Logo ${namaFakultas}`}
+                    fill
+                    sizes="(min-width: 1024px) 248px, 56vw"
+                    className="object-contain drop-shadow-[0_10px_16px_rgba(70,50,27,0.18)]"
+                    priority={aktif === 0}
+                  />
+                </div>
+              ) : slideAktif ? (
                 <Image
                   src={slideAktif.src}
-                  alt={`Logo ${namaFakultas}`}
+                  alt={`Suasana ${namaFakultas}, foto ${aktif}`}
                   fill
-                  sizes="(min-width: 1024px) 248px, 56vw"
-                  className="object-contain drop-shadow-[0_10px_16px_rgba(70,50,27,0.18)]"
-                  priority={aktif === 0}
+                  sizes="(min-width: 1024px) 400px, 90vw"
+                  className="object-contain p-[5%]"
                 />
-              </div>
-            ) : slideAktif ? (
-              <Image
-                src={slideAktif.src}
-                alt={`Suasana ${namaFakultas}, foto ${aktif}`}
-                fill
-                sizes="(min-width: 1024px) 400px, 90vw"
-                className="object-contain p-[5%]"
-              />
-            ) : (
-              <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
-                Logo {namaFakultas} segera hadir
-              </span>
-            )}
-          </motion.div>
-        </AnimatePresence>
+              ) : (
+                <span className="px-5 text-center font-ui text-sm text-bkui-teks/55">
+                  Logo {namaFakultas} segera hadir
+                </span>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-        {/* Bingkai digambar di atas isinya supaya garisnya tidak ikut terpotong. */}
-        <Image
-          src="/icon/explore/bingkai-foto.svg"
-          alt=""
-          aria-hidden
-          fill
-          sizes="(min-width: 1024px) 400px, 90vw"
-          className="pointer-events-none"
-        />
+          {/* Bingkai digambar di atas isinya supaya garisnya tidak ikut terpotong. */}
+          <Image
+            src="/icon/explore/bingkai-foto.svg"
+            alt=""
+            aria-hidden
+            fill
+            sizes="(min-width: 1024px) 400px, 90vw"
+            className="pointer-events-none"
+          />
+        </div>
+
+        {jumlah > 1 && (
+          <>
+            <motion.button
+              type="button"
+              onClick={() => pindah(-1)}
+              whileTap={kurangiGerak ? undefined : { scale: 0.88 }}
+              aria-label={`Foto sebelumnya dari ${namaFakultas}`}
+              className="absolute left-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:-left-14"
+            >
+              <Image src="/icon/merch/chevron.svg" alt="" aria-hidden width={28} height={28} className="size-7" />
+            </motion.button>
+            <motion.button
+              type="button"
+              onClick={() => pindah(1)}
+              whileTap={kurangiGerak ? undefined : { scale: 0.88 }}
+              aria-label={`Foto berikutnya dari ${namaFakultas}`}
+              className="absolute right-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-b from-bkui-coklat-garis to-bkui-coklat-tua shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:-right-14"
+            >
+              <Image src="/icon/merch/chevron.svg" alt="" aria-hidden width={28} height={28} className="size-7 rotate-180" />
+            </motion.button>
+          </>
+        )}
       </div>
 
       <div className="flex min-h-11 items-center justify-center gap-1">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/Footer";
+import { MinCanButton } from "@/components/layout/MinCanButton";
 import { Navbar } from "@/components/layout/Navbar";
 import { SakuraBerjatuhan } from "@/components/ui/SakuraBerjatuhan";
 import { AuthProvider } from "@/lib/auth-state";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Navbar />
           {children}
           <Footer />
+          <MinCanButton />
         </AuthProvider>
       </body>
     </html>
