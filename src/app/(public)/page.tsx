@@ -5,6 +5,7 @@ import { FogTransition } from "@/components/landing/FogTransition";
 import { Hero } from "@/components/landing/Hero";
 import { TestimoniCASA } from "@/components/landing/TestimoniCASA";
 import { TokohInspirasi } from "@/components/landing/TokohInspirasi";
+import { TransisiHeroAwan } from "@/components/landing/TransisiHeroAwan";
 import { VideoBKUI } from "@/components/landing/VideoBKUI";
 
 /**
@@ -27,15 +28,13 @@ export default function LandingPage() {
   return (
     <main className="flex-1">
       <Hero />
-      <FogTransition />
+      <TransisiHeroAwan />
       <ApaItuBKUI />
-      <FogTransition />
       <VideoBKUI />
       <FogTransition />
       <ArahPetualangan />
       <FogTransition />
       <TokohInspirasi />
-      <FogTransition />
       <TestimoniCASA />
       <FogTransition />
       <FAQ />

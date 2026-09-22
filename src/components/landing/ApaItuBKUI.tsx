@@ -33,7 +33,7 @@ export function ApaItuBKUI() {
     <SectionLangit
       id="apa-itu-bkui"
       // Jarak atas mengikuti posisi judul di frame Figma.
-      className="min-h-[58.53vw] pb-14 pt-[max(140px,14.22vw)] sm:pb-20"
+      className="min-h-[58.53vw] pb-14 pt-[max(150px,13vw)] sm:pb-20"
       dekorasi={
         /*
           Cabang dan bunga yang membingkai section ini di Figma.
@@ -44,14 +44,14 @@ export function ApaItuBKUI() {
         */
         <>
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-            <Image
+            {/* <Image
               src="/icon/landing/latest/hero-about-transition.svg"
               alt=""
               width={1000}
               height={1300}
               className="absolute top-0 left-0 h-[30vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
             >
-            </Image>
+            </Image> */}
             {/* <Image
               src="/icon/landing/latest/apaitu-branch-left.svg"
               alt=""
