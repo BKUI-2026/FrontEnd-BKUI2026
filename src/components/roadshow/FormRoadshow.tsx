@@ -6,6 +6,7 @@ import { useId, useState } from "react";
 import type { FormEvent } from "react";
 
 import { ApiError, NetworkError, daftarRoadshow } from "@/lib/api";
+import * as v from "@/lib/validasi";
 
 interface KolomRoadshowProps {
   label: string;
@@ -14,6 +15,8 @@ interface KolomRoadshowProps {
   type?: "text" | "email" | "tel" | "number";
   autoComplete: string;
   pencarian?: boolean;
+  galat?: string;
+  petunjuk?: string;
 }
 
 function KolomRoadshow({
@@ -23,6 +26,8 @@ function KolomRoadshow({
   type = "text",
   autoComplete,
   pencarian = false,
+  galat,
+  petunjuk,
 }: KolomRoadshowProps) {
   const id = useId();
 
@@ -34,15 +39,20 @@ function KolomRoadshow({
       >
         {label}
       </label>
-      <div className="flex h-11 items-center rounded-xl border-2 border-bkui-teks px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-terang">
+      <div
+        className={`flex h-11 items-center rounded-xl border-2 px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-terang ${
+          galat ? "border-bkui-galat" : "border-bkui-teks"
+        }`}
+      >
         <input
           id={id}
           name={name}
           type={type}
-          required
           min={type === "number" ? 1 : undefined}
           autoComplete={autoComplete}
           placeholder={placeholder}
+          aria-invalid={galat ? true : undefined}
+          aria-describedby={galat ? `${id}-galat` : petunjuk ? `${id}-petunjuk` : undefined}
           className="h-6 min-w-0 flex-1 bg-transparent font-body text-base font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-none"
         />
         {pencarian && (
@@ -56,6 +66,16 @@ function KolomRoadshow({
           />
         )}
       </div>
+
+      {galat ? (
+        <p id={`${id}-galat`} role="alert" className="font-body text-xs font-medium leading-[1.35] text-bkui-galat">
+          {galat}
+        </p>
+      ) : petunjuk ? (
+        <p id={`${id}-petunjuk`} className="font-body text-xs leading-[1.35] text-bkui-teks/60">
+          {petunjuk}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -73,6 +93,8 @@ function KolomRoadshow({
 export function FormRoadshow() {
   const router = useRouter();
   const [pesan, setPesan] = useState("");
+  /** Galat per kolom — ditampilkan di bawah kolomnya, bukan dikumpulkan di kaki. */
+  const [galatKolom, setGalatKolom] = useState<v.Galat>({});
   const [sedangKirim, setSedangKirim] = useState(false);
 
   async function kirim(event: FormEvent<HTMLFormElement>) {
@@ -80,14 +102,28 @@ export function FormRoadshow() {
     if (sedangKirim) return;
 
     const form = event.currentTarget;
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      setPesan("Lengkapi seluruh data sekolah dan penanggung jawab terlebih dahulu.");
-      return;
-    }
-
     const data = new FormData(form);
     const teks = (nama: string) => String(data.get(nama) ?? "").trim();
+
+    // Diperiksa sendiri, tidak memakai `reportValidity()` bawaan browser:
+    // gelembung bawaan muncul satu per satu, bahasanya ikut bahasa browser
+    // (sering Inggris), dan hilang begitu diklik. Pesan di bawah kolom tetap
+    // terbaca sampai diperbaiki.
+    const galat = v.kumpulkan({
+      namaSekolah: v.panjangMinimal(teks("namaSekolah"), 3, "Nama sekolah"),
+      alamatSekolah: v.panjangMinimal(teks("alamatSekolah"), 5, "Alamat sekolah"),
+      emailSekolah: v.email(teks("emailSekolah"), "Email sekolah"),
+      jumlahTargetSiswa: v.jumlahPositif(teks("jumlahTargetSiswa"), "Jumlah target siswa"),
+      namaPenanggungJawab: v.panjangMinimal(teks("namaPenanggungJawab"), 2, "Nama penanggung jawab"),
+      nomorHp: v.telepon(teks("nomorHp"), "Nomor HP"),
+      emailPenanggungJawab: v.email(teks("emailPenanggungJawab"), "Email penanggung jawab"),
+    });
+    setGalatKolom(galat);
+    if (v.adaGalat(galat)) {
+      setPesan("");
+      v.fokuskanGalatPertama(form, galat);
+      return;
+    }
 
     setPesan("");
     setSedangKirim(true);
@@ -100,7 +136,7 @@ export function FormRoadshow() {
         targetStudentCount: Number(teks("jumlahTargetSiswa")),
         pjName: teks("namaPenanggungJawab"),
         pjEmail: teks("emailPenanggungJawab"),
-        pjPhone: teks("nomorHp").replace(/\s/g, ""),
+        pjPhone: v.normalisasiTelepon(teks("nomorHp")),
       });
 
       router.push("/school-roadshow/success");
@@ -131,10 +167,10 @@ export function FormRoadshow() {
           <legend className="mb-6 w-full text-center font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks-tua">
             Detail Sekolah
           </legend>
-          <KolomRoadshow label="Nama Sekolah" name="namaSekolah" placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" pencarian />
-          <KolomRoadshow label="Alamat Sekolah" name="alamatSekolah" placeholder="Contoh: Jl. Taman Bukit Duri No. 2" autoComplete="street-address" />
-          <KolomRoadshow label="Email Sekolah" name="emailSekolah" type="email" placeholder="Contoh: humas@sekolah.sch.id" autoComplete="email" />
-          <KolomRoadshow label="Jumlah Target Siswa" name="jumlahTargetSiswa" type="number" placeholder="Contoh: 120" autoComplete="off" />
+          <KolomRoadshow label="Nama Sekolah" name="namaSekolah" galat={galatKolom.namaSekolah} placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" pencarian />
+          <KolomRoadshow label="Alamat Sekolah" name="alamatSekolah" galat={galatKolom.alamatSekolah} placeholder="Contoh: Jl. Taman Bukit Duri No. 2" autoComplete="street-address" />
+          <KolomRoadshow label="Email Sekolah" name="emailSekolah" galat={galatKolom.emailSekolah} type="email" placeholder="Contoh: humas@sekolah.sch.id" autoComplete="email" />
+          <KolomRoadshow label="Jumlah Target Siswa" name="jumlahTargetSiswa" galat={galatKolom.jumlahTargetSiswa} type="number" placeholder="Contoh: 120" autoComplete="off" />
         </fieldset>
 
         <div aria-hidden className="hidden w-px bg-bkui-teks lg:block" />
@@ -143,9 +179,9 @@ export function FormRoadshow() {
           <legend className="mb-6 w-full text-center font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks-tua">
             Kontak Penanggung Jawab
           </legend>
-          <KolomRoadshow label="Nama Lengkap" name="namaPenanggungJawab" placeholder="Contoh: Andi Pratama" autoComplete="name" />
-          <KolomRoadshow label="Nomor HP" name="nomorHp" type="tel" placeholder="Contoh: 0812 3456 7890" autoComplete="tel" />
-          <KolomRoadshow label="Email" name="emailPenanggungJawab" type="email" placeholder="Contoh: andi@email.com" autoComplete="email" />
+          <KolomRoadshow label="Nama Lengkap" name="namaPenanggungJawab" galat={galatKolom.namaPenanggungJawab} placeholder="Contoh: Andi Pratama" autoComplete="name" />
+          <KolomRoadshow label="Nomor HP" name="nomorHp" galat={galatKolom.nomorHp} petunjuk="Boleh diawali 08 atau +62." type="tel" placeholder="Contoh: 0812 3456 7890" autoComplete="tel" />
+          <KolomRoadshow label="Email" name="emailPenanggungJawab" galat={galatKolom.emailPenanggungJawab} type="email" placeholder="Contoh: andi@email.com" autoComplete="email" />
         </fieldset>
       </div>
 

@@ -11,6 +11,11 @@ interface KolomIsianProps {
   placeholder?: string;
   /** Nilai `autocomplete` HTML. Wajib diisi sadar, jangan dibiarkan menebak. */
   autoComplete: string;
+  /** Pesan galat untuk kolom INI. Kosong berarti tidak ada masalah. */
+  galat?: string;
+  /** Petunjuk singkat di bawah kolom, mis. contoh format yang diterima. */
+  petunjuk?: string;
+  inputMode?: "text" | "numeric" | "tel" | "email";
 }
 
 /**
@@ -31,8 +36,13 @@ export function KolomIsian({
   type = "text",
   placeholder,
   autoComplete,
+  galat,
+  petunjuk,
+  inputMode,
 }: KolomIsianProps) {
   const id = useId();
+  const idGalat = `${id}-galat`;
+  const idPetunjuk = `${id}-petunjuk`;
   const [terlihat, setTerlihat] = useState(false);
   const sandi = type === "password";
 
@@ -42,13 +52,25 @@ export function KolomIsian({
         {label}
       </label>
 
-      <div className="flex h-10 items-center gap-1 rounded-lg border border-bkui-teks px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau sm:gap-3">
+      {/*
+        Tepi kolom ikut memerah saat bermasalah. Warna saja tidak pernah jadi
+        satu-satunya penanda — pesannya tetap ditulis di bawah, supaya yang
+        tidak bisa membedakan warna tetap tahu apa yang salah.
+      */}
+      <div
+        className={`flex h-10 items-center gap-1 rounded-lg border px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bkui-hijau sm:gap-3 ${
+          galat ? "border-2 border-bkui-galat" : "border-bkui-teks"
+        }`}
+      >
         <input
           id={id}
           name={name}
           type={sandi && terlihat ? "text" : type}
           placeholder={placeholder}
           autoComplete={autoComplete}
+          inputMode={inputMode}
+          aria-invalid={galat ? true : undefined}
+          aria-describedby={galat ? idGalat : petunjuk ? idPetunjuk : undefined}
           className="h-6 min-w-0 flex-1 bg-transparent font-body text-sm font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-none"
         />
 
@@ -71,6 +93,20 @@ export function KolomIsian({
           </button>
         )}
       </div>
+
+      {/*
+        Pesan galat menggantikan petunjuk, tidak menumpuknya — dua baris teks
+        kecil di bawah satu kolom sempit justru saling mengaburkan.
+      */}
+      {galat ? (
+        <p id={idGalat} role="alert" className="font-body text-xs font-medium leading-[1.35] text-bkui-galat">
+          {galat}
+        </p>
+      ) : petunjuk ? (
+        <p id={idPetunjuk} className="font-body text-xs leading-[1.35] text-bkui-teks/60">
+          {petunjuk}
+        </p>
+      ) : null}
     </div>
   );
 }

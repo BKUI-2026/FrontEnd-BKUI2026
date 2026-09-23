@@ -6,6 +6,7 @@ import { useState, type FormEvent } from "react";
 
 import { ApiError, NetworkError } from "@/lib/api";
 import { useSesi } from "@/lib/auth-state";
+import * as v from "@/lib/validasi";
 
 import { KolomIsian } from "./KolomIsian";
 
@@ -27,25 +28,33 @@ export function FormMasuk() {
   const { masuk } = useSesi();
 
   const [pesanGalat, setPesanGalat] = useState<string | null>(null);
+  /** Galat per kolom, ditampilkan tepat di bawah kolomnya masing-masing. */
+  const [galatKolom, setGalatKolom] = useState<v.Galat>({});
   const [sedangKirim, setSedangKirim] = useState(false);
 
   const kirim = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (sedangKirim) return;
 
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const email = String(data.get("email") ?? "").trim();
     const sandi = String(data.get("sandi") ?? "");
 
-    if (!email || !sandi) {
-      setPesanGalat("Email dan kata sandi wajib diisi.");
-      return;
-    }
-    // Pemeriksaan format paling longgar yang tetap berguna: ada karakter
-    // sebelum @, sesudah @, dan sebuah titik di domainnya. Aturan email yang
-    // "ketat" terkenal menolak alamat yang sebenarnya sah.
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setPesanGalat("Format email belum benar.");
+    // Keduanya diperiksa sekaligus, bukan berhenti di kesalahan pertama.
+    // Kalau email DAN kata sandi sama-sama kosong, memberitahukannya satu per
+    // satu memaksa orang mengirim dua kali untuk tahu keduanya bermasalah.
+    const galat = v.kumpulkan({
+      email: v.email(email),
+      // Di halaman Masuk panjang kata sandi TIDAK diperiksa: aturan panjang
+      // bisa berubah, dan akun lama mungkin memakai sandi yang lebih pendek.
+      // Yang berhak menolaknya cuma server.
+      sandi: sandi ? null : "Kata sandi wajib diisi.",
+    });
+    setGalatKolom(galat);
+    if (v.adaGalat(galat)) {
+      setPesanGalat(null);
+      v.fokuskanGalatPertama(form, galat);
       return;
     }
 
@@ -93,13 +102,22 @@ export function FormMasuk() {
 
       <form onSubmit={kirim} noValidate className="mt-6 flex w-full flex-col items-center gap-8">
         <div className="flex w-full flex-col gap-6 sm:max-w-[392px]">
-          <KolomIsian label="Email" name="email" type="email" placeholder="Contoh: nama@email.com" autoComplete="email" />
+          <KolomIsian
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="Contoh: nama@email.com"
+            autoComplete="email"
+            inputMode="email"
+            galat={galatKolom.email}
+          />
           <KolomIsian
             label="Kata Sandi"
             name="sandi"
             type="password"
             placeholder="Masukkan kata sandi"
             autoComplete="current-password"
+            galat={galatKolom.sandi}
           />
         </div>
 

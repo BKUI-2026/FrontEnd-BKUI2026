@@ -13,6 +13,7 @@ import {
 } from "@/lib/api";
 import { useSesi } from "@/lib/auth-state";
 import { kompresGambar } from "@/lib/kompres-gambar";
+import * as v from "@/lib/validasi";
 
 import { KolomIsian } from "./KolomIsian";
 
@@ -65,14 +66,6 @@ const FASE = [
   "Media Sosial",
 ] as const;
 
-const FIELD_PER_FASE = [
-  ["nama", "sekolah", "telepon", "line", "email", "sandi", "konfirmasi-sandi"],
-  ["jenis-kelamin", "usia", "nisn", "kelas", "provinsi"],
-  ["kartu-pelajar"],
-  ["minat", "kelebihan-kekurangan", "kontribusi", "komitmen"],
-  ["bukti-instagram", "bukti-tiktok", "bukti-x", "bukti-story"],
-] as const;
-
 /**
  * Form daftar mentoring bertahap.
  *
@@ -99,61 +92,85 @@ export function FormDaftar() {
   const [sedangKirim, setSedangKirim] = useState(false);
   /** Tahap yang sedang berjalan — pengiriman ini beberapa langkah, bukan satu. */
   const [pesanProses, setPesanProses] = useState("");
+  /**
+   * Galat per kolom, ditampilkan tepat di bawah kolomnya masing-masing.
+   * Menggantikan satu pesan tunggal di kaki formulir: di langkah yang berisi
+   * tujuh kolom, pesan tunggal memaksa orang menebak kolom mana yang salah.
+   */
+  const [galatKolom, setGalatKolom] = useState<v.Galat>({});
 
-  const validasiFase = (form: HTMLFormElement, fase = faseAktif) => {
+  /**
+   * Periksa satu langkah dan kembalikan galat PER KOLOM.
+   *
+   * Semua kolom di langkah itu diperiksa sekaligus, bukan berhenti di
+   * kesalahan pertama. Kalau berhenti di yang pertama, orang yang tiga
+   * kolomnya bermasalah harus menekan Lanjut tiga kali untuk tahu semuanya.
+   */
+  const periksaFase = (form: HTMLFormElement, fase: number): v.Galat => {
     const data = new FormData(form);
-
-    for (const field of FIELD_PER_FASE[fase]) {
-      const nilai = data.get(field);
-      const kosong = nilai instanceof File ? nilai.size === 0 : !String(nilai ?? "").trim();
-      if (kosong) {
-        setPesanGalat("Lengkapi semua kolom di langkah ini sebelum lanjut.");
-        return false;
-      }
-    }
+    const s = (nama: string) => String(data.get(nama) ?? "");
 
     if (fase === 0) {
-      const nama = String(data.get("nama") ?? "");
-      const email = String(data.get("email") ?? "").trim();
-      const telepon = String(data.get("telepon") ?? "").trim();
-      const sandi = String(data.get("sandi") ?? "");
-      const konfirmasi = String(data.get("konfirmasi-sandi") ?? "");
-
-      if (nama !== nama.toUpperCase()) {
-        setPesanGalat("Nama lengkap wajib memakai huruf kapital.");
-        return false;
-      }
-      if (!/^\+62\d{7,14}$/.test(telepon)) {
-        setPesanGalat("Nomor WhatsApp pakai format +62, contoh: +628964321000.");
-        return false;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        setPesanGalat("Format email belum benar.");
-        return false;
-      }
-      if (sandi.length < 8) {
-        setPesanGalat("Kata sandi minimal 8 karakter.");
-        return false;
-      }
-      if (sandi !== konfirmasi) {
-        setPesanGalat("Konfirmasi kata sandi belum sama dengan kata sandinya.");
-        return false;
-      }
+      return v.kumpulkan({
+        // Nama TIDAK lagi ditolak karena bukan huruf kapital — dikapitalkan
+        // sendiri saat dikirim. Menolak isian yang sebenarnya sudah benar
+        // hanya karena bentuk hurufnya itu pekerjaan yang bisa dikerjakan
+        // komputer.
+        nama: v.panjangMinimal(s("nama"), 2, "Nama lengkap"),
+        sekolah: v.wajib(s("sekolah"), "Asal sekolah"),
+        telepon: v.telepon(s("telepon")),
+        // ID Line memang opsional di BE; dulu FE mewajibkannya, jadi yang
+        // tidak punya Line tidak bisa lewat sama sekali.
+        email: v.email(s("email")),
+        sandi: v.sandi(s("sandi")),
+        "konfirmasi-sandi": v.sandiSama(s("konfirmasi-sandi"), s("sandi")),
+      });
     }
 
     if (fase === 1) {
-      const usia = Number(data.get("usia"));
-      const nisn = String(data.get("nisn") ?? "").trim();
-      if (!Number.isInteger(usia) || usia < 10 || usia > 25) {
-        setPesanGalat("Usia harus berupa angka yang valid.");
-        return false;
-      }
-      if (!/^\d{10}$/.test(nisn)) {
-        setPesanGalat("NISN harus berisi 10 digit angka.");
-        return false;
-      }
+      return v.kumpulkan({
+        "jenis-kelamin": v.wajib(s("jenis-kelamin"), "Jenis kelamin"),
+        usia: v.usia(s("usia")),
+        nisn: v.nisn(s("nisn")),
+        kelas: v.wajib(s("kelas"), "Kelas"),
+        provinsi: v.wajib(s("provinsi"), "Provinsi asal sekolah"),
+      });
     }
 
+    if (fase === 2) {
+      return v.kumpulkan({
+        "kartu-pelajar": v.berkasWajib(data.get("kartu-pelajar"), "Kartu pelajar"),
+      });
+    }
+
+    if (fase === 3) {
+      return v.kumpulkan({
+        minat: v.panjangMinimal(s("minat"), 10, "Jawaban minat"),
+        "kelebihan-kekurangan": v.panjangMinimal(
+          s("kelebihan-kekurangan"), 10, "Jawaban kelebihan & kekurangan",
+        ),
+        kontribusi: v.panjangMinimal(s("kontribusi"), 10, "Jawaban kontribusi"),
+        komitmen: v.wajib(s("komitmen"), "Pernyataan komitmen"),
+      });
+    }
+
+    return v.kumpulkan({
+      "bukti-instagram": v.berkasWajib(data.get("bukti-instagram"), "Bukti follow Instagram"),
+      "bukti-tiktok": v.berkasWajib(data.get("bukti-tiktok"), "Bukti follow TikTok"),
+      "bukti-x": v.berkasWajib(data.get("bukti-x"), "Bukti follow X"),
+      "bukti-story": v.berkasWajib(data.get("bukti-story"), "Bukti unggah Story"),
+    });
+  };
+
+  /** Periksa satu langkah, tampilkan galatnya, dan fokuskan yang pertama. */
+  const validasiFase = (form: HTMLFormElement, fase = faseAktif): boolean => {
+    const galat = periksaFase(form, fase);
+    setGalatKolom(galat);
+    if (v.adaGalat(galat)) {
+      setPesanGalat(null);
+      v.fokuskanGalatPertama(form, galat);
+      return false;
+    }
     setPesanGalat(null);
     return true;
   };
@@ -166,6 +183,7 @@ export function FormDaftar() {
 
   const kembali = () => {
     setPesanGalat(null);
+    setGalatKolom({});
     setFaseAktif((fase) => Math.max(fase - 1, 0));
   };
 
@@ -221,16 +239,25 @@ export function FormDaftar() {
     // Kalau ada yang tidak lolos, layarnya dipindahkan ke langkah itu supaya
     // pesan galatnya muncul di sebelah kolom yang dimaksud.
     for (let fase = 0; fase < FASE.length; fase += 1) {
-      if (!validasiFase(e.currentTarget, fase)) {
+      const galat = periksaFase(e.currentTarget, fase);
+      if (v.adaGalat(galat)) {
+        setGalatKolom(galat);
+        setPesanGalat(null);
         setFaseAktif(fase);
+        v.fokuskanGalatPertama(e.currentTarget, galat);
         return;
       }
     }
+    setGalatKolom({});
 
     const data = new FormData(e.currentTarget);
-    const nama = String(data.get("nama") ?? "").trim();
+    // Dirapikan di sini, bukan dipaksakan ke pengisi form lewat pesan galat.
+    // Nama dikapitalkan karena dipakai di berkas resmi kepanitiaan, dan nomor
+    // dinormalkan ke +62 karena itu yang diterima BE — sementara yang paling
+    // lazim diketik orang Indonesia justru diawali 08.
+    const nama = String(data.get("nama") ?? "").trim().toUpperCase();
     const sekolah = String(data.get("sekolah") ?? "").trim();
-    const telepon = String(data.get("telepon") ?? "").replace(/\s/g, "");
+    const telepon = v.normalisasiTelepon(String(data.get("telepon") ?? ""));
     const email = String(data.get("email") ?? "").trim();
     const sandi = String(data.get("sandi") ?? "");
 
@@ -358,7 +385,7 @@ export function FormDaftar() {
           Seluruh fase tetap TERPASANG di DOM; yang tidak aktif disembunyikan.
 
           Ini bukan soal gaya. Sebelumnya tiap fase dirender bersyarat
-          (`faseAktif === 0 && <FaseAkun />`), jadi begitu pendaftar maju ke
+          (`faseAktif === 0 && <FaseAkun galat={galatKolom} />`), jadi begitu pendaftar maju ke
           langkah berikutnya, input langkah sebelumnya dilepas dari DOM dan
           nilainya ikut hilang. Saat submit di langkah 5, `new FormData(form)`
           mengembalikan nama, email, dan kata sandi KOSONG — pendaftaran selalu
@@ -371,19 +398,19 @@ export function FormDaftar() {
         */}
         <div className="w-full">
           <Fase aktif={faseAktif === 0}>
-            <FaseAkun />
+            <FaseAkun galat={galatKolom} />
           </Fase>
           <Fase aktif={faseAktif === 1}>
-            <FaseSekolah />
+            <FaseSekolah galat={galatKolom} />
           </Fase>
           <Fase aktif={faseAktif === 2}>
-            <FaseKartuPelajar />
+            <FaseKartuPelajar galat={galatKolom} />
           </Fase>
           <Fase aktif={faseAktif === 3}>
-            <FaseEsai />
+            <FaseEsai galat={galatKolom} />
           </Fase>
           <Fase aktif={faseAktif === 4}>
-            <FaseSosial />
+            <FaseSosial galat={galatKolom} />
           </Fase>
         </div>
 
@@ -487,16 +514,16 @@ function RoadmapFase({ faseAktif }: { faseAktif: number }) {
   );
 }
 
-function FaseAkun() {
+function FaseAkun({ galat }: { galat: v.Galat }) {
   return (
     <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
-        <KolomIsian label="Nama Lengkap" name="nama" placeholder="Contoh: MUHAMMAD ALIF" autoComplete="name" />
-        <KolomIsian label="Asal Sekolah" name="sekolah" placeholder="Contoh: SMA NEGERI 8 JAKARTA" autoComplete="organization" />
-        <KolomIsian label="Nomor Whatsapp Pribadi" name="telepon" type="tel" placeholder="Contoh: +628964321000" autoComplete="tel" />
-        <KolomIsian label="ID Line Pribadi" name="line" placeholder="Contoh: alifbkui26" autoComplete="off" />
-        <KolomIsian label="Email Pribadi" name="email" type="email" placeholder="Contoh: nama@email.com" autoComplete="email" />
-        <KolomIsian label="Buat kata sandi baru" name="sandi" type="password" placeholder="Minimal 8 karakter" autoComplete="new-password" />
+        <KolomIsian label="Nama Lengkap" name="nama" placeholder="Contoh: Muhammad Alif" autoComplete="name" galat={galat.nama} petunjuk="Ditulis sesuai kartu pelajar." />
+        <KolomIsian label="Asal Sekolah" name="sekolah" placeholder="Contoh: SMA Negeri 8 Jakarta" autoComplete="organization" galat={galat.sekolah} />
+        <KolomIsian label="Nomor Whatsapp Pribadi" name="telepon" type="tel" inputMode="tel" placeholder="Contoh: 081234567890" autoComplete="tel" galat={galat.telepon} petunjuk="Boleh diawali 08 atau +62." />
+        <KolomIsian label="ID Line Pribadi" name="line" placeholder="Contoh: alifbkui26" autoComplete="off" petunjuk="Boleh dikosongkan kalau tidak punya." />
+        <KolomIsian label="Email Pribadi" name="email" type="email" inputMode="email" placeholder="Contoh: nama@email.com" autoComplete="email" galat={galat.email} petunjuk="Dipakai untuk masuk ke akunmu." />
+        <KolomIsian label="Buat kata sandi baru" name="sandi" type="password" placeholder="Minimal 8 karakter" autoComplete="new-password" galat={galat.sandi} />
         <div className="md:col-span-2 md:max-w-[calc(50%-12px)]">
           <KolomIsian
             label="Konfirmasi kata sandi baru"
@@ -504,6 +531,7 @@ function FaseAkun() {
             type="password"
             placeholder="Masukkan ulang kata sandi"
             autoComplete="new-password"
+            galat={galat["konfirmasi-sandi"]}
           />
         </div>
       </div>
@@ -511,53 +539,54 @@ function FaseAkun() {
   );
 }
 
-function FaseSekolah() {
+function FaseSekolah({ galat }: { galat: v.Galat }) {
   return (
     <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
-        <RadioGroup label="Jenis Kelamin" name="jenis-kelamin" options={["Laki-Laki", "Perempuan"]} />
-        <KolomAngka label="Usia" name="usia" placeholder="Contoh: 17" />
-        <KolomIsian label="Nomor Induk Siswa Nasional (NISN)" name="nisn" placeholder="Contoh: 1234567890" autoComplete="off" />
-        <RadioGroup label="Berada di kelas berapa kamu sekarang" name="kelas" options={["X", "XI", "XII"]} />
-        <KolomSelect label="Provinsi asal sekolah" name="provinsi" options={PROVINSI_INDONESIA} placeholder="Pilih provinsi" />
+        <RadioGroup label="Jenis Kelamin" name="jenis-kelamin" options={["Laki-Laki", "Perempuan"]} galat={galat["jenis-kelamin"]} />
+        <KolomAngka label="Usia" name="usia" placeholder="Contoh: 17" galat={galat.usia} />
+        <KolomIsian label="Nomor Induk Siswa Nasional (NISN)" name="nisn" inputMode="numeric" placeholder="Contoh: 1234567890" autoComplete="off" galat={galat.nisn} petunjuk="10 digit angka, ada di kartu pelajar." />
+        <RadioGroup label="Berada di kelas berapa kamu sekarang" name="kelas" options={["X", "XI", "XII"]} galat={galat.kelas} />
+        <KolomSelect label="Provinsi asal sekolah" name="provinsi" options={PROVINSI_INDONESIA} placeholder="Pilih provinsi" galat={galat.provinsi} />
       </div>
     </PanelFase>
   );
 }
 
-function FaseKartuPelajar() {
+function FaseKartuPelajar({ galat }: { galat: v.Galat }) {
   return (
     <PanelFase>
-      <KolomFile label="Lampirkan bukti kartu pelajar" name="kartu-pelajar" />
+      <KolomFile label="Lampirkan bukti kartu pelajar" name="kartu-pelajar" galat={galat["kartu-pelajar"]} />
     </PanelFase>
   );
 }
 
-function FaseEsai() {
+function FaseEsai({ galat }: { galat: v.Galat }) {
   return (
     <PanelFase>
       <div className="grid w-full gap-6">
-        <KolomTeksArea label="Apa yang membuatmu berminat mengikuti program ini?" name="minat" placeholder="Ceritakan alasan dan harapanmu mengikuti Mentoring BKUI 2026." />
-        <KolomTeksArea label="Apa kelebihan dan kekurangan yang kamu miliki?" name="kelebihan-kekurangan" placeholder="Tulis kelebihan yang bisa kamu bawa dan kekurangan yang sedang kamu perbaiki." />
-        <KolomTeksArea label="Kontribusi seperti apa yang akan kamu berikan pada program ini?" name="kontribusi" placeholder="Contoh: aktif berdiskusi, membantu teman kelompok, dan menjaga komitmen sampai akhir." />
+        <KolomTeksArea label="Apa yang membuatmu berminat mengikuti program ini?" name="minat" placeholder="Ceritakan alasan dan harapanmu mengikuti Mentoring BKUI 2026." galat={galat.minat} />
+        <KolomTeksArea label="Apa kelebihan dan kekurangan yang kamu miliki?" name="kelebihan-kekurangan" placeholder="Tulis kelebihan yang bisa kamu bawa dan kekurangan yang sedang kamu perbaiki." galat={galat["kelebihan-kekurangan"]} />
+        <KolomTeksArea label="Kontribusi seperti apa yang akan kamu berikan pada program ini?" name="kontribusi" placeholder="Contoh: aktif berdiskusi, membantu teman kelompok, dan menjaga komitmen sampai akhir." galat={galat.kontribusi} />
         <RadioGroup
           label="Program ini akan dilaksanakan selama kurang lebih 3 bulan secara daring. Saya bersedia berkomitmen mengikuti rangkaian Mentoring Bedah Kampus UI 2026 hingga selesai."
           name="komitmen"
           options={["Ya, bersedia", "Tidak, bersedia"]}
+          galat={galat.komitmen}
         />
       </div>
     </PanelFase>
   );
 }
 
-function FaseSosial() {
+function FaseSosial({ galat }: { galat: v.Galat }) {
   return (
     <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
-        <KolomFile label="Bukti Follow Instagram bkui.official" name="bukti-instagram" />
-        <KolomFile label="Bukti Follow Tiktok bkui.official" name="bukti-tiktok" />
-        <KolomFile label="Bukti Follow X @BKUI_Official" name="bukti-x" />
-        <KolomFile label="Bukti unggah Feeds Open Recruitment Mentoring BKUI 2026 ke Instagram Story" name="bukti-story" />
+        <KolomFile label="Bukti Follow Instagram bkui.official" name="bukti-instagram" galat={galat["bukti-instagram"]} />
+        <KolomFile label="Bukti Follow Tiktok bkui.official" name="bukti-tiktok" galat={galat["bukti-tiktok"]} />
+        <KolomFile label="Bukti Follow X @BKUI_Official" name="bukti-x" galat={galat["bukti-x"]} />
+        <KolomFile label="Bukti unggah Feeds Open Recruitment Mentoring BKUI 2026 ke Instagram Story" name="bukti-story" galat={galat["bukti-story"]} />
       </div>
     </PanelFase>
   );
@@ -575,13 +604,48 @@ function PanelFase({
   );
 }
 
-function FieldShell({ label, children }: { label: string; children: ReactNode }) {
+/**
+ * Pesan galat satu kolom.
+ *
+ * Selalu di bawah kolomnya, tidak pernah dikumpulkan di kaki formulir:
+ * pesan yang jauh dari kolomnya memaksa orang menebak kolom mana yang
+ * dimaksud — apalagi di langkah yang berisi delapan kolom sekaligus.
+ */
+function PesanKolom({ id, pesan }: { id?: string; pesan?: string }) {
+  if (!pesan) return null;
+  return (
+    <p id={id} role="alert" className="font-body text-xs font-medium leading-[1.35] text-bkui-galat">
+      {pesan}
+    </p>
+  );
+}
+
+/** Kelas tepi kolom: memerah saat bermasalah, tapi warna tidak pernah jadi
+ *  satu-satunya penanda — pesannya selalu ikut ditulis. */
+function tepi(galat?: string): string {
+  return galat ? "border-2 border-bkui-galat" : "border border-bkui-teks";
+}
+
+function FieldShell({
+  label,
+  children,
+  galat,
+  id,
+  idLabel,
+}: {
+  label: string;
+  children: ReactNode;
+  galat?: string;
+  id?: string;
+  idLabel?: string;
+}) {
   return (
     <div className="flex w-full flex-col gap-2">
-      <span className="font-body text-sm font-medium leading-[1.35] text-bkui-teks">
+      <span id={idLabel} className="font-body text-sm font-medium leading-[1.35] text-bkui-teks">
         {label}
       </span>
       {children}
+      <PesanKolom id={id ? `${id}-galat` : undefined} pesan={galat} />
     </div>
   );
 }
@@ -590,14 +654,31 @@ function RadioGroup({
   label,
   name,
   options,
+  galat,
 }: {
   label: string;
   name: string;
   options: readonly string[];
+  galat?: string;
 }) {
+  const idLabel = `${name}-label`;
+  const idGalat = `${name}-galat`;
+
   return (
-    <FieldShell label={label}>
-      <div className="flex min-h-10 flex-wrap items-center gap-2 rounded-lg border border-bkui-teks px-3 py-2">
+    <FieldShell label={label} galat={galat} id={name} idLabel={idLabel}>
+      {/*
+        Keadaan galat dipasang di GRUP-nya, bukan di tiap tombol radio:
+        `aria-invalid` tidak berlaku pada role="radio", jadi kalau dipasang di
+        sana pembaca layar mengabaikannya. Dengan role="radiogroup", pesannya
+        ikut terbaca begitu fokus masuk ke pilihan mana pun.
+      */}
+      <div
+        role="radiogroup"
+        aria-labelledby={idLabel}
+        aria-invalid={galat ? true : undefined}
+        aria-describedby={galat ? idGalat : undefined}
+        className={`flex min-h-10 flex-wrap items-center gap-2 rounded-lg px-3 py-2 ${tepi(galat)}`}
+      >
         {options.map((option) => (
           <label key={option} className="inline-flex min-h-8 cursor-pointer items-center gap-2 rounded-full px-2 font-body text-sm font-medium text-bkui-teks">
             <input name={name} type="radio" value={option} className="size-4 accent-bkui-hijau" />
@@ -609,7 +690,7 @@ function RadioGroup({
   );
 }
 
-function KolomAngka({ label, name, placeholder }: { label: string; name: string; placeholder: string }) {
+function KolomAngka({ label, name, placeholder, galat }: { label: string; name: string; placeholder: string; galat?: string }) {
   const id = useId();
 
   return (
@@ -623,8 +704,11 @@ function KolomAngka({ label, name, placeholder }: { label: string; name: string;
         type="number"
         inputMode="numeric"
         placeholder={placeholder}
-        className="h-10 rounded-lg border border-bkui-teks bg-transparent px-4 font-body text-sm font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau"
+        aria-invalid={galat ? true : undefined}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className={`h-10 rounded-lg bg-transparent px-4 font-body text-sm font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${tepi(galat)}`}
       />
+      <PesanKolom id={`${id}-galat`} pesan={galat} />
     </div>
   );
 }
@@ -634,11 +718,13 @@ function KolomSelect({
   name,
   options,
   placeholder,
+  galat,
 }: {
   label: string;
   name: string;
   options: readonly string[];
   placeholder: string;
+  galat?: string;
 }) {
   const id = useId();
 
@@ -651,18 +737,21 @@ function KolomSelect({
         id={id}
         name={name}
         defaultValue=""
-        className="h-10 rounded-lg border border-bkui-teks bg-transparent px-4 font-body text-sm font-medium leading-[1.2] text-bkui-teks focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau"
+        aria-invalid={galat ? true : undefined}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className={`h-10 rounded-lg bg-transparent px-4 font-body text-sm font-medium leading-[1.2] text-bkui-teks focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${tepi(galat)}`}
       >
         <option value="" disabled>{placeholder}</option>
         {options.map((option) => (
           <option key={option} value={option}>{option}</option>
         ))}
       </select>
+      <PesanKolom id={`${id}-galat`} pesan={galat} />
     </div>
   );
 }
 
-function KolomFile({ label, name }: { label: string; name: string }) {
+function KolomFile({ label, name, galat }: { label: string; name: string; galat?: string }) {
   const id = useId();
 
   return (
@@ -675,8 +764,11 @@ function KolomFile({ label, name }: { label: string; name: string }) {
         name={name}
         type="file"
         accept="image/*,.pdf"
-        className="min-h-10 rounded-lg border border-bkui-teks bg-transparent px-4 py-2 font-body text-sm font-medium leading-[1.2] text-bkui-teks file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-bkui-button file:px-4 file:py-1.5 file:font-ui file:text-sm file:font-medium file:text-bkui-teks focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau"
+        aria-invalid={galat ? true : undefined}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className={`min-h-10 rounded-lg bg-transparent px-4 py-2 font-body text-sm font-medium leading-[1.2] text-bkui-teks file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-bkui-button file:px-4 file:py-1.5 file:font-ui file:text-sm file:font-medium file:text-bkui-teks focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${tepi(galat)}`}
       />
+      <PesanKolom id={`${id}-galat`} pesan={galat} />
     </div>
   );
 }
@@ -685,10 +777,12 @@ function KolomTeksArea({
   label,
   name,
   placeholder,
+  galat,
 }: {
   label: string;
   name: string;
   placeholder: string;
+  galat?: string;
 }) {
   const id = useId();
 
@@ -702,8 +796,11 @@ function KolomTeksArea({
         name={name}
         placeholder={placeholder}
         rows={4}
-        className="min-h-28 resize-y rounded-lg border border-bkui-teks bg-transparent px-4 py-3 font-body text-sm font-medium leading-[1.4] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau"
+        aria-invalid={galat ? true : undefined}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className={`min-h-28 resize-y rounded-lg bg-transparent px-4 py-3 font-body text-sm font-medium leading-[1.4] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${tepi(galat)}`}
       />
+      <PesanKolom id={`${id}-galat`} pesan={galat} />
     </div>
   );
 }
