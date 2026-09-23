@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import {
   ApiError,
   NetworkError,
+  ambilAcara,
   statusMentoring,
+  type Acara,
   type MentoringRegistrationState,
 } from "@/lib/api";
 import { useSesi } from "@/lib/auth-state";
@@ -14,25 +16,21 @@ import { useSesi } from "@/lib/auth-state";
 import { LatarDashboard } from "./LatarDashboard";
 import { SidebarDashboard } from "./SidebarDashboard";
 
-/** Hasil pengambilan status mentoring dari BE. */
+/** Hasil pengambilan data dari BE. */
 type HasilMuat =
   | { jenis: "memuat" }
-  | { jenis: "siap"; status: MentoringRegistrationState }
+  | { jenis: "siap"; status: MentoringRegistrationState; acara: Acara[] }
   | { jenis: "galat"; pesan: string };
 
 /** Apa yang digambar di layar — termasuk keadaan yang tidak perlu memanggil BE. */
 type Keadaan = HasilMuat | { jenis: "bukanSiswa" };
 
 /**
- * "Acara Saya" — daftar acara yang diikuti pengguna.
+ * "Acara Saya" — acara yang diumumkan panitia untuk peserta mentoring.
  *
- * Satu-satunya acara yang datanya ada di BE saat ini adalah Mentoring, dan
- * statusnya ditarik dari `GET /mentoring-registrations/me`.
- *
- * Detail sesi (tanggal, tautan Zoom, pengumuman) TIDAK ada di endpoint itu.
- * Menurut PRD, isi seperti itu dikelola Admin lewat entity Content, dan slug
- * untuk mentoring belum disepakati — jadi bagian itu masih menunggu, bukan
- * diisi tanggal karangan seperti saat slicing.
+ * Isinya dikelola panitia lewat panel admin (`/acara` di BE), bukan ditulis
+ * di sini. Acara berstatus draf tidak pernah ikut terkirim, jadi panitia bisa
+ * menyiapkan jadwal jauh hari tanpa terlihat siswa.
  */
 export function AcaraSaya() {
   const { user } = useSesi();
@@ -41,15 +39,18 @@ export function AcaraSaya() {
   const adalahSiswa = user?.role === "STUDENT";
 
   useEffect(() => {
-    // Endpoint mentoring hanya untuk role STUDENT — memanggilnya sebagai
-    // General Public cuma menghasilkan 403 yang sudah bisa kita duga.
+    // Kedua endpoint hanya untuk role STUDENT — memanggilnya sebagai General
+    // Public cuma menghasilkan 403 yang sudah bisa kita duga.
     if (!adalahSiswa) return;
 
     let masihTerpasang = true;
 
-    statusMentoring()
-      .then((status) => {
-        if (masihTerpasang) setHasil({ jenis: "siap", status });
+    // Diminta bersamaan, bukan berurutan: keduanya tidak saling bergantung,
+    // dan menunggunya satu per satu membuat dashboard terasa dua kali lebih
+    // lambat dibuka.
+    Promise.all([statusMentoring(), ambilAcara()])
+      .then(([status, acara]) => {
+        if (masihTerpasang) setHasil({ jenis: "siap", status, acara });
       })
       .catch((galat: unknown) => {
         if (!masihTerpasang) return;
@@ -76,7 +77,9 @@ export function AcaraSaya() {
         <SidebarDashboard aktif="acara" />
 
         <main className="flex min-h-[748px] min-w-0 flex-1 flex-col items-center rounded-3xl px-0 py-8 lg:px-12 lg:py-12">
-          <h1 className="font-display text-4xl leading-[1.4] text-bkui-teks sm:text-5xl">Acara Saya</h1>
+          <h1 className="font-display text-4xl leading-[1.4] text-bkui-teks sm:text-5xl">
+            Acara Saya
+          </h1>
 
           <div className="mt-6 flex w-full flex-col gap-6">
             {keadaan.jenis === "memuat" && (
@@ -101,13 +104,29 @@ export function AcaraSaya() {
             {keadaan.jenis === "siap" && !keadaan.status.registered && (
               <KartuKosong
                 judul="Belum ada acara"
-                keterangan="Kamu belum mendaftar program Mentoring. Setelah mendaftar, detail sesinya akan muncul di halaman ini."
+                keterangan="Kamu belum mendaftar program Mentoring. Setelah mendaftar, acara yang diumumkan panitia akan muncul di halaman ini."
               />
             )}
 
-            {keadaan.jenis === "siap" && keadaan.status.registered && (
-              <KartuMentoring terdaftarSejak={keadaan.status.registeredAt} />
-            )}
+            {/*
+              Sudah terdaftar tapi panitia belum mengumumkan acara apa pun.
+              Dibedakan dari "belum mendaftar" dengan sengaja: keduanya sama-sama
+              kosong di layar, tapi yang harus dilakukan pembacanya berbeda.
+            */}
+            {keadaan.jenis === "siap" &&
+              keadaan.status.registered &&
+              keadaan.acara.length === 0 && (
+                <KartuKosong
+                  judul="Pendaftaranmu sudah tercatat"
+                  keterangan="Jadwal sesi dan tautan pertemuan akan muncul di sini setelah diumumkan panitia BKUI 2026."
+                />
+              )}
+
+            {keadaan.jenis === "siap" &&
+              keadaan.status.registered &&
+              keadaan.acara.map((acara) => (
+                <KartuAcara key={acara.id} acara={acara} />
+              ))}
           </div>
         </main>
       </div>
@@ -124,44 +143,83 @@ function KartuKosong({ judul, keterangan }: { judul: string; keterangan: string 
   );
 }
 
-function KartuMentoring({ terdaftarSejak }: { terdaftarSejak: string | null }) {
+function KartuAcara({ acara }: { acara: Acara }) {
   return (
     <article className="flex flex-col gap-4 rounded-3xl bg-bkui-navbar px-6 py-6 sm:px-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks">Mentoring</h2>
+        <div className="min-w-0">
+          {/* `break-words`: judul acara diketik panitia dan bisa apa saja. */}
+          <h2 className="font-ui text-[28px] font-semibold leading-[1.2] break-words text-bkui-teks">
+            {acara.judul}
+          </h2>
           <p className="mt-1 flex items-center gap-1.5 font-body text-base font-medium text-bkui-teks sm:text-xl">
             <Image src="/icon/dashboard/calendar.svg" alt="" aria-hidden width={24} height={24} className="size-6" />
-            {terdaftarSejak
-              ? `Terdaftar ${formatTanggal(terdaftarSejak)}`
-              : "Terdaftar"}
+            {formatTanggal(acara.waktuMulai)}
           </p>
         </div>
 
-        <button
-          type="button"
-          disabled
-          title="Tautan Zoom akan tersedia setelah diumumkan panitia"
-          className="flex h-12 cursor-not-allowed items-center justify-center gap-2 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-8 font-ui text-base font-medium text-bkui-coklat opacity-70"
-        >
-          <Image src="/icon/dashboard/external-link.svg" alt="" aria-hidden width={24} height={24} className="size-6" />
-          Akses Zoom
-        </button>
+        <TombolAkses tautan={acara.tautan} />
       </div>
 
-      <p className="text-justify font-body text-base font-medium leading-[1.2] text-bkui-teks">
-        Pendaftaran mentoringmu sudah tercatat. Jadwal sesi dan tautan pertemuan
-        akan ditampilkan di sini setelah diumumkan oleh panitia BKUI 2026.
+      <p className="whitespace-pre-wrap break-words text-justify font-body text-base font-medium leading-[1.4] text-bkui-teks">
+        {acara.deskripsi}
       </p>
     </article>
   );
 }
 
-/** Tanggal ISO dari BE → format Indonesia, mis. "20 September 2026". */
+/**
+ * Tombol menuju ruang pertemuan.
+ *
+ * Selama panitia belum mengisi tautannya, tombolnya tetap ditampilkan tapi
+ * mati — bukan disembunyikan. Tombol yang muncul tiba-tiba di hari-H membuat
+ * peserta ragu apakah ia melewatkan sesuatu; tombol mati dengan keterangan
+ * justru memberi tahu bahwa memang belum waktunya.
+ */
+function TombolAkses({ tautan }: { tautan: string | null }) {
+  const kelas =
+    "flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-8 font-ui text-base font-medium text-bkui-coklat";
+
+  const ikon = (
+    <Image src="/icon/dashboard/external-link.svg" alt="" aria-hidden width={24} height={24} className="size-6" />
+  );
+
+  if (!tautan) {
+    return (
+      <button
+        type="button"
+        disabled
+        title="Tautan akan tersedia setelah diumumkan panitia"
+        className={`${kelas} cursor-not-allowed opacity-70`}
+      >
+        {ikon}
+        Belum tersedia
+      </button>
+    );
+  }
+
+  return (
+    <a
+      href={tautan}
+      target="_blank"
+      // `noopener` penting: tautannya diketik panitia dan mengarah ke luar.
+      rel="noopener noreferrer"
+      className={`${kelas} transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau`}
+    >
+      {ikon}
+      Akses Acara
+    </a>
+  );
+}
+
+/** Tanggal ISO dari BE → format Indonesia beserta jamnya, dalam WIB. */
 function formatTanggal(iso: string): string {
-  return new Date(iso).toLocaleDateString("id-ID", {
+  return new Date(iso).toLocaleString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Jakarta",
   });
 }
