@@ -4,8 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 
-import { ApiError, NetworkError } from "@/lib/api";
+import {
+  ApiError,
+  NetworkError,
+  daftarMentoring,
+  type BerkasMentoring,
+} from "@/lib/api";
 import { useSesi } from "@/lib/auth-state";
+import { kompresGambar } from "@/lib/kompres-gambar";
 
 import { KolomIsian } from "./KolomIsian";
 
@@ -74,6 +80,15 @@ const FIELD_PER_FASE = [
  * yang stabil, tapi belum dikirim ke endpoint lain sampai kontrak BE mentoring
  * final.
  */
+/**
+ * Pembungkus satu fase. Disembunyikan lewat atribut `hidden`, yang sekaligus
+ * mengeluarkan isinya dari urutan tab dan dari pembaca layar — jadi pendaftar
+ * tidak bisa ter-tab ke kolom langkah lain yang sedang tidak terlihat.
+ */
+function Fase({ aktif, children }: { aktif: boolean; children: ReactNode }) {
+  return <div hidden={!aktif}>{children}</div>;
+}
+
 export function FormDaftar() {
   const router = useRouter();
   const { daftar } = useSesi();
@@ -81,6 +96,8 @@ export function FormDaftar() {
   const [faseAktif, setFaseAktif] = useState(0);
   const [pesanGalat, setPesanGalat] = useState<string | null>(null);
   const [sedangKirim, setSedangKirim] = useState(false);
+  /** Tahap yang sedang berjalan — pengiriman ini beberapa langkah, bukan satu. */
+  const [pesanProses, setPesanProses] = useState("");
 
   const validasiFase = (form: HTMLFormElement, fase = faseAktif) => {
     const data = new FormData(form);
@@ -154,7 +171,18 @@ export function FormDaftar() {
   const kirim = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (sedangKirim) return;
-    if (!validasiFase(e.currentTarget, faseAktif)) return;
+
+    // Seluruh fase diperiksa ulang, bukan cuma fase yang sedang terbuka.
+    // Pendaftar bisa saja mengubah isian langkah awal lalu melompat lewat
+    // tombol Kembali, dan kolom yang tersembunyi tetap ikut terkirim.
+    // Kalau ada yang tidak lolos, layarnya dipindahkan ke langkah itu supaya
+    // pesan galatnya muncul di sebelah kolom yang dimaksud.
+    for (let fase = 0; fase < FASE.length; fase += 1) {
+      if (!validasiFase(e.currentTarget, fase)) {
+        setFaseAktif(fase);
+        return;
+      }
+    }
 
     const data = new FormData(e.currentTarget);
     const nama = String(data.get("nama") ?? "").trim();
@@ -163,20 +191,91 @@ export function FormDaftar() {
     const email = String(data.get("email") ?? "").trim();
     const sandi = String(data.get("sandi") ?? "");
 
+    const teks = (k: string) => String(data.get(k) ?? "").trim();
+
+    // Kelima berkas wajib. Diperiksa DI SINI, sebelum akun dibuat — kalau
+    // dicek setelahnya, pendaftar yang lupa satu bukti sudah terlanjur punya
+    // akun dan harus mengulang lewat jalur lain.
+    const NAMA_BERKAS = [
+      ["kartuPelajar", "kartu-pelajar", "Kartu pelajar"],
+      ["buktiInstagram", "bukti-instagram", "Bukti follow Instagram"],
+      ["buktiTiktok", "bukti-tiktok", "Bukti follow TikTok"],
+      ["buktiX", "bukti-x", "Bukti follow X"],
+      ["buktiStory", "bukti-story", "Bukti unggah Story"],
+    ] as const;
+
+    const mentah: Record<string, File> = {};
+    for (const [kunci, kolom, label] of NAMA_BERKAS) {
+      const berkas = data.get(kolom);
+      if (!(berkas instanceof File) || berkas.size === 0) {
+        setPesanGalat(`${label} belum diunggah.`);
+        setFaseAktif(kolom === "kartu-pelajar" ? 2 : 4);
+        return;
+      }
+      mentah[kunci] = berkas;
+    }
+
     setPesanGalat(null);
     setSedangKirim(true);
 
+    // Sebagian galat cuma bisa diketahui server — yang paling sering, email
+    // sudah dipakai orang lain. Langkahnya dicatat supaya pendaftar tidak
+    // ditinggal di layar Media Sosial sambil membaca keluhan soal email yang
+    // kolomnya ada di langkah pertama.
+    let langkah: "akun" | "mentoring" = "akun";
+
     try {
+      // Dikecilkan di browser sebelum dikirim. Foto kartu dari HP bisa
+      // beberapa MB; tanpa ini unggahan lewat jaringan seluler sering putus,
+      // dan 5 berkas x ribuan pendaftar cepat menghabiskan disk server.
+      setPesanProses("Menyiapkan berkas…");
+      const berkas = Object.fromEntries(
+        await Promise.all(
+          Object.entries(mentah).map(async ([kunci, file]) => [
+            kunci,
+            await kompresGambar(file),
+          ]),
+        ),
+      ) as unknown as BerkasMentoring;
+
+      setPesanProses("Membuat akun…");
       await daftar({
         fullName: nama,
         email,
         password: sandi,
+        // Form ini menanyakan NISN dan kelas X/XI/XII, jadi yang mengisinya
+        // memang siswa — role STUDENT diberikan langsung supaya bisa lanjut
+        // mengirim pendaftaran mentoringnya.
+        isHighSchoolStudent: true,
         ...(sekolah ? { institution: sekolah } : {}),
         ...(telepon ? { phoneNumber: telepon } : {}),
       });
-      router.replace("/profile");
+
+      langkah = "mentoring";
+      setPesanProses("Mengirim pendaftaran…");
+      await daftarMentoring(
+        {
+          jenisKelamin:
+            teks("jenis-kelamin") === "Perempuan" ? "PEREMPUAN" : "LAKI_LAKI",
+          usia: Number(teks("usia")),
+          nisn: teks("nisn"),
+          kelas: teks("kelas") as "X" | "XI" | "XII",
+          provinsi: teks("provinsi"),
+          ...(teks("line") ? { idLine: teks("line") } : {}),
+          minat: teks("minat"),
+          kelebihanKekurangan: teks("kelebihan-kekurangan"),
+          kontribusi: teks("kontribusi"),
+          komitmen: teks("komitmen"),
+        },
+        berkas,
+      );
+
+      router.replace("/dashboard");
     } catch (galat) {
+      setPesanProses("");
       if (galat instanceof ApiError) {
+        // Galat pembuatan akun selalu berasal dari kolom di langkah pertama.
+        if (langkah === "akun" && !galat.terlaluSering) setFaseAktif(0);
         setPesanGalat(
           galat.terlaluSering
             ? "Terlalu banyak percobaan pendaftaran. Coba lagi sebentar lagi."
@@ -200,12 +299,37 @@ export function FormDaftar() {
       <RoadmapFase faseAktif={faseAktif} />
 
       <form onSubmit={kirim} noValidate className="mt-8 flex w-full max-w-[860px] flex-col items-center gap-7">
+        {/*
+          Seluruh fase tetap TERPASANG di DOM; yang tidak aktif disembunyikan.
+
+          Ini bukan soal gaya. Sebelumnya tiap fase dirender bersyarat
+          (`faseAktif === 0 && <FaseAkun />`), jadi begitu pendaftar maju ke
+          langkah berikutnya, input langkah sebelumnya dilepas dari DOM dan
+          nilainya ikut hilang. Saat submit di langkah 5, `new FormData(form)`
+          mengembalikan nama, email, dan kata sandi KOSONG — pendaftaran selalu
+          ditolak server, dan pesan galatnya (soal langkah 1) muncul di layar
+          langkah 5.
+
+          Elemen ber-`display:none` tetap ikut terkirim bersama form, dan berkas
+          yang sudah dipilih tetap menempel di input-nya. Jadi menyembunyikan,
+          bukan melepas, adalah yang benar di sini.
+        */}
         <div className="w-full">
-          {faseAktif === 0 && <FaseAkun />}
-          {faseAktif === 1 && <FaseSekolah />}
-          {faseAktif === 2 && <FaseKartuPelajar />}
-          {faseAktif === 3 && <FaseEsai />}
-          {faseAktif === 4 && <FaseSosial />}
+          <Fase aktif={faseAktif === 0}>
+            <FaseAkun />
+          </Fase>
+          <Fase aktif={faseAktif === 1}>
+            <FaseSekolah />
+          </Fase>
+          <Fase aktif={faseAktif === 2}>
+            <FaseKartuPelajar />
+          </Fase>
+          <Fase aktif={faseAktif === 3}>
+            <FaseEsai />
+          </Fase>
+          <Fase aktif={faseAktif === 4}>
+            <FaseSosial />
+          </Fase>
         </div>
 
         <p
@@ -241,7 +365,7 @@ export function FormDaftar() {
               aria-busy={sedangKirim}
               className="tombol-kertas h-14 w-full cursor-pointer rounded-full bg-bkui-button px-8 font-ui text-lg font-medium capitalize text-bkui-teks focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau disabled:cursor-wait disabled:opacity-70 sm:w-auto lg:text-xl"
             >
-              {sedangKirim ? "Memproses..." : "Kirim Pendaftaran"}
+              {sedangKirim ? pesanProses || "Memproses..." : "Kirim Pendaftaran"}
             </button>
           )}
         </div>

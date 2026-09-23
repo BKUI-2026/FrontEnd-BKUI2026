@@ -156,9 +156,17 @@ interface OpsiPermintaan extends Omit<RequestInit, 'body'> {
 async function kirim<T>(path: string, opsi: OpsiPermintaan = {}): Promise<T> {
   const { body, autoRefresh = true, headers, ...sisa } = opsi;
 
+  // FormData dikirim apa adanya. Content-Type-nya TIDAK boleh diset manual:
+  // browser harus mengisinya sendiri lengkap dengan boundary multipart, dan
+  // menimpanya bikin server gagal mem-parse berkasnya.
+  const adalahFormData =
+    typeof FormData !== 'undefined' && body instanceof FormData;
+
   const jalankan = async (): Promise<Response> => {
     const header = new Headers(headers);
-    if (body !== undefined) header.set('Content-Type', 'application/json');
+    if (body !== undefined && !adalahFormData) {
+      header.set('Content-Type', 'application/json');
+    }
     if (accessToken) header.set('Authorization', `Bearer ${accessToken}`);
 
     try {
@@ -167,7 +175,12 @@ async function kirim<T>(path: string, opsi: OpsiPermintaan = {}): Promise<T> {
         headers: header,
         // Wajib: refresh token ada di cookie httpOnly milik BE.
         credentials: 'include',
-        body: body === undefined ? undefined : JSON.stringify(body),
+        body:
+          body === undefined
+            ? undefined
+            : adalahFormData
+              ? (body as FormData)
+              : JSON.stringify(body),
       });
     } catch {
       // fetch hanya melempar kalau permintaannya tidak sampai — bukan untuk
@@ -266,6 +279,15 @@ export interface DataDaftar {
   /** Sekolah/universitas asal. */
   institution?: string;
   phoneNumber?: string;
+  /**
+   * Jawaban "Are you a high school student?".
+   *
+   * Opsional di BE dan defaultnya `false` (role GENERAL_PUBLIC). Dikirim
+   * `true` dari form Mentoring, karena form itu menanyakan NISN dan kelas
+   * X/XI/XII — yang mengisinya memang siswa, dan role STUDENT diperlukan
+   * supaya pendaftaran mentoringnya bisa langsung dikirim.
+   */
+  isHighSchoolStudent?: boolean;
 }
 
 export function daftarAkun(data: DataDaftar): Promise<AuthResponse> {
@@ -321,9 +343,52 @@ export function statusMentoring(): Promise<MentoringRegistrationState> {
   return kirim<MentoringRegistrationState>('/mentoring-registrations/me');
 }
 
-export function daftarMentoring(): Promise<MentoringRegistrationState> {
+/** Isi form Mentoring, selain berkas. Nama field mengikuti kontrak BE. */
+export interface DataMentoring {
+  jenisKelamin: 'LAKI_LAKI' | 'PEREMPUAN';
+  usia: number;
+  /** 10 digit angka. */
+  nisn: string;
+  kelas: 'X' | 'XI' | 'XII';
+  provinsi: string;
+  idLine?: string;
+  minat: string;
+  kelebihanKekurangan: string;
+  kontribusi: string;
+  komitmen: string;
+}
+
+/** Kelima berkas bukti yang wajib diunggah. */
+export interface BerkasMentoring {
+  kartuPelajar: File;
+  buktiInstagram: File;
+  buktiTiktok: File;
+  buktiX: File;
+  buktiStory: File;
+}
+
+/**
+ * Kirim pendaftaran Mentoring beserta berkasnya.
+ *
+ * Dikirim sebagai `multipart/form-data` karena membawa 5 berkas. Gambarnya
+ * sebaiknya sudah dikecilkan lebih dulu lewat `kompresGambar` — BE menolak
+ * berkas di atas 5 MB.
+ */
+export function daftarMentoring(
+  data: DataMentoring,
+  berkas: BerkasMentoring,
+): Promise<MentoringRegistrationState> {
+  const form = new FormData();
+  for (const [kunci, nilai] of Object.entries(data)) {
+    if (nilai !== undefined && nilai !== '') form.append(kunci, String(nilai));
+  }
+  for (const [kunci, file] of Object.entries(berkas)) {
+    form.append(kunci, file);
+  }
+
   return kirim<MentoringRegistrationState>('/mentoring-registrations', {
     method: 'POST',
+    body: form,
   });
 }
 
