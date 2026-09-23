@@ -9,6 +9,7 @@ import {
   NetworkError,
   daftarMentoring,
   type BerkasMentoring,
+  type DataDaftar,
 } from "@/lib/api";
 import { useSesi } from "@/lib/auth-state";
 import { kompresGambar } from "@/lib/kompres-gambar";
@@ -91,7 +92,7 @@ function Fase({ aktif, children }: { aktif: boolean; children: ReactNode }) {
 
 export function FormDaftar() {
   const router = useRouter();
-  const { daftar } = useSesi();
+  const { daftar, masuk, user } = useSesi();
 
   const [faseAktif, setFaseAktif] = useState(0);
   const [pesanGalat, setPesanGalat] = useState<string | null>(null);
@@ -168,6 +169,48 @@ export function FormDaftar() {
     setFaseAktif((fase) => Math.max(fase - 1, 0));
   };
 
+  /**
+   * Pastikan ada sesi yang siap dipakai mengirim form mentoring.
+   *
+   * Pendaftaran mentoring butuh akun, tapi akunnya belum tentu perlu DIBUAT.
+   * Pendaftar yang percobaan sebelumnya gagal di tengah jalan sudah punya akun
+   * dari percobaan itu, dan sebagian memang sudah punya akun sejak awal.
+   *
+   * Sebelumnya form selalu memanggil daftar, jadi orang-orang itu selalu
+   * ditolak "Email sudah terdaftar." tanpa jalan untuk melanjutkan — akunnya
+   * ada, tapi pendaftaran mentoringnya tidak pernah bisa masuk. Sekarang kalau
+   * emailnya sudah dipakai, kita coba masuk memakai kata sandi yang barusan
+   * diketik lalu meneruskan pendaftarannya.
+   */
+  const siapkanAkun = async (data: DataDaftar) => {
+    // Sudah login dengan email yang sama? Tidak perlu apa-apa lagi.
+    if (user?.email?.toLowerCase() === data.email.toLowerCase()) return;
+
+    try {
+      await daftar(data);
+      return;
+    } catch (galat) {
+      if (!(galat instanceof ApiError) || galat.status !== 409) throw galat;
+    }
+
+    // 409 = email sudah dipakai. Coba masuk dengan kata sandi yang diketik.
+    setPesanProses("Masuk ke akun yang sudah ada…");
+    try {
+      await masuk(data.email, data.password);
+    } catch (galat) {
+      if (galat instanceof ApiError && galat.status === 401) {
+        // Emailnya benar-benar milik orang ini tapi sandinya beda, ATAU
+        // emailnya milik orang lain. Keduanya tidak bisa kita bedakan dari
+        // sini, jadi pesannya dibuat yang menolong keduanya.
+        const pesan =
+          "Email ini sudah punya akun, tapi kata sandinya tidak cocok. " +
+          "Pakai kata sandi akun tersebut, atau masuk dulu lewat halaman Masuk.";
+        throw new ApiError(pesan, 409, [pesan]);
+      }
+      throw galat;
+    }
+  };
+
   const kirim = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (sedangKirim) return;
@@ -239,7 +282,7 @@ export function FormDaftar() {
       ) as unknown as BerkasMentoring;
 
       setPesanProses("Membuat akun…");
-      await daftar({
+      await siapkanAkun({
         fullName: nama,
         email,
         password: sandi,
@@ -273,6 +316,18 @@ export function FormDaftar() {
       router.replace("/dashboard");
     } catch (galat) {
       setPesanProses("");
+      // Sudah pernah mengirim pendaftaran mentoring sebelumnya. Itu bukan
+      // kegagalan — yang diinginkan pendaftar memang sudah tercapai, jadi
+      // antar saja ke dashboard alih-alih menakutinya dengan pesan merah.
+      if (
+        galat instanceof ApiError &&
+        galat.status === 409 &&
+        langkah === "mentoring"
+      ) {
+        router.replace("/dashboard");
+        return;
+      }
+
       if (galat instanceof ApiError) {
         // Galat pembuatan akun selalu berasal dari kolom di langkah pertama.
         if (langkah === "akun" && !galat.terlaluSering) setFaseAktif(0);
