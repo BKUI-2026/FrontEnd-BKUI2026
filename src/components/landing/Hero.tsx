@@ -59,7 +59,19 @@ export function Hero() {
         `object-cover`, sehingga tepi ilustrasi boleh terpotong tanpa menyisakan
         ruang kosong sebelum transisi awan.
       */}
-      <div className="relative h-[130vw] min-h-[360px] max-h-[500px] w-full md:aspect-[1512/900] md:h-auto md:min-h-0 md:max-h-none">
+        {/*
+          `overflow-hidden` di sini bukan sekadar kerapian.
+
+          Bikun berhenti di `left-84%` dengan lebar `20%`, jadi tepi kanannya
+          berada di 104% — melewati layar tepat 4% (77px di layar 1920px, 60px
+          di 1512px). Tanpa dipotong, luberan itu memanjangkan halaman dan
+          seluruh Landing Page bisa digeser ke samping. Saat animasinya
+          berjalan, bikun bahkan sampai 110% di luar layar.
+
+          Dipotong memang yang benar: bikun sengaja digambar seolah melaju
+          keluar dari bingkai.
+        */}
+      <div className="relative h-[130vw] min-h-[360px] max-h-[500px] w-full overflow-hidden md:aspect-[1512/900] md:h-auto md:min-h-0 md:max-h-none">
         {/*
           Ilustrasinya menempati seluruh kotak berasio tetap ini. Karena SVG,
           tidak ada yang perlu dimuat lebih dulu: markup-nya sudah ikut di HTML
