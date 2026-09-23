@@ -277,15 +277,22 @@ function AvatarProfil({
         href="/profile"
         aria-label="Profil saya"
         aria-current={aktif ? "page" : undefined}
-        className="relative z-10 flex size-16 items-center justify-center rounded-full bg-bkui-biru-redup transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+        /*
+         * TANPA warna latar. Ikonnya sendiri sudah berwarna #6EA2CD — persis
+         * nilai `bkui-biru-redup` — dan bentuknya lingkaran dengan siluet
+         * orang yang DILUBANGI, bukan siluet padat. Memberinya latar warna
+         * yang sama membuat lubangnya ikut terisi, dan yang tampil cuma
+         * lingkaran polos tanpa orang.
+         */
+        className="relative z-10 flex size-16 items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
       >
         <Image
           src="/icon/dashboard/avatar-placeholder.svg"
           alt=""
           aria-hidden
           width={64}
-          height={64}
-          className="size-16 rounded-full"
+          height={58}
+          className="w-16"
         />
       </Link>
       {aktif && (

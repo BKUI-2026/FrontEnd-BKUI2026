@@ -19,7 +19,13 @@ import { SidebarDashboard } from "./SidebarDashboard";
 /** Hasil pengambilan data dari BE. */
 type HasilMuat =
   | { jenis: "memuat" }
-  | { jenis: "siap"; status: MentoringRegistrationState; acara: Acara[] }
+  | {
+      jenis: "siap";
+      status: MentoringRegistrationState;
+      acara: Acara[];
+      /** Daftar acara gagal diambil — status pendaftaran tetap ditampilkan. */
+      acaraGagal: boolean;
+    }
   | { jenis: "galat"; pesan: string };
 
 /** Apa yang digambar di layar — termasuk keadaan yang tidak perlu memanggil BE. */
@@ -48,9 +54,27 @@ export function AcaraSaya() {
     // Diminta bersamaan, bukan berurutan: keduanya tidak saling bergantung,
     // dan menunggunya satu per satu membuat dashboard terasa dua kali lebih
     // lambat dibuka.
-    Promise.all([statusMentoring(), ambilAcara()])
-      .then(([status, acara]) => {
-        if (masihTerpasang) setHasil({ jenis: "siap", status, acara });
+    //
+    // Kegagalan daftar acara sengaja DITELAN di sini. Status pendaftaran itu
+    // hal yang paling ingin dipastikan peserta saat membuka halaman ini, dan
+    // tidak ada alasan menghapusnya dari layar cuma karena daftar acaranya
+    // sedang bermasalah.
+    Promise.all([
+      statusMentoring(),
+      ambilAcara().then(
+        (acara) => ({ acara, gagal: false }),
+        () => ({ acara: [] as Acara[], gagal: true }),
+      ),
+    ])
+      .then(([status, hasilAcara]) => {
+        if (masihTerpasang) {
+          setHasil({
+            jenis: "siap",
+            status,
+            acara: hasilAcara.acara,
+            acaraGagal: hasilAcara.gagal,
+          });
+        }
       })
       .catch((galat: unknown) => {
         if (!masihTerpasang) return;
@@ -108,6 +132,13 @@ export function AcaraSaya() {
               />
             )}
 
+            {keadaan.jenis === "siap" && keadaan.acaraGagal && (
+              <p role="alert" className="text-center font-body text-sm font-medium text-bkui-galat">
+                Daftar acara belum bisa dimuat. Coba muat ulang halaman ini
+                sebentar lagi.
+              </p>
+            )}
+
             {/*
               Sudah terdaftar tapi panitia belum mengumumkan acara apa pun.
               Dibedakan dari "belum mendaftar" dengan sengaja: keduanya sama-sama
@@ -115,10 +146,20 @@ export function AcaraSaya() {
             */}
             {keadaan.jenis === "siap" &&
               keadaan.status.registered &&
-              keadaan.acara.length === 0 && (
+              keadaan.acara.length === 0 &&
+              !keadaan.acaraGagal && (
                 <KartuKosong
                   judul="Pendaftaranmu sudah tercatat"
                   keterangan="Jadwal sesi dan tautan pertemuan akan muncul di sini setelah diumumkan panitia BKUI 2026."
+                />
+              )}
+
+            {keadaan.jenis === "siap" &&
+              keadaan.status.registered &&
+              keadaan.acaraGagal && (
+                <KartuKosong
+                  judul="Pendaftaranmu sudah tercatat"
+                  keterangan="Status pendaftaranmu aman. Hanya daftar acaranya yang sedang tidak bisa diambil."
                 />
               )}
 
