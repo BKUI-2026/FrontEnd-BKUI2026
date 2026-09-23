@@ -624,6 +624,27 @@ body {
  * mendukung `:has()`, yang hilang cuma penguncian scroll-nya — overlay-nya
  * sendiri tetap berfungsi.
  */
+/*
+ * Pengaman terakhir: halaman tidak pernah boleh bisa digeser ke samping.
+ *
+ * Landing Page penuh elemen dekoratif yang sengaja digambar menembus tepi
+ * bingkai — bikun yang melaju keluar layar, bendera, dedaunan tertiup. Tiap
+ * kali ada yang baru ditambahkan tanpa pembungkus yang memotongnya, seluruh
+ * halaman ikut memanjang dan muncul geseran ke samping. Sudah terjadi sekali
+ * pada bikun (meluber 4% lebar layar), dan akan terjadi lagi.
+ *
+ * `clip`, BUKAN `hidden`. Keduanya sama-sama memotong, tapi `hidden` membuat
+ * body jadi wadah gulir, dan itu mematikan `position: sticky` pada navbar —
+ * navbarnya berhenti menempel di atas saat halaman digulir. `clip` memotong
+ * tanpa membuat wadah gulir, jadi navbar tetap menempel.
+ *
+ * Hanya sumbu X. Halaman tetap bisa digulir ke bawah seperti biasa.
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
 body:has(dialog[open]) {
   overflow: hidden;
 }

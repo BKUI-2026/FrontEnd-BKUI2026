@@ -343,6 +343,28 @@ export function statusMentoring(): Promise<MentoringRegistrationState> {
   return kirim<MentoringRegistrationState>('/mentoring-registrations/me');
 }
 
+/** Satu acara di "Acara Saya", dikelola panitia lewat panel admin. */
+export interface Acara {
+  id: string;
+  judul: string;
+  deskripsi: string;
+  /** ISO 8601 dari BE. */
+  waktuMulai: string;
+  /** Tautan pertemuan. `null` selama panitia belum mengisinya. */
+  tautan: string | null;
+}
+
+/**
+ * Acara yang tampil di dashboard siswa.
+ *
+ * Butuh sesi ber-role STUDENT: isinya bisa memuat tautan Zoom, dan tautan
+ * yang bisa diambil tanpa login sama saja dengan membuka ruang mentoring ke
+ * publik. Yang berstatus draf tidak pernah ikut terkirim.
+ */
+export function ambilAcara(): Promise<Acara[]> {
+  return kirim<Acara[]>('/acara');
+}
+
 /** Isi form Mentoring, selain berkas. Nama field mengikuti kontrak BE. */
 export interface DataMentoring {
   jenisKelamin: 'LAKI_LAKI' | 'PEREMPUAN';

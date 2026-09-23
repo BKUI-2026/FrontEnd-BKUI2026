@@ -1,13 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ButtonPesanTiket } from "@/components/ui/ButtonPesanTiket";
 import { LogoBKUI } from "@/components/ui/LogoBKUI";
-import { useAkses } from "@/lib/auth-state";
+import { useAkses, useSudahMasuk } from "@/lib/auth-state";
 import { menuUntuk } from "@/lib/navigation";
 
 /**
@@ -18,6 +19,16 @@ import { menuUntuk } from "@/lib/navigation";
 export function Navbar() {
   const pathname = usePathname();
   const akses = useAkses();
+  const sudahMasuk = useSudahMasuk();
+  /**
+   * Siswa tidak lagi melihat "Kunjungan Sekolah".
+   *
+   * Tombol itu untuk perwakilan sekolah yang mengajukan roadshow, bukan untuk
+   * peserta. Siswa yang sudah mendaftar mentoring (dan karenanya berperan
+   * STUDENT) tidak punya keperluan dengannya, dan tempatnya di navbar dipakai
+   * avatar profil — sesuai desain dashboard di Figma.
+   */
+  const siswa = akses === "Student";
   const kurangiGerak = useReducedMotion();
   const [menuTerbuka, setMenuTerbuka] = useState(false);
   const [navbarTersembunyi, setNavbarTersembunyi] = useState(false);
@@ -122,22 +133,31 @@ export function Navbar() {
                 />
               )}
             </div>
-            <div className="relative">
-              <Link
-                href="/school-roadshow"
-                aria-current={halamanAktif("/school-roadshow") ? "page" : undefined}
-                className="relative z-10 inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
-              >
-                Kunjungan Sekolah
-              </Link>
-              {halamanAktif("/school-roadshow") && (
-                <motion.span
-                  layoutId="navbar-active-spotlight"
-                  transition={transisiSpotlight}
-                  className="pointer-events-none absolute inset-0 z-20 rounded-full border-2 border-bkui-teks shadow-[0_5px_14px_rgba(26,39,49,0.18)]"
-                />
-              )}
-            </div>
+            {!siswa && (
+              <div className="relative">
+                <Link
+                  href="/school-roadshow"
+                  aria-current={halamanAktif("/school-roadshow") ? "page" : undefined}
+                  className="relative z-10 inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+                >
+                  Kunjungan Sekolah
+                </Link>
+                {halamanAktif("/school-roadshow") && (
+                  <motion.span
+                    layoutId="navbar-active-spotlight"
+                    transition={transisiSpotlight}
+                    className="pointer-events-none absolute inset-0 z-20 rounded-full border-2 border-bkui-teks shadow-[0_5px_14px_rgba(26,39,49,0.18)]"
+                  />
+                )}
+              </div>
+            )}
+
+            {sudahMasuk && (
+              <AvatarProfil
+                aktif={halamanAktif("/profile")}
+                transisi={transisiSpotlight}
+              />
+            )}
           </div>
 
           {/* Tombol menu mobile */}
@@ -199,12 +219,30 @@ export function Navbar() {
 
                 <div className="flex flex-col gap-3">
                   <ButtonPesanTiket className="justify-center" />
-                  <Link
-                    href="/school-roadshow"
-                    className="rounded-full bg-bkui-button px-6 py-3 text-center font-ui text-base font-medium text-bkui-teks"
-                  >
-                    Kunjungan Sekolah
-                  </Link>
+                  {!siswa && (
+                    <Link
+                      href="/school-roadshow"
+                      className="rounded-full bg-bkui-button px-6 py-3 text-center font-ui text-base font-medium text-bkui-teks"
+                    >
+                      Kunjungan Sekolah
+                    </Link>
+                  )}
+                  {sudahMasuk && (
+                    <Link
+                      href="/profile"
+                      className="flex items-center justify-center gap-2 rounded-full border-2 border-bkui-teks px-6 py-3 text-center font-ui text-base font-medium text-bkui-teks"
+                    >
+                      <Image
+                        src="/icon/dashboard/avatar-placeholder.svg"
+                        alt=""
+                        aria-hidden
+                        width={24}
+                        height={24}
+                        className="size-6 rounded-full"
+                      />
+                      Profil Saya
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -212,5 +250,67 @@ export function Navbar() {
         </AnimatePresence>
       </nav>
     </header>
+  );
+}
+
+/**
+ * Pintu masuk ke halaman profil.
+ *
+ * Avatarnya gambar bawaan, bukan foto pengguna: BE tidak menyimpan foto profil
+ * dan PRD tidak memintanya. Kalau suatu saat ada, cukup ganti `src` di sini.
+ *
+ * `aria-label` diisi karena isinya cuma gambar hiasan — tanpa itu pembaca
+ * layar cuma menyebut "tautan" tanpa memberi tahu tautan ke mana.
+ */
+function AvatarProfil({
+  aktif,
+  // Transisi spotlight dibuat di dalam Navbar karena bergantung pada preferensi
+  // "kurangi gerak" pengguna, jadi dioper ke sini alih-alih dihitung ulang.
+  transisi,
+}: {
+  aktif: boolean;
+  transisi: { duration: number; ease: [number, number, number, number] };
+}) {
+  return (
+    <div className="relative size-14 shrink-0">
+      <Link
+        href="/profile"
+        aria-label="Profil saya"
+        aria-current={aktif ? "page" : undefined}
+        /*
+         * Gambarnya DIPOTONG jadi lingkaran oleh pembungkus ini, bukan
+         * ditampilkan apa adanya.
+         *
+         * Asetnya berukuran 300x270.937 — lingkaran berdiameter 300 yang
+         * bagian bawahnya terpotong sejak dari berkasnya. Ditampilkan apa
+         * adanya, ia jadi lingkaran beralas rata di dalam kotak 64x64, dan
+         * cincin penanda halaman aktif menyisakan celah di atas-bawah tapi
+         * menempel di sisinya. Itu yang terlihat tidak rapi.
+         *
+         * Dipotong lingkaran, yang tampil cuma bagian tengah cakram birunya:
+         * bundar penuh, tanpa alas rata, dan cincinnya memeluk persis.
+         */
+        className="relative z-10 flex size-14 items-center justify-center overflow-hidden rounded-full bg-bkui-navbar transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+      >
+        <Image
+          src="/icon/dashboard/avatar-placeholder.svg"
+          alt=""
+          aria-hidden
+          width={64}
+          height={58}
+          /* `max-w-none` supaya gambar boleh lebih besar dari pembungkusnya —
+             itu justru yang membuat potongannya terisi penuh. */
+          className="w-16 max-w-none"
+        />
+      </Link>
+
+      {aktif && (
+        <motion.span
+          layoutId="navbar-active-spotlight"
+          transition={transisi}
+          className="pointer-events-none absolute inset-0 z-20 rounded-full border-2 border-bkui-teks shadow-[0_5px_14px_rgba(26,39,49,0.18)]"
+        />
+      )}
+    </div>
   );
 }

@@ -10,21 +10,41 @@
 /** Dua kondisi RBAC yang ada. Tidak ada yang ketiga. */
 export type Akses = "General Public" | "Student";
 
+/**
+ * Siapa yang melihat sebuah menu.
+ *
+ * Dulu field ini bernama `akses` dan bernilai sama dengan tipe `Akses`, tapi
+ * artinya membingungkan: "General Public" dipakai untuk menandai "tampil ke
+ * semua orang", bukan "tampil hanya ke yang belum login". Begitu ada menu
+ * yang justru harus HILANG setelah jadi siswa, nama lama itu tidak bisa lagi
+ * menjelaskan apa pun.
+ */
+export type TampilUntuk =
+  /** Selalu tampil, login maupun tidak. */
+  | "semua"
+  /** Hilang begitu pengguna berstatus siswa. */
+  | "belumSiswa"
+  /** Hanya untuk yang sudah berstatus siswa. */
+  | "siswa";
+
 export interface NavItem {
   label: string;
   href: string;
-  /**
-   * Siapa yang boleh melihat menu ini.
-   * - "General Public" → selalu tampil, termasuk saat sudah login
-   * - "Student"        → hanya tampil setelah login
-   */
-  akses: Akses;
+  tampilUntuk: TampilUntuk;
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
-  { label: "Beranda", href: "/", akses: "General Public" },
-  { label: "Explore UI", href: "/explore-ui", akses: "General Public" },
-  { label: "Daftar Mentoring", href: "/daftar-mentoring", akses: "General Public" },
+  { label: "Beranda", href: "/", tampilUntuk: "semua" },
+  { label: "Explore UI", href: "/explore-ui", tampilUntuk: "semua" },
+  /*
+   * Hilang setelah pengguna berstatus siswa.
+   *
+   * Role STUDENT diberikan justru saat pendaftaran mentoring dikirim, jadi
+   * siswa yang melihat menu ini sudah pasti terdaftar — dan mengajaknya
+   * mendaftar lagi cuma membingungkan. Statusnya ada di halaman "Acara Saya"
+   * pada dashboard, yang dijangkau lewat avatar di navbar.
+   */
+  { label: "Daftar Mentoring", href: "/daftar-mentoring", tampilUntuk: "belumSiswa" },
 ] as const;
 
 /*
@@ -41,6 +61,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
 
 /** Menu yang boleh dilihat oleh kondisi akses tertentu. */
 export function menuUntuk(akses: Akses): readonly NavItem[] {
-  if (akses === "Student") return NAV_ITEMS;
-  return NAV_ITEMS.filter((item) => item.akses === "General Public");
+  const siswa = akses === "Student";
+  return NAV_ITEMS.filter(
+    (item) =>
+      item.tampilUntuk === "semua" ||
+      (siswa ? item.tampilUntuk === "siswa" : item.tampilUntuk === "belumSiswa"),
+  );
 }
