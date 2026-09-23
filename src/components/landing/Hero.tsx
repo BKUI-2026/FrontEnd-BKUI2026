@@ -117,7 +117,7 @@ export function Hero() {
           <CountdownHero />
         </div>
 
-        <div aria-hidden className="bikun-masuk pointer-events-none absolute left-[76%] top-[50%] w-[24%] md:left-[84%] md:top-[41.6%] md:w-[20%]">
+        <div aria-hidden className="bikun-masuk pointer-events-none absolute left-[76%] top-[58%] w-[24%] md:left-[84%] md:top-[41.6%] md:w-[20%]">
           <Image
             src="/icon/landing/bikun-extracted.svg"
             alt=""
