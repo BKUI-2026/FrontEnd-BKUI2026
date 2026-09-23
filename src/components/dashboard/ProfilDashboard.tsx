@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { ApiError, NetworkError, simpanProfil } from "@/lib/api";
+import * as v from "@/lib/validasi";
 import { useSesi } from "@/lib/auth-state";
 
 import { LatarDashboard } from "./LatarDashboard";
@@ -30,6 +31,8 @@ export function ProfilDashboard() {
   const [sedangSimpan, setSedangSimpan] = useState(false);
   const [pesan, setPesan] = useState("");
   const [galat, setGalat] = useState("");
+  /** Galat per kolom — ditampilkan di bawah kolomnya masing-masing. */
+  const [galatKolom, setGalatKolom] = useState<v.Galat>({});
 
   // PenjagaSesi memastikan halaman ini hanya dirender saat sudah masuk, jadi
   // `user` praktis selalu ada di sini. Penjagaan ini untuk meyakinkan compiler.
@@ -47,13 +50,23 @@ export function ProfilDashboard() {
     if (sedangSimpan) return;
 
     const form = event.currentTarget;
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-
     const data = new FormData(form);
     const teks = (nama: string) => String(data.get(nama) ?? "").trim();
+
+    // Nomor HP opsional: kalau dikosongkan itu memang cara menghapusnya, jadi
+    // yang diperiksa hanya kalau ada isinya.
+    const nomor = teks("phoneNumber");
+    const galatBaru = v.kumpulkan({
+      fullName: v.panjangMinimal(teks("fullName"), 2, "Nama lengkap"),
+      phoneNumber: nomor ? v.telepon(nomor, "Nomor HP") : null,
+    });
+    setGalatKolom(galatBaru);
+    if (v.adaGalat(galatBaru)) {
+      setGalat("");
+      setPesan("");
+      v.fokuskanGalatPertama(form, galatBaru);
+      return;
+    }
 
     setGalat("");
     setPesan("");
@@ -65,7 +78,9 @@ export function ProfilDashboard() {
         // Dikirim apa adanya termasuk saat dikosongkan — itu cara pengguna
         // menghapus isian yang sebelumnya terisi.
         institution: teks("institution"),
-        phoneNumber: teks("phoneNumber").replace(/\s/g, ""),
+        // Dinormalkan ke +62; BE menolak bentuk lain, dan 08 justru yang
+        // paling lazim diketik.
+        phoneNumber: nomor ? v.normalisasiTelepon(nomor) : "",
       });
 
       perbaruiProfil(terbaru);
@@ -110,10 +125,21 @@ export function ProfilDashboard() {
                       defaultValue={nilaiAwal[kolom.name]}
                       placeholder={bisaDisunting ? kolom.placeholder : "Belum diisi"}
                       readOnly={!bisaDisunting}
-                      required={bisaDisunting && kolom.wajib}
-                      aria-describedby={kolom.hanyaBaca && sedangEdit ? "ket-email" : undefined}
-                      className={`h-11 rounded-xl border-2 border-bkui-teks bg-transparent px-4 font-body text-base font-medium text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${!bisaDisunting ? "cursor-default" : ""} ${kolom.hanyaBaca && sedangEdit ? "opacity-70" : ""}`}
+                      aria-invalid={galatKolom[kolom.name] ? true : undefined}
+                      aria-describedby={
+                        galatKolom[kolom.name]
+                          ? `galat-${kolom.name}`
+                          : kolom.hanyaBaca && sedangEdit
+                            ? "ket-email"
+                            : undefined
+                      }
+                      className={`h-11 rounded-xl border-2 bg-transparent px-4 font-body text-base font-medium text-bkui-teks placeholder:text-bkui-teks/45 focus:outline-2 focus:outline-offset-2 focus:outline-bkui-hijau ${galatKolom[kolom.name] ? "border-bkui-galat" : "border-bkui-teks"} ${!bisaDisunting ? "cursor-default" : ""} ${kolom.hanyaBaca && sedangEdit ? "opacity-70" : ""}`}
                     />
+                    {galatKolom[kolom.name] && (
+                      <span id={`galat-${kolom.name}`} role="alert" className="font-body text-xs font-medium leading-[1.35] text-bkui-galat">
+                        {galatKolom[kolom.name]}
+                      </span>
+                    )}
                   </label>
                 );
               })}
@@ -128,7 +154,7 @@ export function ProfilDashboard() {
 
           {sedangEdit ? (
             <div className="flex flex-wrap justify-center gap-4">
-              <button type="button" disabled={sedangSimpan} onClick={() => { setSedangEdit(false); setPesan(""); setGalat(""); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks disabled:opacity-60">
+              <button type="button" disabled={sedangSimpan} onClick={() => { setSedangEdit(false); setPesan(""); setGalat(""); setGalatKolom({}); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks disabled:opacity-60">
                 Batal
               </button>
               <button type="submit" disabled={sedangSimpan} aria-busy={sedangSimpan} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-9 font-ui text-xl font-medium text-bkui-coklat disabled:cursor-wait disabled:opacity-70">
@@ -136,7 +162,7 @@ export function ProfilDashboard() {
               </button>
             </div>
           ) : (
-            <button type="button" onClick={() => { setSedangEdit(true); setPesan(""); setGalat(""); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks">
+            <button type="button" onClick={() => { setSedangEdit(true); setPesan(""); setGalat(""); setGalatKolom({}); }} className="tombol-kertas h-16 rounded-full bg-gradient-to-b from-bkui-button to-bkui-navbar px-9 font-ui text-xl font-medium text-bkui-teks">
               Edit Profil
             </button>
           )}
