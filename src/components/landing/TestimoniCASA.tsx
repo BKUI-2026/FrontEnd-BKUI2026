@@ -10,8 +10,8 @@ import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 
 const PENGUMUMAN_CASA = [
-  "Nantikan 8 Campus Ambassador BKUI 2026",
-  "Nantikan 12 Student Ambassador BKUI 2026",
+  { jumlah: "8", peran: "Campus Ambassador" },
+  { jumlah: "12", peran: "Student Ambassador" },
 ] as const;
 
 const GERAK_TESTIMONI = {
@@ -40,6 +40,7 @@ export function TestimoniCASA() {
   const [arah, setArah] = useState<1 | -1>(1);
   const jumlah = PENGUMUMAN_CASA.length;
   const pengumuman = PENGUMUMAN_CASA[indeks];
+  const teksPengumuman = `Nantikan ${pengumuman.jumlah} ${pengumuman.peran} BKUI 2026`;
 
   // Modulo dua arah supaya dari testimoni pertama bisa mundur ke yang terakhir.
   const pindah = (langkah: 1 | -1) => {
@@ -69,7 +70,7 @@ export function TestimoniCASA() {
           <div className="relative h-[420px] min-w-0 flex-1 overflow-hidden rounded-3xl sm:h-[500px]">
             <AnimatePresence custom={arah} initial={false}>
               <motion.article
-                key={pengumuman}
+                key={teksPengumuman}
                 custom={arah}
                 variants={GERAK_TESTIMONI}
                 initial="masuk"
@@ -102,7 +103,12 @@ export function TestimoniCASA() {
                 <div className="flex flex-col items-center gap-5 overflow-y-auto text-center lg:items-start lg:text-left">
                   <div>
                     <h3 className="font-display text-xl leading-[1.4] sm:text-[32px]">
-                      {pengumuman}
+                      Nantikan{" "}
+                      <span className="font-ui font-extrabold">
+                        {pengumuman.jumlah}
+                      </span>{" "}
+                      {pengumuman.peran} BKUI{" "}
+                      <span className="font-ui font-extrabold">2026</span>
                     </h3>
                     {/* <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
                       {testimoni.asalSekolah}

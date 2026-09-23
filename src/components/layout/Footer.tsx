@@ -96,7 +96,7 @@ export function Footer() {
         <div className="flex flex-col gap-3 md:items-end">
           <LogoFooterBKUI />
           <p className="text-base text-black">
-            &copy; 2026 BKUI. All rights reserved.
+            &copy; <span className="font-ui font-extrabold">2026</span> BKUI. All rights reserved.
           </p>
         </div>
       </div>

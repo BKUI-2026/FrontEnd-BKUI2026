@@ -14,17 +14,9 @@ import { TAHAP_TIMELINE } from "@/lib/landing-content";
  * dirender sebagai <ol> supaya urutannya ikut terbaca screen reader, bukan cuma
  * terlihat dari posisi pil di layar.
  *
- * Ada DUA susunan yang isinya sama:
- * - **lg ke atas** — jalur berkelok seperti di Figma, pil ditempatkan absolut
- *   pada kotak berasio 1512:885. Semua posisi dinyatakan dalam persen hasil
- *   bagi koordinat Figma, jadi seluruh komposisi ikut mengecil utuh.
- * - **di bawah lg** — daftar vertikal dengan garis putus-putus di kiri. Jalur
- *   berkelok tidak dipaksakan ke layar sempit: pil-nya akan jadi terlalu kecil
- *   untuk dibaca.
- *
- * Keduanya membaca `TAHAP_TIMELINE` yang sama; yang tidak dipakai disembunyikan
- * dengan `hidden`, dan hanya satu yang punya <ol> semantik supaya isinya tidak
- * terbaca dua kali.
+ * Jalur berkelok memakai satu kanvas berasio 1512:885 pada semua ukuran layar.
+ * Posisi dinyatakan dalam persen supaya versi HP menjadi miniatur komposisi
+ * desktop, bukan berubah menjadi daftar vertikal yang berbeda bentuk.
  */
 
 /** Posisi tiap tahap di jalur berkelok, dalam persen terhadap frame Figma. */
@@ -46,8 +38,7 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
           </Muncul>
         </div>
 
-        {/* ---------- Susunan berkelok (lg ke atas) ---------- */}
-        <ol className="relative mx-auto hidden aspect-[1512/885] w-full lg:block">
+        <ol className="relative mx-auto mt-5 block aspect-[1512/885] w-full sm:mt-8">
           {/* Jalur putus-putus penghubung antar tahap */}
           <JalurTimeline
             jalur="dua"
@@ -83,29 +74,6 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
           })}
         </ol>
 
-        {/* ---------- Susunan vertikal (di bawah lg) ---------- */}
-        <ol
-          className="relative mx-auto mt-8 flex max-w-lg flex-col gap-6 border-l-4 border-dashed border-bkui-hijau-tua pl-6 lg:hidden"
-          // Daftar berkelok di atas sudah membawa <ol> semantiknya sendiri, tapi
-          // hanya satu dari keduanya yang pernah tampil sekaligus — keduanya
-          // dibedakan lewat `hidden`, bukan dirender bersamaan.
-        >
-          <Image
-            src="/icon/landing/bikun-extracted.svg"
-            alt=""
-            aria-hidden
-            width={84}
-            height={72}
-            className="bikun-mobile-timeline pointer-events-none absolute -left-[27px] top-0 z-10 h-auto w-12"
-          />
-          {TAHAP_TIMELINE.map((tahap, i) => (
-            <li key={tahap.id} className="group">
-              <Muncul jeda={i * 110}>
-                <PilTahap tahap={tahap} />
-              </Muncul>
-            </li>
-          ))}
-        </ol>
       </div>
   );
 

@@ -7,11 +7,8 @@ import type { ElementType, ReactNode } from "react";
 type UkuranJudul = "title" | "h1" | "h2" | "h3";
 
 interface JudulStickerProps {
-  /**
-   * Teksnya harus string, bukan ReactNode — komponen ini merender teks yang
-   * sama tiga kali (satu per lapis outline), jadi isinya wajib bisa disalin.
-   */
-  children: string;
+  /** Isi dirender ulang pada ketiga lapisan outline judul. */
+  children: ReactNode;
   /** Level heading yang dipakai. Default `h2`. */
   as?: Extract<ElementType, "h1" | "h2" | "h3" | "p" | "span">;
   ukuran?: UkuranJudul;

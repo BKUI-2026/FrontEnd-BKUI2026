@@ -344,52 +344,6 @@
   animation: bikun-mesin 0.16s steps(2, end) 30;
 }
 
-@keyframes bikun-mobile-jalur {
-  0% {
-    top: -3%;
-    opacity: 0;
-    transform: scale(0.35);
-  }
-  5%, 22% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  27% {
-    opacity: 0;
-    transform: scale(0.35);
-  }
-  31%, 47% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  52% {
-    opacity: 0;
-    transform: scale(0.35);
-  }
-  56%, 72% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  77% {
-    opacity: 0;
-    transform: scale(0.35);
-  }
-  81%, 95% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    top: 94%;
-    opacity: 0;
-    transform: scale(0.35);
-  }
-}
-
-.bikun-mobile-timeline {
-  animation: bikun-mobile-jalur 18s linear infinite;
-  transform-origin: center;
-}
-
 /*
  * ---------------------------------------------------------------------------
  * Auth scene masuk/daftar
@@ -1105,7 +1059,6 @@ body:has(dialog[open]) {
   .naik-turun,
   .bikun-masuk,
   .bikun-melayang,
-  .bikun-mobile-timeline,
   .coming-soon-melayang,
   .coming-soon__huruf,
   .countdown-ornamen-berputar,
@@ -1128,11 +1081,6 @@ body:has(dialog[open]) {
 
   .bikun-di-jalur { display: none; }
 
-  .bikun-mobile-timeline {
-    top: 92%;
-    opacity: 1;
-    transform: none;
-  }
 }
 /* The auth frames do not have falling sakura over their form controls. */
 body:has(.auth-scene) .sakura-layer {

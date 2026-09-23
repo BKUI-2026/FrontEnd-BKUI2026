@@ -44,7 +44,8 @@ export function VideoBKUI() {
           {/* Ukuran "title" (72px), bukan "h2" (48px): di Figma judul ini
               selebar 446px pada frame 1512, dan h2 cuma menghasilkan ~302px. */}
           <JudulSticker as="h2" ukuran="title" className="-mb-15">
-            {VIDEO_LANDING.judul}
+            TRAILER BKUI{" "}
+            <span className="font-ui font-extrabold">2026</span>
           </JudulSticker>
         </Muncul>
 

@@ -140,7 +140,8 @@ export function ArahPetualangan() {
             Tentukan Arah Petualanganmu
           </JudulSticker>
           <p className="rounded-full bg-gradient-to-r from-bkui-hijau-daun to-bkui-hijau-tua px-4 py-2 font-ui text-sm font-semibold leading-[1.2] text-bkui-netral sm:text-lg lg:px-[1.6cqw] lg:py-[0.66cqw] lg:text-[1.85cqw]">
-            Mata Acara Bedah Kampus UI 2026
+            Mata Acara Bedah Kampus UI{" "}
+            <span className="font-extrabold">2026</span>
           </p>
         </div>
 
