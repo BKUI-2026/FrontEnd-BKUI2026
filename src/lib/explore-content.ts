@@ -73,7 +73,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "FKUI merupakan fakultas tertua dan pertama di UI yang berdiri sejak tahun 1950. FKUI menjadi pusat pendidikan kedokteran terkemuka di Indonesia serta mencetak dokter umum maupun spesialis yang tersebar di seluruh penjuru negeri.",
     logoSrc: "/image/fakultas-logo/fk-nobg.png",
-    fotoSrc: ["/image/fakultas/fk1.jpg", "/image/fakultas/fk2.jpg", "/image/fakultas/fk3.jpeg"],
+    fotoSrc: ["/image/fakultas/fk1.jpg", "/image/fakultas/fk2.jpg", "/image/fakultas/fk3.jpg"],
     prodi: ["Pendidikan Dokter"],
   },
   {
@@ -93,7 +93,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Indonesia, atau disingkat FMIPA UI, adalah salah satu fakultas pada Rumpun Ilmu Sains dan Teknologi. Fakultas ini berfokus pada bidang matematika dan ilmu pengetahuan alam.",
     logoSrc: "/image/fakultas-logo/mipa-nobg.png",
-    fotoSrc: ["/image/fakultas/mipa1.jpg", "/image/fakultas/mipa2.jpg"],
+    fotoSrc: ["/image/fakultas/mipa1.jpg", "/image/fakultas/mipa2.jpg", "/image/fakultas/mipa3.jpg"],
     prodi: [
       "Matematika",
       "Kimia",
@@ -147,7 +147,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Kesehatan Masyarakat Universitas Indonesia (FKM UI) merupakan bagian dari Rumpun Ilmu Kesehatan UI (RIK UI). Fakultas ini bertujuan mencetak ahli dan profesional kesehatan masyarakat yang dapat berkontribusi dalam meningkatkan derajat kesehatan masyarakat.",
     logoSrc: "/image/fakultas-logo/fkm-nobg.png",
-    fotoSrc: ["/image/fakultas/fkm1.jpg"],
+    fotoSrc: ["/image/fakultas/fkm1.jpg", "/image/fakultas/fkm2.jpg", "/image/fakultas/fkm3.jpg"],
     prodi: [
       "Kesehatan Masyarakat",
       "Gizi",
@@ -162,7 +162,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ilmu Keperawatan Universitas Indonesia (FIK UI) merupakan Fakultas Ilmu Keperawatan pertama dan terbaik di Indonesia. Saat ini FIK UI berfungsi sebagai pusat pendidikan keperawatan dan berperan sebagai pembina beberapa institusi pendidikan tinggi keperawatan di Indonesia.",
     logoSrc: "/image/fakultas-logo/fik.png",
-    fotoSrc: ["/image/fakultas/fik1.jpeg", "/image/fakultas/fik2.jpg", "/image/fakultas/fik3.jpg"],
+    fotoSrc: ["/image/fakultas/fik1.jpg", "/image/fakultas/fik2.jpg", "/image/fakultas/fik3.jpg"],
     prodi: ["Ilmu Keperawatan"],
   },
   {
@@ -172,7 +172,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Farmasi mempelajari ilmu pembuatan obat dari bahan alam maupun sintetis yang cocok dan nyaman untuk didistribusikan serta digunakan dalam pencegahan dan pengobatan penyakit.",
     logoSrc: "/image/fakultas-logo/ff-nobg.png",
-    fotoSrc: ["/image/fakultas/ff1.jpg", "/image/fakultas/ff2.jpg"],
+    fotoSrc: ["/image/fakultas/ff1.jpg", "/image/fakultas/ff2.jpg", "/image/fakultas/ff3.jpg"],
     prodi: ["Farmasi"],
   },
   {
@@ -182,7 +182,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "FH UI merupakan fakultas hukum tertua di Indonesia. Fakultas ini menghasilkan praktisi hukum, hakim, jaksa, pengacara, notaris, hingga akademisi hukum yang tersebar di berbagai institusi penegak hukum dan lembaga negara.",
     logoSrc: "/image/fakultas-logo/fh-nobg.png",
-    fotoSrc: ["/image/fakultas/fh1.jpg"],
+    fotoSrc: ["/image/fakultas/fh1.jpg", "/image/fakultas/fh2.jpg", "/image/fakultas/fh3.webp"],
     prodi: ["Ilmu Hukum"],
   },
   {
@@ -192,7 +192,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ekonomi dan Bisnis Universitas Indonesia (FEB UI) adalah salah satu fakultas ekonomi paling bergengsi di Indonesia yang berfokus pada kajian ekonomi, akuntansi, manajemen, dan bisnis.",
     logoSrc: "/image/fakultas-logo/feb-nobg.png",
-    fotoSrc: ["/image/fakultas/feb1.jpg", "/image/fakultas/feb2.jpg", "/image/fakultas/feb3.jpg"],
+    fotoSrc: ["/image/fakultas/feb1.jpg", "/image/fakultas/feb2.webp", "/image/fakultas/feb3.jpg"],
     prodi: [
       "Ilmu Ekonomi",
       "Manajemen",
@@ -262,7 +262,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ilmu Administrasi Universitas Indonesia, atau disingkat FIA UI, adalah fakultas dalam Rumpun Ilmu Sosial dan Humaniora yang dibentuk pada tahun 2015. Sebelumnya, FIA UI merupakan Departemen Ilmu Administrasi yang bernaung di bawah FISIP UI.",
     logoSrc: "/image/fakultas-logo/fia-nobg.png",
-    fotoSrc: [],
+    fotoSrc: ["/image/fakultas/fia1.jpg", "/image/fakultas/fia2.webp", "/image/fakultas/fia3.jpg"],
     prodi: [
       "Ilmu Administrasi Niaga",
       "Ilmu Administrasi Negara",
@@ -276,7 +276,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Sekolah Vokasi UI adalah perguruan tinggi yang bertujuan mempersiapkan tenaga yang dapat menerapkan keahlian dan keterampilan di bidang tertentu, siap kerja, dan mampu bersaing secara global.",
     logoSrc: "/image/fakultas-logo/vokasi.png",
-    fotoSrc: ["/image/fakultas/voks1.jpg", "/image/fakultas/voks2.jpg", "/image/fakultas/voks3.webp"],
+    fotoSrc: ["/image/fakultas/vokasi1.jpg", "/image/fakultas/vokasi2.jpg", "/image/fakultas/vokasi3.jpg"],
     prodi: [
       "Administrasi Rumah Sakit",
       "Akuntansi",
