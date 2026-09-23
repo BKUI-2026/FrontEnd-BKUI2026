@@ -38,6 +38,7 @@ export default function LandingPage() {
       <TestimoniCASA />
       <FogTransition />
       <FAQ />
+      <FogTransition />
     </main>
   );
 }

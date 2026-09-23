@@ -31,7 +31,7 @@ export function FAQ() {
             aria-hidden
             fill
             sizes="100vw"
-            className="pointer-events-none -z-10 object-contain object-top sm:object-fill"
+            className="pointer-events-none -z-10 object-fill object-top [clip-path:inset(0_0_20%_0)]"
           />
           <Image
             src="/image/landing/faq-star.png"

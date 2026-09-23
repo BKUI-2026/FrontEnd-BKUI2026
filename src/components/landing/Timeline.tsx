@@ -85,11 +85,19 @@ export function Timeline({ tergabung = false }: { tergabung?: boolean }) {
 
         {/* ---------- Susunan vertikal (di bawah lg) ---------- */}
         <ol
-          className="mx-auto mt-8 flex max-w-lg flex-col gap-6 border-l-4 border-dashed border-bkui-hijau-tua pl-6 lg:hidden"
+          className="relative mx-auto mt-8 flex max-w-lg flex-col gap-6 border-l-4 border-dashed border-bkui-hijau-tua pl-6 lg:hidden"
           // Daftar berkelok di atas sudah membawa <ol> semantiknya sendiri, tapi
           // hanya satu dari keduanya yang pernah tampil sekaligus — keduanya
           // dibedakan lewat `hidden`, bukan dirender bersamaan.
         >
+          <Image
+            src="/icon/landing/bikun-extracted.svg"
+            alt=""
+            aria-hidden
+            width={84}
+            height={72}
+            className="bikun-mobile-timeline pointer-events-none absolute -left-[27px] top-0 z-10 h-auto w-12"
+          />
           {TAHAP_TIMELINE.map((tahap, i) => (
             <li key={tahap.id} className="group">
               <Muncul jeda={i * 110}>

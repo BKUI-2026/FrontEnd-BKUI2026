@@ -2,10 +2,11 @@
 export function FogTransition() {
   return (
     <div aria-hidden className="pointer-events-none relative z-20 h-0">
+      <div className="absolute inset-x-0 top-0 h-[50px] -translate-y-1/2 bg-gradient-to-b from-white/0 via-white/70 to-white/0" />
       <svg
         viewBox="0 0 1512 64"
         preserveAspectRatio="none"
-        className="absolute inset-x-0 top-0 h-6 w-full -translate-y-1/2 sm:h-8 lg:h-9"
+        className="absolute inset-x-0 top-0 h-[50px] w-full -translate-y-1/2"
       >
         <defs>
           {/* Setiap lapis kabut tetap punya intensitas sendiri, lalu memudar

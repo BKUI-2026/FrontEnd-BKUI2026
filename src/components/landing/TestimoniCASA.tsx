@@ -8,7 +8,11 @@ import { HiasanTestimoni } from "@/components/landing/HiasanTestimoni";
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
-import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
+
+const PENGUMUMAN_CASA = [
+  "Nantikan 8 Campus Ambassador BKUI 2026",
+  "Nantikan 12 Student Ambassador BKUI 2026",
+] as const;
 
 const GERAK_TESTIMONI = {
   masuk: (arah: number) => ({ x: `${arah * 100}%`, opacity: 0 }),
@@ -34,8 +38,8 @@ const GERAK_TESTIMONI = {
 export function TestimoniCASA() {
   const [indeks, setIndeks] = useState(0);
   const [arah, setArah] = useState<1 | -1>(1);
-  const jumlah = DAFTAR_TESTIMONI.length;
-  const testimoni = DAFTAR_TESTIMONI[indeks];
+  const jumlah = PENGUMUMAN_CASA.length;
+  const pengumuman = PENGUMUMAN_CASA[indeks];
 
   // Modulo dua arah supaya dari testimoni pertama bisa mundur ke yang terakhir.
   const pindah = (langkah: 1 | -1) => {
@@ -62,10 +66,10 @@ export function TestimoniCASA() {
             berganti setelah menekan panah — tanpa ini, tombolnya terasa tidak
             melakukan apa-apa.
           */}
-          <div className="relative h-[500px] min-w-0 flex-1 overflow-hidden rounded-3xl">
+          <div className="relative h-[420px] min-w-0 flex-1 overflow-hidden rounded-3xl sm:h-[500px]">
             <AnimatePresence custom={arah} initial={false}>
               <motion.article
-                key={testimoni.nama}
+                key={pengumuman}
                 custom={arah}
                 variants={GERAK_TESTIMONI}
                 initial="masuk"
@@ -95,10 +99,10 @@ export function TestimoniCASA() {
                   />
                 </div>
 
-                <div className="flex flex-col gap-5 overflow-y-auto">
+                <div className="flex flex-col items-center gap-5 overflow-y-auto text-center lg:items-start lg:text-left">
                   <div>
-                    <h3 className="font-display text-2xl leading-[1.4] sm:text-[32px]">
-                      Nantikan Campuss dan Student Ambassador BKUI <span className="font-extrabold font-ui">2026 </span>!!
+                    <h3 className="font-display text-xl leading-[1.4] sm:text-[32px]">
+                      {pengumuman}
                     </h3>
                     {/* <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
                       {testimoni.asalSekolah}
@@ -118,7 +122,7 @@ export function TestimoniCASA() {
         {/* Tetap diumumkan ke pembaca layar tanpa menambah elemen visual di
             luar komposisi Figma. */}
         <p className="sr-only" aria-live="polite">
-          Testimoni {indeks + 1} dari {jumlah}
+          Pengumuman {indeks + 1} dari {jumlah}
         </p>
       </div>
     </SectionLangit>

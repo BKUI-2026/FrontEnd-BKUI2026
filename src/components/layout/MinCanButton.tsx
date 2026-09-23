@@ -1,12 +1,24 @@
+"use client";
+
 import Image from "next/image";
+import type { MouseEvent } from "react";
 
 const INSTAGRAM_DM_URL =
   "https://www.instagram.com/direct/t/17844938015330878/";
+const INSTAGRAM_MOBILE_DM_URL = "https://ig.me/m/bkui.official";
 
 export function MinCanButton() {
+  const bukaInstagram = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      event.preventDefault();
+      window.location.href = INSTAGRAM_MOBILE_DM_URL;
+    }
+  };
+
   return (
     <a
       href={INSTAGRAM_DM_URL}
+      onClick={bukaInstagram}
       target="_blank"
       rel="noreferrer"
       aria-label="Tanya MinCan melalui Instagram"

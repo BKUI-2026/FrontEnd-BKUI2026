@@ -200,7 +200,7 @@ export interface VideoLanding {
 
 export const VIDEO_LANDING: VideoLanding = {
   // Di Figma judulnya ditulis kapital semua.
-  judul: "AFTER MOVIE",
+  judul: "TRAILER BKUI 2026",
   url: null,
 };
 
