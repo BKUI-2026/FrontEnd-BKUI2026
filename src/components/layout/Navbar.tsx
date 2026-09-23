@@ -272,19 +272,25 @@ function AvatarProfil({
   transisi: { duration: number; ease: [number, number, number, number] };
 }) {
   return (
-    <div className="relative">
+    <div className="relative size-14 shrink-0">
       <Link
         href="/profile"
         aria-label="Profil saya"
         aria-current={aktif ? "page" : undefined}
         /*
-         * TANPA warna latar. Ikonnya sendiri sudah berwarna #6EA2CD — persis
-         * nilai `bkui-biru-redup` — dan bentuknya lingkaran dengan siluet
-         * orang yang DILUBANGI, bukan siluet padat. Memberinya latar warna
-         * yang sama membuat lubangnya ikut terisi, dan yang tampil cuma
-         * lingkaran polos tanpa orang.
+         * Gambarnya DIPOTONG jadi lingkaran oleh pembungkus ini, bukan
+         * ditampilkan apa adanya.
+         *
+         * Asetnya berukuran 300x270.937 — lingkaran berdiameter 300 yang
+         * bagian bawahnya terpotong sejak dari berkasnya. Ditampilkan apa
+         * adanya, ia jadi lingkaran beralas rata di dalam kotak 64x64, dan
+         * cincin penanda halaman aktif menyisakan celah di atas-bawah tapi
+         * menempel di sisinya. Itu yang terlihat tidak rapi.
+         *
+         * Dipotong lingkaran, yang tampil cuma bagian tengah cakram birunya:
+         * bundar penuh, tanpa alas rata, dan cincinnya memeluk persis.
          */
-        className="relative z-10 flex size-16 items-center justify-center rounded-full transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+        className="relative z-10 flex size-14 items-center justify-center overflow-hidden rounded-full bg-bkui-navbar transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
       >
         <Image
           src="/icon/dashboard/avatar-placeholder.svg"
@@ -292,9 +298,12 @@ function AvatarProfil({
           aria-hidden
           width={64}
           height={58}
-          className="w-16"
+          /* `max-w-none` supaya gambar boleh lebih besar dari pembungkusnya —
+             itu justru yang membuat potongannya terisi penuh. */
+          className="w-16 max-w-none"
         />
       </Link>
+
       {aktif && (
         <motion.span
           layoutId="navbar-active-spotlight"
