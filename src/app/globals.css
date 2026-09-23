@@ -1,6 +1,26 @@
 @import "tailwindcss";
 
 /*
+ * Dekorasi landing sengaja meluber dari frame agar pohon, bendera, dan bunga
+ * tetap terasa penuh. Di browser mobile, transform pada dekorasi tersebut bisa
+ * ikut mengaktifkan rubber-band horizontal walaupun lebar dokumen terukur pas.
+ * Kunci sumbu X di akar halaman; scroll vertikal tetap sepenuhnya normal.
+ */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
+/*
  * Design token BKUI 2026 — diambil dari Figma (Local variables).
  *
  * Pakai token ini di komponen (mis. `bg-bkui-oren`, `text-bkui-hijau`),
