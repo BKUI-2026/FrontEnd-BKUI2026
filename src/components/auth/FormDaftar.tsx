@@ -336,7 +336,7 @@ function FaseSekolah() {
   return (
     <PanelFase>
       <div className="grid w-full gap-x-6 gap-y-6 md:grid-cols-2">
-        <RadioGroup label="Jenis Kelamin" name="jenis-kelamin" options={["Laki-Laki", "Perempuan", "Non-binary"]} />
+        <RadioGroup label="Jenis Kelamin" name="jenis-kelamin" options={["Laki-Laki", "Perempuan"]} />
         <KolomAngka label="Usia" name="usia" placeholder="Contoh: 17" />
         <KolomIsian label="Nomor Induk Siswa Nasional (NISN)" name="nisn" placeholder="Contoh: 1234567890" autoComplete="off" />
         <RadioGroup label="Berada di kelas berapa kamu sekarang" name="kelas" options={["X", "XI", "XII"]} />
