@@ -1,12 +1,12 @@
-/** Gelombang putih yang memudar ke transparan di sambungan antarseksi. */
+/** Gelombang putih berlapis yang memudar di sambungan antarseksi. */
 export function FogTransition() {
   return (
     <div aria-hidden className="pointer-events-none relative z-20 h-0">
-      <div className="absolute inset-x-0 top-0 h-[50px] -translate-y-1/2 bg-gradient-to-b from-white/0 via-white/70 to-white/0" />
+      <div className="absolute inset-x-0 top-0 h-[80px] -translate-y-1/2 bg-gradient-to-b from-white/0 via-white/75 to-white/0 sm:h-[96px]" />
       <svg
         viewBox="0 0 1512 64"
         preserveAspectRatio="none"
-        className="absolute inset-x-0 top-0 h-[50px] w-full -translate-y-1/2"
+        className="absolute inset-x-0 top-0 h-[80px] w-full -translate-y-1/2 sm:h-[96px]"
       >
         <defs>
           {/* Setiap lapis kabut tetap punya intensitas sendiri, lalu memudar

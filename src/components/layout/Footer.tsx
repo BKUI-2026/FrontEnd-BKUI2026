@@ -3,7 +3,7 @@ import Image from "next/image";
 import { LogoFooterBKUI } from "@/components/ui/LogoFooterBKUI";
 
 /** Alamat email resmi BKUI, sesuai desain Figma footer. */
-const EMAIL_BKUI = "bedahkampusui@gmail.com";
+const EMAIL_BKUI = "bkui2026@gmail.com";
 
 /**
  * Ikon sosial media di footer.
