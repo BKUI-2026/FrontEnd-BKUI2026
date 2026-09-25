@@ -30,7 +30,6 @@ export default function LandingPage() {
       <Hero />
       <TransisiHeroAwan />
       <ApaItuBKUI />
-      <FogTransition />
       <VideoBKUI />
       <FogTransition />
       <ArahPetualangan />

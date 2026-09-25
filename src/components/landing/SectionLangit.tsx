@@ -154,7 +154,7 @@ export function DekorBendera({ className }: { className?: string }) {
         alt=""
         width={1512}
         height={156}
-        className="bendera-goyang h-auto w-full min-w-[1512px]"
+        className="bendera-goyang h-auto w-full min-w-[1512px] [mask-image:linear-gradient(to_bottom,transparent_0%,black_32%,black_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_32%,black_100%)]"
       />
     </div>
   );

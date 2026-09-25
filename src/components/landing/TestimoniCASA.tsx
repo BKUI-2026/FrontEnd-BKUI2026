@@ -10,8 +10,8 @@ import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 
 const PENGUMUMAN_CASA = [
-  { jumlah: "8", peran: "Campus Ambassador" },
-  { jumlah: "12", peran: "Student Ambassador" },
+  { jumlah: 8, peran: "Campus Ambassador" },
+  { jumlah: 12, peran: "Student Ambassador" },
 ] as const;
 
 const GERAK_TESTIMONI = {
@@ -80,8 +80,7 @@ export function TestimoniCASA() {
                 aria-live="polite"
                 className="absolute inset-0 flex flex-col items-center gap-5 overscroll-contain bg-bkui-krem-kartu p-6 text-bkui-teks will-change-transform sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
               >
-                {/* Siluet peserta sebagai placeholder visual hingga foto CASA
-                    yang sudah dikurasi tersedia dari Admin. */}
+                {/* Satu siluet dengan angka jumlah ambassador di wajahnya. */}
                 <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
                   <Image
                     src="/icon/landing/latest/siluet-orang.png"
@@ -89,8 +88,14 @@ export function TestimoniCASA() {
                     aria-hidden
                     fill
                     sizes="(min-width: 1024px) 39vw, 200px"
-                    className="object-contain "
+                    className="object-contain"
                   />
+                  <span
+                    aria-hidden
+                    className="absolute left-1/2 top-[29%] z-10 -translate-x-1/2 -translate-y-1/2 font-ui text-[clamp(2rem,4.2vw,4rem)] font-extrabold leading-none text-bkui-krem [paint-order:stroke_fill] [-webkit-text-stroke:0.06em_#9c3214] [text-shadow:0_0.08em_0.04em_rgb(0_0_0_/_0.3)]"
+                  >
+                    {pengumuman.jumlah}
+                  </span>
                   <Image
                     src="/icon/landing/bingkai-foto-besar.svg"
                     alt=""

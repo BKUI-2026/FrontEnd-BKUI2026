@@ -31,7 +31,7 @@ export function FAQ() {
             aria-hidden
             fill
             sizes="100vw"
-            className="pointer-events-none -z-10 object-fill object-top [clip-path:inset(0_0_20%_0)]"
+            className="pointer-events-none -z-10 origin-center scale-y-[1.06] object-fill object-top [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_62%,transparent_84%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_62%,transparent_84%)]"
           />
           <Image
             src="/image/landing/faq-star.png"

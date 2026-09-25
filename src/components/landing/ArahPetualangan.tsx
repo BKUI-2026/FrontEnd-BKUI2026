@@ -69,7 +69,7 @@ export function ArahPetualangan() {
           alt=""
           width={1000}
           height={1300}
-          className="absolute top-0 left-0 h-[30vw] w-full max-w-none object-cover object-bottom sm:h-auto sm:object-contain"
+          className="absolute -top-[1.2vw] left-0 h-[30vw] w-full max-w-none object-cover object-bottom [clip-path:inset(4%_0_0_0)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] sm:h-auto sm:object-contain"
         >
         </Image>
         <div
