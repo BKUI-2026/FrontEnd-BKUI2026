@@ -83,7 +83,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Kedokteran Gigi Universitas Indonesia merupakan fakultas kedokteran gigi pertama dan terbaik di Indonesia yang berdiri sejak tahun 1960.",
     logoSrc: "/image/fakultas-logo/fkg-nobg-fix.png",
-    fotoSrc: ["/image/fakultas/fkg1.jpg", "/image/fakultas/fkg2.webp", "/image/fakultas/fkg3.jpg"],
+    fotoSrc: ["/image/fakultas/fkg1.jpg", "/image/fakultas/fkg2.jpg", "/image/fakultas/fkg3.jpg"],
     prodi: ["Pendidikan Dokter Gigi"],
   },
   {
@@ -137,7 +137,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ilmu Komputer Universitas Indonesia (Fasilkom UI) adalah salah satu fakultas ilmu komputer terbaik di Indonesia yang berfokus pada bidang ilmu komputer dan sistem informasi.",
     logoSrc: "/image/fakultas-logo/fasilkom.png",
-    fotoSrc: ["/image/fakultas/fasilkom1.webp", "/image/fakultas/fasilkom2.jpg", "/image/fakultas/fasilkom3.jpg"],
+    fotoSrc: ["/image/fakultas/fasilkom1.jpg", "/image/fakultas/fasilkom2.jpg", "/image/fakultas/fasilkom3.jpg"],
     prodi: ["Sistem Informasi", "Kecerdasan Artifisial", "Ilmu Komputer"],
   },
   {
@@ -182,7 +182,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "FH UI merupakan fakultas hukum tertua di Indonesia. Fakultas ini menghasilkan praktisi hukum, hakim, jaksa, pengacara, notaris, hingga akademisi hukum yang tersebar di berbagai institusi penegak hukum dan lembaga negara.",
     logoSrc: "/image/fakultas-logo/fh-nobg.png",
-    fotoSrc: ["/image/fakultas/fh1.jpg", "/image/fakultas/fh2.jpg", "/image/fakultas/fh3.webp"],
+    fotoSrc: ["/image/fakultas/fh1.jpg", "/image/fakultas/fh2.jpg", "/image/fakultas/fh3.jpg"],
     prodi: ["Ilmu Hukum"],
   },
   {
@@ -192,7 +192,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ekonomi dan Bisnis Universitas Indonesia (FEB UI) adalah salah satu fakultas ekonomi paling bergengsi di Indonesia yang berfokus pada kajian ekonomi, akuntansi, manajemen, dan bisnis.",
     logoSrc: "/image/fakultas-logo/feb-nobg.png",
-    fotoSrc: ["/image/fakultas/feb1.jpg", "/image/fakultas/feb2.webp", "/image/fakultas/feb3.jpg"],
+    fotoSrc: ["/image/fakultas/feb1.jpg", "/image/fakultas/feb2.jpg", "/image/fakultas/feb3.jpg"],
     prodi: [
       "Ilmu Ekonomi",
       "Manajemen",
@@ -234,7 +234,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Psikologi UI adalah Fakultas Psikologi yang pertama kali berdiri di Indonesia dan menjadi acuan pengembangan fakultas-fakultas psikologi lain di Indonesia. Fakultas ini menjadi pusat unggulan dalam pendidikan, pengembangan, dan penerapan psikologi yang berorientasi lintas budaya, perkotaan, dan ulayat (indigenous).",
     logoSrc: "/image/fakultas-logo/fpsi.png",
-    fotoSrc: ["/image/fakultas/psiko1.jpg", "/image/fakultas/psiko2.jpg", "/image/fakultas/psiko3.webp"],
+    fotoSrc: ["/image/fakultas/psiko1.jpg", "/image/fakultas/psiko2.jpg", "/image/fakultas/psiko3.jpg"],
     prodi: ["Psikologi"],
   },
   {
@@ -244,7 +244,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ilmu Sosial dan Ilmu Politik Universitas Indonesia (FISIP UI) didirikan pada tahun 1968 dan berfokus pada kajian dinamika masyarakat, negara, dan hubungan internasional. Beberapa jurusannya adalah sosiologi, hubungan internasional, kriminologi, dan ilmu komunikasi.",
     logoSrc: "/image/fakultas-logo/fisip-nobg.png",
-    fotoSrc: ["/image/fakultas/fisip1.jpg", "/image/fakultas/fisip2.png", "/image/fakultas/fisip3.jpg"],
+    fotoSrc: ["/image/fakultas/fisip1.jpg", "/image/fakultas/fisip2.jpg", "/image/fakultas/fisip3.jpg"],
     prodi: [
       "Ilmu Komunikasi",
       "Ilmu Politik",
@@ -262,7 +262,7 @@ const DAFTAR_DASAR: readonly FakultasDasar[] = [
     ringkasan:
       "Fakultas Ilmu Administrasi Universitas Indonesia, atau disingkat FIA UI, adalah fakultas dalam Rumpun Ilmu Sosial dan Humaniora yang dibentuk pada tahun 2015. Sebelumnya, FIA UI merupakan Departemen Ilmu Administrasi yang bernaung di bawah FISIP UI.",
     logoSrc: "/image/fakultas-logo/fia-nobg.png",
-    fotoSrc: ["/image/fakultas/fia1.jpg", "/image/fakultas/fia2.webp", "/image/fakultas/fia3.jpg"],
+    fotoSrc: ["/image/fakultas/fia1.jpg", "/image/fakultas/fia2.jpg", "/image/fakultas/fia3.jpg"],
     prodi: [
       "Ilmu Administrasi Niaga",
       "Ilmu Administrasi Negara",
