@@ -8,8 +8,10 @@ Terakhir diperbarui: 2026-09-20 15:40 WIB
 
 **Landing Page sudah dislicing penuh dari Figma** (FE-0005). Sepuluh FAQ resmi
 sudah dimasukkan dari dokumen tim (FE-0015). Seluruh Lorem ipsum dan label
-generik sudah diganti copy yang layak tampil (FE-0020); nama pembicara dan
-testimoni asli tetap menunggu konten resmi. Placeholder video kini menampilkan
+generik sudah diganti copy yang layak tampil (FE-0020); Previous Speakers sudah memakai konten tim. Foto dan nama 20 CASA
+sudah berasal dari folder resmi tim (25 Oktober 2026); kutipan asli masih
+menunggu. Kartu CASA hanya menampilkan “Hi, I'm <Nama>” dan “From <asal>”
+sesuai nama file sumber, tanpa label kategori atau placeholder kutipan. Placeholder video kini menampilkan
 “Coming Soon” dengan font judul BKUI (FE-0021).
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
@@ -56,7 +58,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 
 | Fitur/Halaman | Rute | Status | Endpoint BE terkait | Referensi |
 |---|---|---|---|---|
-| Landing Page | `/` | **Sebagian konten resmi** (FAQ dan Previous Speakers sudah dari dokumen tim) | TBD (entity `Content` — video, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
+| Landing Page | `/` | **Sebagian konten resmi** (FAQ, Previous Speakers, serta foto/nama CASA sudah dari tim; kutipan CASA menunggu) | TBD (entity `Content` — video, testimoni, sponsor) | [FE-0005](./features/FE-0005_Salman_Slicing-Landing-Page.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md), [FE-0021](./features/FE-0021_Codex_Placeholder-Video-Coming-Soon.md), [FE-0024](./features/FE-0024_Codex_Revisi-Landing-Terbaru.md) |
 | Daftar Akun | `/daftar` | **Terhubung ke API** | `POST /auth/register` | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Masuk | `/masuk` | **Terhubung ke API** | `POST /auth/login` | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |

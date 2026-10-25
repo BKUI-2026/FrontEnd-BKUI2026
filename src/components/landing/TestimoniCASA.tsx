@@ -9,10 +9,7 @@ import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 
-const PENGUMUMAN_CASA = [
-  { jumlah: 8, peran: "Campus Ambassador" },
-  { jumlah: 12, peran: "Student Ambassador" },
-] as const;
+import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
 
 const GERAK_TESTIMONI = {
   masuk: (arah: number) => ({ x: `${arah * 100}%`, opacity: 0 }),
@@ -21,7 +18,7 @@ const GERAK_TESTIMONI = {
 };
 
 /**
- * Section "Apa Kata Mereka" — testimoni peserta CASA, ditampilkan satu per satu
+ * Section "Apa Kata CASA" — testimoni peserta CASA, ditampilkan satu per satu
  * dengan tombol panah kiri/kanan seperti di Figma.
  *
  * Ukuran diambil dari Figma (node `265:278`): panah 97,5x152, kartu 1001x480,
@@ -38,9 +35,8 @@ const GERAK_TESTIMONI = {
 export function TestimoniCASA() {
   const [indeks, setIndeks] = useState(0);
   const [arah, setArah] = useState<1 | -1>(1);
-  const jumlah = PENGUMUMAN_CASA.length;
-  const pengumuman = PENGUMUMAN_CASA[indeks];
-  const teksPengumuman = `Nantikan ${pengumuman.jumlah} ${pengumuman.peran} BKUI 2026`;
+  const jumlah = DAFTAR_TESTIMONI.length;
+  const testimoni = DAFTAR_TESTIMONI[indeks];
 
   // Modulo dua arah supaya dari testimoni pertama bisa mundur ke yang terakhir.
   const pindah = (langkah: 1 | -1) => {
@@ -67,10 +63,10 @@ export function TestimoniCASA() {
             berganti setelah menekan panah — tanpa ini, tombolnya terasa tidak
             melakukan apa-apa.
           */}
-          <div className="relative h-[420px] min-w-0 flex-1 overflow-hidden rounded-3xl sm:h-[500px]">
+          <div className="relative h-[540px] min-w-0 flex-1 overflow-hidden rounded-3xl sm:h-[500px]">
             <AnimatePresence custom={arah} initial={false}>
               <motion.article
-                key={teksPengumuman}
+                key={testimoni.id}
                 custom={arah}
                 variants={GERAK_TESTIMONI}
                 initial="masuk"
@@ -80,22 +76,16 @@ export function TestimoniCASA() {
                 aria-live="polite"
                 className="absolute inset-0 flex flex-col items-center gap-5 overscroll-contain bg-bkui-krem-kartu p-6 text-bkui-teks will-change-transform sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
               >
-                {/* Satu siluet dengan angka jumlah ambassador di wajahnya. */}
                 <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
-                  <Image
-                    src="/icon/landing/latest/siluet-orang.png"
-                    alt=""
-                    aria-hidden
-                    fill
-                    sizes="(min-width: 1024px) 39vw, 200px"
-                    className="object-contain"
-                  />
-                  <span
-                    aria-hidden
-                    className="absolute left-1/2 top-[29%] z-10 -translate-x-1/2 -translate-y-1/2 font-ui text-[clamp(2rem,4.2vw,4rem)] font-extrabold leading-none text-bkui-krem [paint-order:stroke_fill] [-webkit-text-stroke:0.06em_#9c3214] [text-shadow:0_0.08em_0.04em_rgb(0_0_0_/_0.3)]"
-                  >
-                    {pengumuman.jumlah}
-                  </span>
+                  <div className="absolute inset-[6%] overflow-hidden rounded-xl bg-bkui-krem">
+                    <Image
+                      src={testimoni.foto}
+                      alt={`Foto ${testimoni.nama}`}
+                      fill
+                      sizes="(min-width: 1024px) 320px, 200px"
+                      className="object-contain"
+                    />
+                  </div>
                   <Image
                     src="/icon/landing/bingkai-foto-besar.svg"
                     alt=""
@@ -105,23 +95,15 @@ export function TestimoniCASA() {
                   />
                 </div>
 
-                <div className="flex flex-col items-center gap-5 overflow-y-auto text-center lg:items-start lg:text-left">
+                <div className="flex min-w-0 flex-col items-center gap-4 overflow-y-auto text-center lg:items-start lg:text-left">
                   <div>
-                    <h3 className="font-display text-xl leading-[1.4] sm:text-[32px]">
-                      Nantikan{" "}
-                      <span className="font-ui font-extrabold">
-                        {pengumuman.jumlah}
-                      </span>{" "}
-                      {pengumuman.peran} BKUI{" "}
-                      <span className="font-ui font-extrabold">2026</span>
+                    <h3 className="font-ui text-xl font-extrabold leading-snug sm:text-[32px]">
+                      Hi, I&apos;m {testimoni.nama}
                     </h3>
-                    {/* <p className="font-ui text-xl font-semibold leading-[1.2] sm:text-[28px]">
-                      {testimoni.asalSekolah}
-                    </p> */}
+                    <p className="mt-2 font-ui text-sm font-semibold leading-snug sm:text-lg">
+                      From {testimoni.asalSekolah}
+                    </p>
                   </div>
-                  {/* <p className="font-body text-base leading-[1.4] sm:text-xl">
-                    {testimoni.isi}
-                  </p> */}
                 </div>
               </motion.article>
             </AnimatePresence>
@@ -133,7 +115,7 @@ export function TestimoniCASA() {
         {/* Tetap diumumkan ke pembaca layar tanpa menambah elemen visual di
             luar komposisi Figma. */}
         <p className="sr-only" aria-live="polite">
-          Pengumuman {indeks + 1} dari {jumlah}
+          CASA {indeks + 1} dari {jumlah}
         </p>
       </div>
     </SectionLangit>

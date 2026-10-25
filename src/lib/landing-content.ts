@@ -64,39 +64,180 @@ export const TAHAP_TIMELINE: readonly TahapTimeline[] = [
   { id: "puncak", judul: "Puncak Acara BKUI 2026", detail: "Desember" },
 ] as const;
 
-/** Satu testimoni di section "Apa Kata Mereka". */
+/** CASA dari folder foto dan nama resmi tim; kutipan masih menunggu. */
 export interface Testimoni {
   id: string;
   nama: string;
+  /** Sekolah atau program studi, sesuai nama file sumber. */
   asalSekolah: string;
-  isi: string;
-  foto: string | null;
+  peran: "Campus Ambassador" | "Student Ambassador";
+  /** null sampai kutipan asli diberikan oleh CASA. */
+  isi: string | null;
+  foto: string;
 }
 
-/** TODO: ganti dengan testimoni asli peserta CASA dari PM. */
 export const DAFTAR_TESTIMONI: readonly Testimoni[] = [
   {
-    id: "testimoni-1",
-    nama: "Kesan Peserta",
-    asalSekolah: "Alumni CASA BKUI",
-    isi: "Cerita resmi peserta tentang pengalaman mengikuti rangkaian BKUI akan ditampilkan di sini setelah dikurasi oleh panitia.",
-    foto: null,
+    "id": "aurelya-batara-randa",
+    "nama": "Aurelya Batara Randa",
+    "asalSekolah": "Geografi’26",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/aurelya-batara-randa.webp"
   },
   {
-    id: "testimoni-2",
-    nama: "Perjalanan Menuju UI",
-    asalSekolah: "Alumni CASA BKUI",
-    isi: "Nantikan pengalaman peserta saat mengenal kehidupan kampus, mengeksplorasi fakultas, dan menemukan program studi yang sesuai dengan minatnya.",
-    foto: null,
+    "id": "exsel-cornelio",
+    "nama": "Exsel Cornelio",
+    "asalSekolah": "Hubungan Masyarakat’26",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/exsel-cornelio.webp"
   },
   {
-    id: "testimoni-3",
-    nama: "Langkah Menentukan Pilihan",
-    asalSekolah: "Alumni CASA BKUI",
-    isi: "Kisah peserta tentang proses memantapkan pilihan pendidikan bersama BKUI 2026 akan hadir setelah testimoni resmi tersedia.",
-    foto: null,
+    "id": "hanna-awliya-lesmana-putri",
+    "nama": "Hanna Awliya Lesmana Putri",
+    "asalSekolah": "Periklanan Kreatif’26",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/hanna-awliya-lesmana-putri.webp"
   },
-] as const;
+  {
+    "id": "nayyara-azarine-farrashila",
+    "nama": "Nayyara Azarine Farrashila",
+    "asalSekolah": "Ilmu Hukum’25",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/nayyara-azarine-farrashila.webp"
+  },
+  {
+    "id": "neysa-chandria-melisenda",
+    "nama": "Neysa Chandria Melisenda",
+    "asalSekolah": "Administrasi Perpajakan’26",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/neysa-chandria-melisenda.webp"
+  },
+  {
+    "id": "zerlitha-syakilla-meydra",
+    "nama": "Zerlitha Syakilla Meydra",
+    "asalSekolah": "Ilmu Komunikasi’26",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/zerlitha-syakilla-meydra.webp"
+  },
+  {
+    "id": "sandrin-alivia-syahri",
+    "nama": "Sandrin Alivia Syahri",
+    "asalSekolah": "Ilmu Keperawatan’25",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/sandrin-alivia-syahri.webp"
+  },
+  {
+    "id": "abiyu-mahasika",
+    "nama": "Abiyu Mahasika",
+    "asalSekolah": "Teknik Metalurgi dan Material’25",
+    "peran": "Campus Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/abiyu-mahasika.webp"
+  },
+  {
+    "id": "rafik-muhammad-adil",
+    "nama": "Rafik Muhammad Adil",
+    "asalSekolah": "SMA Negeri 1 Cianjur",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/rafik-muhammad-adil.webp"
+  },
+  {
+    "id": "fajrea-zaina-nafisha",
+    "nama": "Fajrea Zaina Nafisha",
+    "asalSekolah": "SMA Islam Al Azhar 22",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/fajrea-zaina-nafisha.webp"
+  },
+  {
+    "id": "ashlee-naveeja-mardiono",
+    "nama": "Ashlee Naveeja Mardiono",
+    "asalSekolah": "SMA Labschool Cibubur",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/ashlee-naveeja-mardiono.webp"
+  },
+  {
+    "id": "aqyla-zahya-ayufarista",
+    "nama": "Aqyla Zahya Ayufarista",
+    "asalSekolah": "SMK Negeri 2 Buduran Sidoarjo",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/aqyla-zahya-ayufarista.webp"
+  },
+  {
+    "id": "rizky-fairus-arisandi",
+    "nama": "Rizky Fairus Arisandi",
+    "asalSekolah": "SMA Negeri 1 Taman Sidoarjo",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/rizky-fairus-arisandi.webp"
+  },
+  {
+    "id": "ratu-adeline-fidelia-permata",
+    "nama": "Ratu Adeline Fidelia Permata",
+    "asalSekolah": "SMA Labschool Kebayoran",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/ratu-adeline-fidelia-permata.webp"
+  },
+  {
+    "id": "raisha-fathi-azzura-rasyid",
+    "nama": "Raisha Fathi Azzura Rasyid",
+    "asalSekolah": "SMA Negeri 2 Bandung",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/raisha-fathi-azzura-rasyid.webp"
+  },
+  {
+    "id": "mohammad-hanif-baihaqi",
+    "nama": "Mohammad Hanif Baihaqi",
+    "asalSekolah": "MAN 1 Bliter",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/mohammad-hanif-baihaqi.webp"
+  },
+  {
+    "id": "mochammad-raffa-satria-ardhani",
+    "nama": "Mochammad Raffa Satria Ardhani",
+    "asalSekolah": "SMAN 1 GEDANGAN",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/mochammad-raffa-satria-ardhani.webp"
+  },
+  {
+    "id": "kanesha-syahquita-izzati",
+    "nama": "Kanesha Syahquita Izzati",
+    "asalSekolah": "SMA Negeri 1 Tangerang",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/kanesha-syahquita-izzati.webp"
+  },
+  {
+    "id": "emily-gaizka-kirana",
+    "nama": "Emily Gaizka Kirana",
+    "asalSekolah": "SMAN 7 Jakarta",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/emily-gaizka-kirana.webp"
+  },
+  {
+    "id": "alexa-salsabila-putri-rahmanto",
+    "nama": "Alexa Salsabila Putri Rahmanto",
+    "asalSekolah": "SMA Negeri 1 Sooko",
+    "peran": "Student Ambassador",
+    "isi": null,
+    "foto": "/image/landing/casa/alexa-salsabila-putri-rahmanto.webp"
+  }
+];
 
 /** Satu baris accordion FAQ. */
 export interface ItemFAQ {
