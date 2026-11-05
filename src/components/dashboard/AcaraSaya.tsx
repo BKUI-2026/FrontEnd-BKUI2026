@@ -100,7 +100,7 @@ export function AcaraSaya() {
       <div className="flex w-full flex-col gap-8 lg:flex-row lg:items-stretch">
         <SidebarDashboard aktif="acara" />
 
-        <main className="flex min-h-[748px] min-w-0 flex-1 flex-col items-center rounded-3xl px-0 py-8 lg:px-12 lg:py-12">
+        <main className="@container flex min-h-[748px] min-w-0 flex-1 flex-col items-center rounded-3xl px-0 py-8 lg:px-12 lg:py-12">
           <h1 className="font-display text-4xl leading-[1.4] text-bkui-teks sm:text-5xl">
             Acara Saya
           </h1>
@@ -187,15 +187,15 @@ function KartuKosong({ judul, keterangan }: { judul: string; keterangan: string 
 function KartuAcara({ acara }: { acara: Acara }) {
   return (
     <article className="flex flex-col gap-4 rounded-3xl bg-bkui-navbar px-6 py-6 sm:px-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 @xl:flex-row @xl:items-center @xl:justify-between">
         <div className="min-w-0">
           {/* `break-words`: judul acara diketik panitia dan bisa apa saja. */}
           <h2 className="font-ui text-[28px] font-semibold leading-[1.2] break-words text-bkui-teks">
             {acara.judul}
           </h2>
-          <p className="mt-1 flex items-center gap-1.5 font-body text-base font-medium text-bkui-teks sm:text-xl">
-            <Image src="/icon/dashboard/calendar.svg" alt="" aria-hidden width={24} height={24} className="size-6" />
-            {formatTanggal(acara.waktuMulai)}
+          <p className="mt-1 flex items-start gap-1.5 font-body text-base font-medium text-bkui-teks sm:text-xl">
+            <Image src="/icon/dashboard/calendar.svg" alt="" aria-hidden width={24} height={24} className="mt-0.5 size-6 shrink-0" />
+            <time dateTime={acara.waktuMulai} className="min-w-0">{formatTanggal(acara.waktuMulai)}</time>
           </p>
         </div>
 

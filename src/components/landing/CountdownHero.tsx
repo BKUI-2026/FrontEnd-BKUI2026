@@ -2,9 +2,17 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { env } from "@/lib/env";
 
 const TARGET_BAWAAN = "2026-12-19T00:00:00+07:00";
-const TARGET_COUNTDOWN = process.env.NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET ?? TARGET_BAWAAN;
+const targetKonfigurasi = new Date(env.bkuiCountdownTarget).getTime();
+const TARGET_IPA = Number.isFinite(targetKonfigurasi)
+  ? targetKonfigurasi
+  : new Date(TARGET_BAWAAN).getTime();
+const JADWAL = { IPA: TARGET_IPA, IPS: TARGET_IPA + 86_400_000 } as const;
+const FORMAT_TANGGAL = new Intl.DateTimeFormat("id-ID", {
+  day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta",
+});
 
 const LATAR_COUNTDOWN = [
   "/icon/landing/latest/countdown-bg-1.svg",
@@ -21,8 +29,8 @@ interface SisaWaktu {
   detik: number;
 }
 
-function hitungSisaWaktu(target: number): SisaWaktu {
-  const sisaDetik = Math.max(0, Math.floor((target - Date.now()) / 1000));
+function hitungSisaWaktu(target: number, sekarang: number): SisaWaktu {
+  const sisaDetik = Math.max(0, Math.floor((target - sekarang) / 1000));
   const hari = Math.floor(sisaDetik / 86_400);
   const jam = Math.floor((sisaDetik % 86_400) / 3_600);
   const menit = Math.floor((sisaDetik % 3_600) / 60);
@@ -43,17 +51,20 @@ function formatAngka(angka: number) {
  * terakhir, prioritas bergeser ke jam–menit–detik agar urgensinya terbaca.
  */
 export function CountdownHero() {
-  const target = new Date(TARGET_COUNTDOWN).getTime();
-  const targetValid = Number.isFinite(target) ? target : new Date(TARGET_BAWAAN).getTime();
-  const [sisa, setSisa] = useState<SisaWaktu | null>(null);
+  const [rumpun, setRumpun] = useState<keyof typeof JADWAL>("IPA");
+  const [sekarang, setSekarang] = useState<number | null>(null);
+  const target = JADWAL[rumpun];
+  const sisa = sekarang === null ? null : hitungSisaWaktu(target, sekarang);
 
   useEffect(() => {
-    const perbarui = () => setSisa(hitungSisaWaktu(targetValid));
-    perbarui();
-
+    const perbarui = () => setSekarang(Date.now());
+    const awal = window.setTimeout(perbarui, 0);
     const interval = window.setInterval(perbarui, 1_000);
-    return () => window.clearInterval(interval);
-  }, [targetValid]);
+    return () => {
+      window.clearTimeout(awal);
+      window.clearInterval(interval);
+    };
+  }, []);
 
   const kurangDariSehari = sisa !== null && sisa.hari === 0;
   const unit = kurangDariSehari
@@ -71,14 +82,29 @@ export function CountdownHero() {
   return (
     <section
       aria-label="Hitung mundur acara BKUI 2026"
-      role="timer"
-      className="flex items-start justify-center"
+      className="flex flex-col items-center gap-3 sm:gap-4"
     >
-      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start gap-x-2 sm:gap-x-5 lg:gap-x-6">
+      <div role="group" aria-label="Pilih countdown IPA atau IPS" className="pointer-events-auto flex rounded-full border-2 border-bkui-krem bg-bkui-hijau-tua/90 p-1 shadow-md">
+        {(["IPA", "IPS"] as const).map((pilihan) => (
+          <button
+            key={pilihan}
+            type="button"
+            aria-pressed={rumpun === pilihan}
+            onClick={() => setRumpun(pilihan)}
+            className={`min-h-11 min-w-20 cursor-pointer rounded-full px-5 font-ui text-sm font-extrabold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-kuning sm:text-base ${rumpun === pilihan ? "bg-bkui-krem text-bkui-hijau-tua" : "text-bkui-krem hover:bg-white/15"}`}
+          >
+            {pilihan}
+          </button>
+        ))}
+      </div>
+      <p aria-live="polite" aria-atomic="true" className="sr-only">
+        Jadwal {rumpun}: {FORMAT_TANGGAL.format(target)} WIB
+      </p>
+      <div role="timer" aria-label={`Hitung mundur ${rumpun}`} aria-live="off" className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start gap-x-2 sm:gap-x-5 lg:gap-x-6">
         {unit.map((item, index) => (
           <div key={item.label} className="contents">
             <UnitCountdown
-              nomor={formatAngka(item.nilai)}
+              nomor={sisa === null ? "--" : formatAngka(item.nilai)}
               label={item.label}
               latar={LATAR_COUNTDOWN[index]}
               warna={WARNA_LABEL_COUNTDOWN[index]}
@@ -126,6 +152,7 @@ function UnitCountdown({
           />
         </div>
         <output
+          aria-live="off"
           style={{ color: warna }}
           className="absolute inset-0 flex items-center justify-center pb-[4%] font-ui text-[clamp(1.7rem,4vw,4rem)] font-extrabold tracking-[-0.08em] [text-shadow:0_0.07em_0.02em_rgb(61_38_9_/_0.35)]"
         >

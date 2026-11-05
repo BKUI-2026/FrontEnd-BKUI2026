@@ -18,24 +18,6 @@ import { TombolJelajahi } from "./TombolJelajahi";
  * ukurannya menyesuaikan layar.
  */
 
-/**
- * Warna tepi bawah ilustrasi, diukur dari empat baris piksel terakhir hasil
- * render. Dipakai buat menyambung strip tombol versi mobile supaya tidak ada
- * garis batas yang kelihatan antara ilustrasi dan strip di bawahnya.
- *
- * Angkanya WAJIB diukur ulang kalau ilustrasinya berubah — nilai lama masih
- * disalin dari `hero-bkui2026.webp` dan langsung meleset jauh begitu hero-nya
- * diganti SVG, karena tepi bawah versi vektor jauh lebih pucat.
- *
- * Batang pohon yang gelap di sekitar 90% sengaja tidak dijadikan stop: di
- * ilustrasi ia cuma selebar batang, tapi sebagai stop gradien ia akan melebar
- * jadi pita cokelat selebar layar.
- */
-/* Khusus strip CTA mobile: dimulai dari warna jalan di tepi ilustrasi, lalu
-   memudar menjadi kabut/langit agar tidak membentuk garis datar di bawah jalan. */
-const SAMBUNGAN_JALAN_KE_LANGIT =
-  "linear-gradient(to bottom, #70655d 0%, #8eabbc 34%, #d7e8e9 67%, var(--color-bkui-button) 100%)";
-
 export function Hero() {
   const labelTombol = (
     <>
@@ -71,7 +53,7 @@ export function Hero() {
           Dipotong memang yang benar: bikun sengaja digambar seolah melaju
           keluar dari bingkai.
         */}
-      <div className="relative h-[130vw] min-h-[360px] max-h-[500px] w-full overflow-hidden md:aspect-[1512/900] md:h-auto md:min-h-0 md:max-h-none">
+      <div className="relative h-[145vw] min-h-[500px] max-h-[600px] w-full overflow-hidden sm:max-h-[720px] lg:aspect-[1512/960] lg:h-auto lg:min-h-0 lg:max-h-none">
         {/*
           Ilustrasinya menempati seluruh kotak berasio tetap ini. Karena SVG,
           tidak ada yang perlu dimuat lebih dulu: markup-nya sudah ikut di HTML
@@ -86,16 +68,16 @@ export function Hero() {
           sizes="100vw"
           priority
           unoptimized
-          className="select-none object-cover object-center md:object-fill [mask-image:linear-gradient(to_bottom,black_0%,black_66%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_66%,transparent_100%)] [user-drag:none] [-webkit-user-drag:none]"
+          className="select-none object-cover object-center lg:object-fill [mask-image:linear-gradient(to_bottom,black_0%,black_66%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_66%,transparent_100%)] [user-drag:none] [-webkit-user-drag:none]"
         />
 
         {/* Judul yang sebelumnya menyatu dalam ekspor Hero. Tiga salinan tiap
             baris ditumpuk sama seperti `.judul-sticker`, tetapi tidak memakai
             animasi masuk agar Hero langsung terbaca saat halaman dibuka. */}
-        <h1 className="pointer-events-none absolute inset-x-0 top-[15%] z-10 flex flex-col items-center text-center font-display leading-none">
+        <h1 className="pointer-events-none absolute inset-x-0 top-[12%] z-10 flex flex-col items-center text-center font-display leading-none lg:top-[10%]">
           <span className="sr-only">Bedah Kampus UI 2026</span>
 
-          <span aria-hidden className="judul-sticker -my-[0.3em] whitespace-nowrap text-[clamp(3rem,7.3vw,7rem)]">
+          <span aria-hidden className="judul-sticker -my-[0.3em] whitespace-nowrap text-[clamp(2.4rem,7.3vw,7rem)]">
             <span className="judul-sticker__pink">BEDAH KAMPUS</span>
             <span className="judul-sticker__krem">BEDAH KAMPUS</span>
             <span className="judul-sticker__isi">BEDAH KAMPUS</span>
@@ -113,7 +95,7 @@ export function Hero() {
           </span>
         </h1>
 
-        <div className="pointer-events-none absolute inset-x-0 top-[52%] z-10 sm:top-[54%]">
+        <div className="pointer-events-none absolute inset-x-0 top-[43%] z-10 lg:top-[44%]">
           <CountdownHero />
         </div>
 
@@ -128,25 +110,15 @@ export function Hero() {
           />
         </div>
 
-        {/*
-          Posisi tombol mengikuti Figma (tengah, 86.9% dari atas frame). Karena
-          pembungkusnya rasio tetap, posisi persen ini tetap pas di lebar layar
-          berapapun.
-
-          Disembunyikan di bawah breakpoint md: di layar sempit tinggi
-          ilustrasinya cuma ~200px, dan tombol setinggi 56px di atasnya akan
-          menutupi hampir separuh gambar.
-        */}
-        <div className="absolute left-1/2  top-[60%] md:top-[85%] hidden -translate-x-1/2 -translate-y-1/2 md:block">
+        {/* Desktop: tombol berada di bawah countdown. Mobile dan tablet
+            memakai baris sendiri agar ruangnya tidak berebut dengan judul. */}
+        <div className="absolute left-1/2 top-[89%] hidden -translate-x-1/2 -translate-y-1/2 lg:block">
           <TombolJelajahi>{labelTombol}</TombolJelajahi>
         </div>
       </div>
 
       {/* Versi mobile — tombol turun ke strip sendiri di bawah ilustrasi. */}
-      <div
-        className="relative z-30 -mt-20 flex justify-center px-5 pb-6 pt-2 md:hidden"
-        style={{ backgroundImage: SAMBUNGAN_JALAN_KE_LANGIT }}
-      >
+      <div className="relative z-30 -mt-12 flex justify-center px-5 pb-8 pt-2 lg:hidden">
         <TombolJelajahi>{labelTombol}</TombolJelajahi>
       </div>
     </section>

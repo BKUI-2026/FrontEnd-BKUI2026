@@ -97,7 +97,7 @@ export function DetailKatalog({ item, urlYesplis, onTutup }: DetailKatalogProps)
         if (e.target === ref.current) onTutup();
       }}
       aria-label={item ? `Detail ${item.nama}` : undefined}
-      className="m-auto w-[calc(100vw-2rem)] max-w-[1282px] bg-transparent p-0 backdrop:bg-black/50"
+      className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[1282px] overflow-y-auto overscroll-contain bg-transparent p-0 backdrop:bg-black/50"
     >
       {item && (
         <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} />
@@ -126,7 +126,7 @@ function IsiDetail({
         type="button"
         onClick={onTutup}
         aria-label="Tutup detail"
-        className="shrink-0 cursor-pointer rounded-full p-1 text-bkui-coklat transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+        className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full text-bkui-coklat transition-opacity hover:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
       >
         <Image src="/icon/merch/tutup.svg" alt="" aria-hidden width={16} height={16} className="size-4" />
       </button>
@@ -136,7 +136,7 @@ function IsiDetail({
           Area foto. Rasionya dikunci 600:446 sesuai Figma supaya tinggi
           overlay tidak berubah saat foto aslinya nanti masuk.
         */}
-        <div className="relative aspect-[600/446] w-full shrink-0 overflow-hidden rounded bg-bkui-coklat lg:w-[600px]">
+        <div className="relative aspect-[600/446] w-full shrink-0 overflow-hidden rounded bg-bkui-coklat lg:w-[52%]">
           <p className="absolute inset-0 flex items-center justify-center font-ui text-sm text-bkui-terang/45">
             Pratinjau foto {foto + 1} segera hadir
           </p>
@@ -144,7 +144,7 @@ function IsiDetail({
           <TombolGeser arah="mundur" onClick={() => geser(-1)} />
           <TombolGeser arah="maju" onClick={() => geser(1)} />
 
-          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+          <div className="absolute bottom-1 left-1/2 flex -translate-x-1/2 sm:bottom-3">
             {Array.from({ length: item.jumlahFoto }, (_, i) => (
               <button
                 key={i}
@@ -152,16 +152,16 @@ function IsiDetail({
                 onClick={() => setFoto(i)}
                 aria-label={`Foto ke-${i + 1} dari ${item.jumlahFoto}`}
                 aria-current={i === foto}
-                className={`size-2 cursor-pointer rounded-full bg-bkui-terang transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang ${
-                  i === foto ? "opacity-100" : "opacity-40"
-                }`}
-              />
+                className="flex size-11 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang"
+              >
+                <span aria-hidden className={`size-2 rounded-full bg-bkui-terang transition-opacity ${i === foto ? "opacity-100" : "opacity-40"}`} />
+              </button>
             ))}
           </div>
         </div>
 
-        <div className="flex w-full flex-col gap-6 text-bkui-coklat lg:w-[522px]">
-          <h2 className="font-display text-3xl leading-[1.4] sm:text-4xl lg:text-[64px]">
+        <div className="flex min-w-0 w-full flex-col gap-6 text-bkui-coklat lg:flex-1">
+          <h2 className="font-display text-3xl leading-[1.4] sm:text-4xl xl:text-[64px]">
             {item.nama}
           </h2>
 
@@ -221,7 +221,7 @@ function TombolGeser({ arah, onClick }: { arah: "maju" | "mundur"; onClick: () =
       type="button"
       onClick={onClick}
       aria-label={maju ? "Foto berikutnya" : "Foto sebelumnya"}
-      className={`absolute top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-full p-1 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang ${
+      className={`absolute top-1/2 z-10 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang ${
         maju ? "right-3" : "left-3"
       }`}
     >

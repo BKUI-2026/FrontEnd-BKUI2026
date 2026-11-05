@@ -204,7 +204,7 @@ export function HiasanVideo() {
       aria-hidden
       // Pembungkus dikunci ke rasio kanvas Figma dan ditempel ke tepi bawah
       // section, supaya garis tanah ilustrasinya selalu duduk di dasar section.
-      className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 aspect-[1512/885] w-full min-w-[900px]"
+      className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 aspect-[1512/885] w-full min-w-[900px] [mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]"
     >
       {HIASAN.map((h) => (
         // Posisi ditaruh di pembungkus, animasi goyang di gambarnya. Keduanya

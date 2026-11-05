@@ -55,7 +55,6 @@ export function ArahPetualangan() {
   return (
     <SectionLangit tanpaAwan>
       <div className="relative min-h-[1100px] w-full overflow-hidden pb-28 pt-20 [container-type:inline-size] lg:aspect-[1512/1148] lg:min-h-0 lg:p-0">
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 hidden h-[12%] bg-gradient-to-b from-[#add919] via-[#add919] to-transparent lg:block" />
         {/* <Image
           src="/icon/landing/latest/arah-hijau-atas.svg"
           alt=""
@@ -69,7 +68,8 @@ export function ArahPetualangan() {
           alt=""
           width={1000}
           height={1300}
-          className="absolute -top-[1.2vw] left-0 h-[30vw] w-full max-w-none object-cover object-bottom [clip-path:inset(4%_0_0_0)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] sm:h-auto sm:object-contain"
+          aria-hidden
+          className="pointer-events-none absolute -top-[1.2vw] left-0 h-[30vw] w-full max-w-none object-cover object-bottom [clip-path:inset(4%_0_0_0)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_24%,black_100%)] sm:h-auto sm:object-contain"
         >
         </Image>
         <div

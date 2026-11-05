@@ -73,7 +73,7 @@ export function SectionLangit({
             Dengan memudar, awan larut ke biru langit sebelum mencapai batas,
             sehingga perpindahan antar-section terbaca mulus.
           */
-          className="pointer-events-none -z-20 object-cover object-top [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)]"
+          className="pointer-events-none -z-20 object-cover object-top [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)]"
         />
       )}
 

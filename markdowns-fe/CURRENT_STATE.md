@@ -2,7 +2,26 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-09-20 15:40 WIB
+Terakhir diperbarui: 2026-11-05
+
+## Iteration 2 — nomor 8, 9, dan 12
+
+- **Countdown IPA/IPS:** pilihan IPA dan IPS dapat diganti langsung di Hero.
+  IPA memakai `NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET` yang sudah ada; IPS otomatis
+  satu hari setelahnya. Target bawaan tetap 19 Desember 2026 pukul 00.00 WIB
+  sesuai kode sebelumnya, bukan konfirmasi jadwal baru dari tim.
+- **Border landing:** strip gradien terpisah di bawah Hero mobile dihapus;
+  ilustrasi menyatu ke warna langit. Dekorasi video memudar sebelum batas
+  section dan lapisan hijau datar di awal Arah Petualangan dihapus.
+- **Responsive:** ruang Hero disesuaikan untuk pilihan countdown; judul
+  Trailer tidak lagi memakai margin negatif di mobile. Detail katalog memakai
+  foto proporsional, area gulir mengikuti tinggi layar, dan kontrol sentuh
+  minimal 44px. Header kartu Acara Saya mengikuti lebar area kontennya agar
+  judul/tanggal tidak berdesakan di samping sidebar pada tablet.
+- **Menunggu tim:** nomor 7 (materi/detail Trailer/Teaser), 10 (pengumpulan
+  tugas CASA), dan 11 (Sponsor) belum diimplementasikan pada iterasi ini.
+
+Detail dan validasi: [FE-0028](./features/FE-0028_Codex_Iteration-2-Countdown-dan-Responsive.md).
 
 ## Status Integrasi per Fitur
 
