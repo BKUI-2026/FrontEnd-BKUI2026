@@ -16,6 +16,7 @@ function alamatLokal(): string[] {
 }
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   /**
    * Izinkan dev server diakses dari device lain di jaringan yang sama (HP,
    * tablet, laptop partner) lewat http://<ip-lokal>:3001.
