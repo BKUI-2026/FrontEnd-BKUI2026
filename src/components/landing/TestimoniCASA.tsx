@@ -18,7 +18,7 @@ const GERAK_TESTIMONI = {
 };
 
 /**
- * Section "Apa Kata CASA" — testimoni peserta CASA, ditampilkan satu per satu
+ * Section "Meet The CASA" — perkenalan CASA, ditampilkan satu per satu
  * dengan tombol panah kiri/kanan seperti di Figma.
  *
  * Ukuran diambil dari Figma (node `265:278`): panah 97,5x152, kartu 1001x480,
@@ -51,7 +51,7 @@ export function TestimoniCASA() {
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
         <Muncul>
           <JudulSticker as="h2" ukuran="h1">
-            Apa Kata CASA
+            Meet The CASA
           </JudulSticker>
         </Muncul>
 

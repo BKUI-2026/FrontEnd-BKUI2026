@@ -6,10 +6,13 @@ import { env } from "@/lib/env";
 
 const TARGET_BAWAAN = "2026-12-19T00:00:00+07:00";
 const targetKonfigurasi = new Date(env.bkuiCountdownTarget).getTime();
-const TARGET_IPA = Number.isFinite(targetKonfigurasi)
+const TARGET_SAINTEK = Number.isFinite(targetKonfigurasi)
   ? targetKonfigurasi
   : new Date(TARGET_BAWAAN).getTime();
-const JADWAL = { IPA: TARGET_IPA, IPS: TARGET_IPA + 86_400_000 } as const;
+const JADWAL = {
+  "Saintek Day": TARGET_SAINTEK,
+  "Soshum Day": TARGET_SAINTEK + 86_400_000,
+} as const;
 const FORMAT_TANGGAL = new Intl.DateTimeFormat("id-ID", {
   day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta",
 });
@@ -51,7 +54,7 @@ function formatAngka(angka: number) {
  * terakhir, prioritas bergeser ke jam–menit–detik agar urgensinya terbaca.
  */
 export function CountdownHero() {
-  const [rumpun, setRumpun] = useState<keyof typeof JADWAL>("IPA");
+  const [rumpun, setRumpun] = useState<keyof typeof JADWAL>("Saintek Day");
   const [sekarang, setSekarang] = useState<number | null>(null);
   const target = JADWAL[rumpun];
   const sisa = sekarang === null ? null : hitungSisaWaktu(target, sekarang);
@@ -84,8 +87,8 @@ export function CountdownHero() {
       aria-label="Hitung mundur acara BKUI 2026"
       className="flex flex-col items-center gap-3 sm:gap-4"
     >
-      <div role="group" aria-label="Pilih countdown IPA atau IPS" className="pointer-events-auto flex rounded-full border-2 border-bkui-krem bg-bkui-hijau-tua/90 p-1 shadow-md">
-        {(["IPA", "IPS"] as const).map((pilihan) => (
+      <div role="group" aria-label="Pilih countdown Saintek Day atau Soshum Day" className="pointer-events-auto flex rounded-full border-2 border-bkui-krem bg-bkui-hijau-tua/90 p-1 shadow-md">
+        {(["Saintek Day", "Soshum Day"] as const).map((pilihan) => (
           <button
             key={pilihan}
             type="button"

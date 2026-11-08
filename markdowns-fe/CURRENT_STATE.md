@@ -2,12 +2,12 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-11-05
+Terakhir diperbarui: 2026-11-08
 
 ## Iteration 2 — nomor 8, 9, dan 12
 
-- **Countdown IPA/IPS:** pilihan IPA dan IPS dapat diganti langsung di Hero.
-  IPA memakai `NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET` yang sudah ada; IPS otomatis
+- **Countdown Saintek Day/Soshum Day:** kedua pilihan dapat diganti langsung di Hero.
+  Saintek Day memakai `NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET` yang sudah ada; Soshum Day otomatis
   satu hari setelahnya. Target bawaan tetap 19 Desember 2026 pukul 00.00 WIB
   sesuai kode sebelumnya, bukan konfirmasi jadwal baru dari tim.
 - **Border landing:** strip gradien terpisah di bawah Hero mobile dihapus;

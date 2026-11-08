@@ -7,7 +7,7 @@
  */
 
 export const env = {
-  /** Target IPA; IPS selalu satu hari setelahnya (Iteration 2 nomor 12). */
+  /** Target Saintek Day; Soshum Day selalu satu hari setelahnya. */
   bkuiCountdownTarget:
     process.env.NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET || '2026-12-19T00:00:00+07:00',
 
