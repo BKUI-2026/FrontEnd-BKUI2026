@@ -6,22 +6,8 @@ import { rupiah, type ItemKatalog } from "@/lib/katalog";
 import { MUNCUL, MUNCUL_TEGAS } from "@/components/explore/gerak";
 
 /**
- * Satu kartu katalog — dipakai untuk produk Merchandise maupun tier Tiket.
- *
- * Di Figma keduanya bukan dua desain mirip melainkan susunan yang sama persis,
- * sampai ke lebar tombolnya. Jadi komponennya satu.
- *
- * ---------------------------------------------------------------------------
- * Tidak ada keranjang, dan itu disengaja
- * ---------------------------------------------------------------------------
- * Dua tombolnya persis seperti di Figma: "Lihat Detail" dan "Beli di Yesplis".
- * Tidak ada tombol tambah-ke-keranjang, tidak ada jumlah beli, tidak ada
- * checkout. Seluruh transaksi terjadi di Yesplis (AGENTS.md bagian 5.4).
- *
- * "Beli di Yesplis" adalah <a> biasa dengan `target="_blank"` — murni pindah
- * halaman keluar, bukan form yang mengirim apa-apa.
- *
- * "Lihat Detail" membuka overlay di halaman yang sama, bukan pindah rute.
+ * Kartu bersama Merchandise dan Ticket. Merchandise dapat memberi callback
+ * keranjang pratinjau; tanpa callback, CTA tetap redirect ke Yesplis.
  */
 interface KartuKatalogProps {
   item: ItemKatalog;
@@ -29,6 +15,8 @@ interface KartuKatalogProps {
   urlYesplis: string;
   /** Membuka overlay detail milik katalog. */
   onLihatDetail: () => void;
+  /** Aksi keranjang untuk pratinjau merchandise; tiket tetap memakai Yesplis. */
+  onTambahKeranjang?: () => void;
   /**
    * Gerak masuk yang lebih terasa. Dipakai halaman Tiket, yang isinya cuma
    * tiga kartu dan muat satu layar — di sana gerak halus nyaris tidak terbaca.
@@ -40,6 +28,7 @@ export function KartuKatalog({
   item,
   urlYesplis,
   onLihatDetail,
+  onTambahKeranjang,
   tegas = false,
 }: KartuKatalogProps) {
   return (
@@ -61,9 +50,9 @@ export function KartuKatalog({
       */}
       <div className="h-[200px] w-full overflow-hidden rounded-2xl bg-bkui-navbar">
         <div className="flex size-full items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
-          <span className="px-4 text-center font-ui text-sm text-bkui-teks/55">
+          {!onTambahKeranjang && <span className="px-4 text-center font-ui text-sm text-bkui-teks/55">
             Foto resmi segera hadir
-          </span>
+          </span>}
         </div>
       </div>
 
@@ -71,7 +60,7 @@ export function KartuKatalog({
         <div className="flex flex-col gap-1 text-bkui-teks">
           <h3 className="font-display text-2xl leading-[1.4] lg:text-[32px]">{item.nama}</h3>
           <p className="font-ui text-xl font-semibold leading-[1.2] lg:text-[28px]">
-            {item.harga === null ? "Harga segera diumumkan" : rupiah(item.harga)}
+            {item.harga === null ? (onTambahKeranjang ? "Segera diumumkan" : "Harga segera diumumkan") : rupiah(item.harga)}
           </p>
           <p className="font-body text-sm font-medium leading-[1.3] opacity-60">
             {item.stok === null ? "Ketersediaan akan diperbarui" : `Stok tersedia: ${item.stok}`}
@@ -92,7 +81,16 @@ export function KartuKatalog({
             Lihat Detail
           </button>
 
-          {urlYesplis ? (
+          {onTambahKeranjang ? (
+            <button
+              type="button"
+              onClick={onTambahKeranjang}
+              aria-label={`Tambah ${item.nama} ke keranjang`}
+              className="tombol-kertas h-12 shrink-0 cursor-pointer rounded-3xl bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-8 font-ui text-base font-medium text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+            >
+              Keranjang
+            </button>
+          ) : urlYesplis ? (
             <a
               href={urlYesplis}
               target="_blank"

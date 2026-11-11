@@ -11,6 +11,7 @@ interface DetailKatalogProps {
   /** URL partner sesuai jenis katalog: tiket atau merchandise. */
   urlYesplis: string;
   onTutup: () => void;
+  onTambahKeranjang?: (item: ItemKatalog) => void;
 }
 
 /**
@@ -34,13 +35,10 @@ interface DetailKatalogProps {
  * diklik, dan mengunci scroll halaman di belakangnya.
  *
  * ---------------------------------------------------------------------------
- * Isinya tetap katalog, bukan transaksi
- * ---------------------------------------------------------------------------
- * Satu-satunya tombol aksi di sini "Beli di Yesplis" — sama seperti di kartu,
- * link keluar biasa. Tidak ada jumlah beli, pilihan ukuran, atau tambah ke
- * keranjang (README boundary nomor 1).
+ * Aksi mengikuti halaman pemanggil: merchandise bisa menambahkan produk ke
+ * keranjang pratinjau, sedangkan tiket tetap diarahkan ke Yesplis.
  */
-export function DetailKatalog({ item, urlYesplis, onTutup }: DetailKatalogProps) {
+export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang }: DetailKatalogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   /*
    * `onTutup` disimpan di ref supaya listener `close` di bawah tidak perlu
@@ -100,7 +98,7 @@ export function DetailKatalog({ item, urlYesplis, onTutup }: DetailKatalogProps)
       className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[1282px] overflow-y-auto overscroll-contain bg-transparent p-0 backdrop:bg-black/50"
     >
       {item && (
-        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} />
+        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} onTambahKeranjang={onTambahKeranjang} />
       )}
     </dialog>
   );
@@ -110,10 +108,12 @@ function IsiDetail({
   item,
   urlYesplis,
   onTutup,
+  onTambahKeranjang,
 }: {
   item: ItemKatalog;
   urlYesplis: string;
   onTutup: () => void;
+  onTambahKeranjang?: (item: ItemKatalog) => void;
 }) {
   const [foto, setFoto] = useState(0);
 
@@ -185,7 +185,15 @@ function IsiDetail({
             {item.deskripsi}
           </p>
 
-          {urlYesplis ? (
+          {onTambahKeranjang ? (
+            <button
+              type="button"
+              onClick={() => { onTambahKeranjang(item); onTutup(); }}
+              className="tombol-kertas min-h-12 rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-8 py-3 font-ui text-lg font-medium text-bkui-coklat"
+            >
+              Tambah ke Keranjang
+            </button>
+          ) : urlYesplis ? (
             <a
               href={urlYesplis}
               target="_blank"

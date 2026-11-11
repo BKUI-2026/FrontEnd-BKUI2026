@@ -40,10 +40,12 @@ sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
 program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy. Hero
 sudah mengikuti desain terbaru node `551:4325` tanpa mengubah isi (FE-0022).
 
-**Merchandise** punya checkout QRIS melalui Midtrans Snap saat backend
-mengaktifkannya. Harga dan stok checkout berasal dari API, dan status pesanan
-dibaca kembali setelah pembayaran. Mode bawaan masih menampilkan katalog lama;
-katalog resmi dan aktivasi produksi menunggu tim.
+**Merchandise** menampilkan katalog sementara yang mengikuti Figma
+`337:388`, termasuk filter kategori, kartu produk kosong, dan keranjang lokal.
+Menu Merchandise ada tepat setelah Daftar Mentoring. Checkout keranjang selalu
+menampilkan `7001 Insufficient privileges` dan tidak memanggil API pesanan
+atau Midtrans. Modul checkout Midtrans yang sudah disiapkan belum dipasang
+di rute publik. Lihat [FE-0029](./features/FE-0029_Codex_Pratinjau-Merchandise-Keranjang.md).
 
 **Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — CTA sudah terhubung
 ke event Yesplis resmi (FE-0015), tanpa payment gateway. Nama tier mengikuti
@@ -83,7 +85,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 | Daftar Akun | `/daftar` | **Terhubung ke API** | `POST /auth/register` | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Masuk | `/masuk` | **Terhubung ke API** | `POST /auth/login` | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
-| Merchandise Catalog | `/merchandise` | **Terhubung ke API** untuk checkout Midtrans; mode produksi masih ditutup | `GET /merchandise/products`, `POST /merchandise/orders`, `GET /merchandise/orders/current` | [Kontrak API](./integrations/backend-api-contract.md) |
+| Merchandise Catalog | `/merchandise` | **Masih Dummy Data** — katalog, filter dan keranjang lokal; checkout diblokir | Tidak memanggil API pembayaran | [FE-0029](./features/FE-0029_Codex_Pratinjau-Merchandise-Keranjang.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif; harga/stok/benefit menunggu) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Profile | `/profile` | **Terhubung ke API** | `GET` & `PATCH /users/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
 | Student Dashboard | `/dashboard` | **Terhubung ke API** (status mentoring nyata; jadwal & link sesi menunggu Content dari Admin) | `GET /mentoring-registrations/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |

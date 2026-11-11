@@ -4,11 +4,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { produkUntuk, type Kategori, type Produk } from "@/lib/merch-content";
-import { env } from "@/lib/env";
 import { BERURUTAN, SEKALI_MASUK } from "@/components/explore/gerak";
 import { FilterMerch } from "./FilterMerch";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
 import { DetailKatalog } from "@/components/katalog/DetailKatalog";
+import { KeranjangMerch } from "./KeranjangMerch";
+import { useKeranjangMerch } from "./keranjang-merch";
 
 /**
  * Katalog merchandise: panel penyaring di kiri, kisi produk di kanan.
@@ -26,6 +27,14 @@ import { DetailKatalog } from "@/components/katalog/DetailKatalog";
  */
 export function KatalogMerch() {
   const [terpilih, setTerpilih] = useState<readonly Kategori[]>([]);
+  const keranjang = useKeranjangMerch();
+  const [keranjangTerbuka, setKeranjangTerbuka] = useState(false);
+  const [pesan, setPesan] = useState("");
+  const totalItem = keranjang.isi.reduce((total, row) => total + row.jumlah, 0);
+  const tambah = (id: string, nama: string) => {
+    keranjang.tambah(id);
+    setPesan(`${nama} ditambahkan ke keranjang.`);
+  };
   /*
    * Overlay detail dipegang di sini, satu untuk seluruh katalog — bukan satu
    * <dialog> per kartu. Sembilan dialog yang isinya sama cuma menggandakan
@@ -61,9 +70,18 @@ export function KatalogMerch() {
     );
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
+    <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-[25px]">
       <div className="lg:w-[212px] lg:shrink-0">
         <FilterMerch terpilih={terpilih} onUbah={ubah} />
+        <button
+          type="button"
+          onClick={() => setKeranjangTerbuka(true)}
+          disabled={!keranjang.siap}
+          className="tombol-kertas mt-4 min-h-12 w-full rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-4 py-3 font-ui font-medium text-bkui-coklat disabled:opacity-60"
+        >
+          Keranjang ({totalItem})
+        </button>
+        <p role="status" className="sr-only">{pesan}</p>
       </div>
 
       <motion.div
@@ -72,14 +90,15 @@ export function KatalogMerch() {
         initial="sembunyi"
         whileInView="tampil"
         viewport={SEKALI_MASUK}
-        className="grid flex-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+        className="grid min-w-0 flex-1 gap-x-4 gap-y-6 sm:grid-cols-2 xl:grid-cols-3"
       >
         {daftar.map((produk) => (
           <KartuKatalog
             key={produk.id}
             item={produk}
-            urlYesplis={env.yesplisMerchUrl}
+            urlYesplis=""
             onLihatDetail={() => bukaDetail(produk)}
+            onTambahKeranjang={() => tambah(produk.id, produk.nama)}
           />
         ))}
       </motion.div>
@@ -87,9 +106,16 @@ export function KatalogMerch() {
       <DetailKatalog
         key={pembuka}
         item={detail}
-        urlYesplis={env.yesplisMerchUrl}
+        urlYesplis=""
         onTutup={() => setDetail(null)}
+        onTambahKeranjang={(produk) => tambah(produk.id, produk.nama)}
       />
+      {keranjangTerbuka && <KeranjangMerch
+        isi={keranjang.isi}
+        onUbahJumlah={keranjang.ubahJumlah}
+        onHapus={keranjang.hapus}
+        onTutup={() => setKeranjangTerbuka(false)}
+      />}
     </div>
   );
 }

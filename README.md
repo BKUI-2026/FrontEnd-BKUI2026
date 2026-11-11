@@ -17,7 +17,7 @@ Sebelum ngoding apapun di repo ini, baca dulu:
 
 Constraint ini berlaku juga buat AI coding agent yang bantu ngerjain repo ini — cek di sini dulu sebelum tanya ulang atau berasumsi.
 
-1. **Ticket tetap menampilkan info + CTA ke Yesplis.** Khusus merchandise, revisi 11 November 2026 menambahkan form pemesanan dan redirect QRIS ke Midtrans Snap saat checkout diaktifkan dari backend.
+1. **Ticket tetap menampilkan info + CTA ke Yesplis.** Halaman merchandise saat ini memakai katalog sementara dan keranjang lokal. Checkout selalu menampilkan `7001 Insufficient privileges`; modul Midtrans belum dihubungkan ke rute publik.
 2. **Jangan ubah keputusan desain Figma tanpa diminta.** Desain UI/UX sudah final dari tim designer — treat sebagai acuan visual, fokus implementasi.
 3. **Jangan nambah role/state RBAC baru** di sisi client tanpa konfirmasi ke PM. Cuma ada 2 kondisi: General Public (belum login) & Student (login).
 4. **Jangan ngarang bentuk response API sendiri.** Kalau endpoint belum ada atau statusnya masih "belum dimulai" di `../BackEnd-BKUI2026/markdowns-be/integrations/`, pakai dummy data dan catat statusnya `Masih Dummy Data` di `markdowns-fe/CURRENT_STATE.md` — jangan asumsi shape data dari BE.

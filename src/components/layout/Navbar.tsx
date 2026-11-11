@@ -92,12 +92,12 @@ export function Navbar() {
         navbarTersembunyi && !menuTerbuka ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <nav aria-label="Navigasi utama" className="relative w-full px-5 py-3 lg:px-8">
+      <nav aria-label="Navigasi utama" className="relative w-full px-5 py-3 xl:px-8">
         <div className="flex min-h-[73px] items-center justify-between gap-4">
           <LogoBKUI ukuran={65} className="flex h-[73px] items-center justify-center rounded-[10px]" />
 
           {/* Menu desktop */}
-          <ul className="hidden flex-1 items-center justify-center gap-5 px-5 lg:flex">
+          <ul className="hidden flex-1 items-center justify-center gap-2 px-2 xl:flex min-[1440px]:gap-5 min-[1440px]:px-5">
             {menu.map((item) => {
               const aktif = halamanAktif(item.href);
               return (
@@ -105,7 +105,7 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     aria-current={aktif ? "page" : undefined}
-                    className="relative inline-flex h-16 items-center justify-center rounded-full px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-colors duration-200 hover:bg-bkui-button/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+                    className="relative inline-flex h-16 items-center justify-center rounded-full px-5 font-ui text-lg font-medium leading-none text-bkui-teks transition-colors min-[1440px]:px-9 min-[1440px]:text-xl duration-200 hover:bg-bkui-button/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
                   >
                     {aktif && (
                       <motion.span
@@ -122,9 +122,9 @@ export function Navbar() {
           </ul>
 
           {/* Aksi kanan — desktop */}
-          <div className="hidden items-center gap-5 lg:flex">
+          <div className="hidden shrink-0 items-center gap-2 xl:flex min-[1440px]:gap-5">
             <div className="relative">
-              <ButtonPesanTiket className="relative z-10" />
+              <ButtonPesanTiket className="relative z-10 xl:px-5 xl:text-lg min-[1440px]:px-9 min-[1440px]:text-xl" />
               {halamanAktif("/ticket") && (
                 <motion.span
                   layoutId="navbar-active-spotlight"
@@ -138,7 +138,7 @@ export function Navbar() {
                 <Link
                   href="/school-roadshow"
                   aria-current={halamanAktif("/school-roadshow") ? "page" : undefined}
-                  className="relative z-10 inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-9 font-ui text-xl font-medium leading-none text-bkui-teks transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
+                  className="relative z-10 inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-b from-bkui-button from-[23.44%] to-[#c1e0fa] px-5 font-ui text-lg font-medium leading-none text-bkui-teks transition-opacity min-[1440px]:px-9 min-[1440px]:text-xl hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
                 >
                   Kunjungan Sekolah
                 </Link>
@@ -167,7 +167,7 @@ export function Navbar() {
             aria-expanded={menuTerbuka}
             aria-controls="menu-mobile"
             aria-label={menuTerbuka ? "Tutup menu" : "Buka menu"}
-            className="ml-auto rounded-full bg-bkui-button px-5 py-2.5 font-ui text-base font-medium text-bkui-teks lg:hidden"
+            className="ml-auto rounded-full bg-bkui-button px-5 py-2.5 font-ui text-base font-medium text-bkui-teks xl:hidden"
           >
             {menuTerbuka ? "Tutup" : "Menu"}
           </button>
@@ -188,7 +188,7 @@ export function Navbar() {
                 duration: kurangiGerak ? 0 : 0.36,
                 ease: [0.22, 1, 0.22, 1],
               }}
-              className="absolute inset-x-0 top-full z-10 overflow-hidden bg-bkui-navbar shadow-[0_8px_16px_rgba(0,0,0,0.10)] lg:hidden"
+              className="absolute inset-x-0 top-full z-10 overflow-hidden bg-bkui-navbar shadow-[0_8px_16px_rgba(0,0,0,0.10)] xl:hidden"
             >
               <div id="menu-mobile" className="border-t border-black/10 px-8 pb-6 pt-2">
                 <ul className="flex flex-col py-2">

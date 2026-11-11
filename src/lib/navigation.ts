@@ -45,6 +45,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
    * pada dashboard, yang dijangkau lewat avatar di navbar.
    */
   { label: "Daftar Mentoring", href: "/daftar-mentoring", tampilUntuk: "belumSiswa" },
+  { label: "Merchandise", href: "/merchandise", tampilUntuk: "semua" },
 ] as const;
 
 /*
