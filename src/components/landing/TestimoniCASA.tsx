@@ -2,14 +2,23 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import { HiasanTestimoni } from "@/components/landing/HiasanTestimoni";
 import { SectionLangit } from "@/components/landing/SectionLangit";
 import { JudulSticker } from "@/components/ui/JudulSticker";
 import { Muncul } from "@/components/ui/Muncul";
 
-import { DAFTAR_TESTIMONI } from "@/lib/landing-content";
+import { DAFTAR_TESTIMONI, type Testimoni } from "@/lib/landing-content";
+
+const KELOMPOK_CASA = [
+  { id: "campus-ambassador", peran: "Campus Ambassador" },
+  { id: "student-ambassador", peran: "Student Ambassador" },
+].map(({ id, peran }) => ({
+  id,
+  peran,
+  anggota: DAFTAR_TESTIMONI.filter((casa) => casa.peran === peran),
+}));
 
 const GERAK_TESTIMONI = {
   masuk: (arah: number) => ({ x: `${arah * 100}%`, opacity: 0 }),
@@ -17,72 +26,73 @@ const GERAK_TESTIMONI = {
   keluar: (arah: number) => ({ x: `${arah * -100}%`, opacity: 0 }),
 };
 
-/**
- * Section "Meet The CASA" — perkenalan CASA, ditampilkan satu per satu
- * dengan tombol panah kiri/kanan seperti di Figma.
- *
- * Ukuran diambil dari Figma (node `265:278`): panah 97,5x152, kartu 1001x480,
- * jarak antar keduanya 32 — total 1260. Kartunya SENGAJA tidak dibuat selebar
- * layar; di desain memang ada ruang kosong di kiri-kanan supaya rumpun pohon
- * di belakangnya tetap kelihatan.
- *
- * Client component karena butuh state testimoni mana yang sedang tampil.
- *
- * Perpindahannya sengaja TIDAK otomatis. Konten yang berganti sendiri tanpa
- * diminta menyulitkan orang yang membaca lambat atau memakai screen reader —
- * dan di Figma pun tidak ada indikasi carousel ini berjalan sendiri.
- */
+/** Meet The CASA: Campus Ambassador di atas, Student Ambassador di bawah. */
 export function TestimoniCASA() {
-  const [indeks, setIndeks] = useState(0);
-  const [arah, setArah] = useState<1 | -1>(1);
-  const jumlah = DAFTAR_TESTIMONI.length;
-  const testimoni = DAFTAR_TESTIMONI[indeks];
-
-  // Modulo dua arah supaya dari testimoni pertama bisa mundur ke yang terakhir.
-  const pindah = (langkah: 1 | -1) => {
-    setArah(langkah);
-    setIndeks((i) => (i + langkah + jumlah) % jumlah);
-  };
-
   return (
     <SectionLangit className="min-h-[70vw] pb-20 pt-20 sm:pt-28 lg:pt-32">
       <HiasanTestimoni />
 
       <div className="relative mx-auto flex w-full max-w-[1172px] flex-col items-center px-4 sm:px-8 lg:w-[77.5vw] lg:px-0">
         <Muncul>
-          <JudulSticker as="h2" ukuran="h1">
+          <JudulSticker as="h2" ukuran="h1" className="text-center">
             Meet The CASA
           </JudulSticker>
         </Muncul>
 
-        <Muncul jeda={120} className="mt-7 flex w-full items-center gap-2 sm:gap-8">
-          <TombolPanah arah="kiri" onClick={() => pindah(-1)} />
+        <div className="mt-7 grid w-full gap-10 sm:gap-12">
+          {KELOMPOK_CASA.map(({ id, peran, anggota }) => (
+            <KaruselCASA key={id} id={id} peran={peran} anggota={anggota} />
+          ))}
+        </div>
+      </div>
+    </SectionLangit>
+  );
+}
 
-          {/*
-            `aria-live="polite"` supaya pengguna screen reader diberi tahu isinya
-            berganti setelah menekan panah — tanpa ini, tombolnya terasa tidak
-            melakukan apa-apa.
-          */}
-          <div className="relative h-[540px] min-w-0 flex-1 overflow-hidden rounded-3xl sm:h-[500px]">
+function KaruselCASA({ id, peran, anggota }: {
+  id: string;
+  peran: string;
+  anggota: readonly Testimoni[];
+}) {
+  const [indeks, setIndeks] = useState(0);
+  const [arah, setArah] = useState<1 | -1>(1);
+  const kurangiGerak = useReducedMotion();
+  const jumlah = anggota.length;
+  const casa = anggota[indeks];
+  if (!casa) return null;
+
+  const pindah = (langkah: 1 | -1) => {
+    setArah(langkah);
+    setIndeks((i) => (i + langkah + jumlah) % jumlah);
+  };
+
+  return (
+    <section aria-labelledby={id}>
+      <Muncul className="flex flex-col items-center gap-4">
+        <h3 id={id} className="rounded-full bg-bkui-hijau-tua px-5 py-2 text-center font-ui text-base font-extrabold text-bkui-krem sm:text-xl">
+          {peran}
+        </h3>
+        <div className="flex w-full items-center gap-2 sm:gap-8">
+          {jumlah > 1 && <TombolPanah arah="kiri" peran={peran} onClick={() => pindah(-1)} />}
+          <div className="grid min-w-0 flex-1 overflow-hidden rounded-3xl bg-bkui-krem-kartu">
             <AnimatePresence custom={arah} initial={false}>
               <motion.article
-                key={testimoni.id}
+                key={casa.id}
                 custom={arah}
                 variants={GERAK_TESTIMONI}
                 initial="masuk"
                 animate="tampil"
                 exit="keluar"
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                aria-live="polite"
-                className="absolute inset-0 flex flex-col items-center gap-5 overscroll-contain bg-bkui-krem-kartu p-6 text-bkui-teks will-change-transform sm:gap-7 sm:p-10 lg:flex-row lg:p-[50px]"
+                transition={{ duration: kurangiGerak ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="col-start-1 row-start-1 flex min-w-0 flex-col items-center justify-center gap-3 px-4 py-5 text-bkui-teks sm:gap-6 sm:p-8 lg:flex-row lg:justify-start lg:px-12"
               >
-                <div className="relative aspect-square w-full max-w-[200px] shrink-0 lg:max-w-[38.7%]">
+                <div className="relative aspect-square w-full max-w-40 shrink-0 sm:max-w-48 lg:max-w-52">
                   <div className="absolute inset-[6%] overflow-hidden rounded-xl bg-bkui-krem">
                     <Image
-                      src={testimoni.foto}
-                      alt={`Foto ${testimoni.nama}`}
+                      src={casa.foto}
+                      alt={`Foto ${casa.nama}`}
                       fill
-                      sizes="(min-width: 1024px) 320px, 200px"
+                      sizes="(min-width: 1024px) 184px, (min-width: 640px) 169px, 141px"
                       className="object-contain"
                     />
                   </div>
@@ -95,67 +105,52 @@ export function TestimoniCASA() {
                   />
                 </div>
 
-                <div className="flex min-w-0 flex-col items-center gap-4 overflow-y-auto text-center lg:items-start lg:text-left">
-                  <div>
-                    <h3 className="font-ui text-xl font-extrabold leading-snug sm:text-[32px]">
-                      Hi, I&apos;m {testimoni.nama}
-                    </h3>
-                    <p className="mt-2 font-ui text-sm font-semibold leading-snug sm:text-lg">
-                      From {testimoni.asalSekolah}
-                    </p>
-                  </div>
+                <div className="min-w-0 text-center wrap-break-word lg:text-left">
+                  <h4 className="font-ui text-xl font-extrabold leading-snug sm:text-[32px]">
+                    {casa.nama}
+                  </h4>
+                  <p className="mt-2 font-ui text-sm font-semibold leading-snug sm:text-lg">
+                    {casa.asalSekolah}
+                  </p>
                 </div>
               </motion.article>
             </AnimatePresence>
           </div>
 
-          <TombolPanah arah="kanan" onClick={() => pindah(1)} />
-        </Muncul>
-
-        {/* Tetap diumumkan ke pembaca layar tanpa menambah elemen visual di
-            luar komposisi Figma. */}
-        <p className="sr-only" aria-live="polite">
-          CASA {indeks + 1} dari {jumlah}
+          {jumlah > 1 && <TombolPanah arah="kanan" peran={peran} onClick={() => pindah(1)} />}
+        </div>
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          {casa.nama}, {casa.asalSekolah}. {indeks + 1} dari {jumlah}.
         </p>
-      </div>
-    </SectionLangit>
+      </Muncul>
+    </section>
   );
 }
 
 function TombolPanah({
   arah,
+  peran,
   onClick,
 }: {
   arah: "kiri" | "kanan";
+  peran: string;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label={
-        arah === "kiri" ? "Testimoni sebelumnya" : "Testimoni berikutnya"
-      }
+      aria-label={`${peran} ${arah === "kiri" ? "sebelumnya" : "berikutnya"}`}
       className="flex size-11 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-110 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
     >
-      {/*
-        Cuma ada satu file panah (menghadap kanan) — di Figma panah kiri adalah
-        salinan yang dicerminkan, bukan gambar terpisah. Dicerminkan lewat CSS
-        supaya tidak ada dua file identik yang harus dijaga tetap sinkron.
-
-        Ukuran 97,5x152 diambil dari Figma; di layar sempit dikecilkan supaya
-        tidak memakan lebar kartunya.
-      */}
+      {/* Panah kiri memakai aset yang sama dengan arah dicerminkan. */}
       <Image
         src="/icon/landing/panah.svg"
         alt=""
         aria-hidden
-        // Ukuran asli berkasnya 92,4862 x 135,27. Kalau diisi angka lain
-        // (sebelumnya 98x152) rasionya meleset dan next/image protes, karena
-        // lebarnya diatur CSS sementara tingginya ikut rasio asli.
         width={92}
         height={135}
-        className={`h-auto w-7 sm:w-[62px] lg:w-[97.5px] ${arah === "kiri" ? "-scale-x-100" : ""}`}
+        className={`h-auto w-7 sm:w-10 ${arah === "kiri" ? "-scale-x-100" : ""}`}
       />
     </button>
   );

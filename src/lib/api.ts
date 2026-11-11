@@ -457,3 +457,64 @@ export function ambilKonten(slug: string): Promise<ContentView> {
 export function ambilSemuaKonten(): Promise<ContentView[]> {
   return kirim<ContentView[]>('/contents');
 }
+
+export interface MerchProduct {
+  sku: string;
+  name: string;
+  price: number;
+  stock: number;
+  testOnly: boolean;
+}
+
+export interface MerchCatalog {
+  mode: 'disabled' | 'sandbox' | 'production';
+  products: MerchProduct[];
+}
+
+export interface MerchOrder {
+  id: string;
+  productName: string;
+  quantity: number;
+  grossAmount: number;
+  status: 'PENDING' | 'PAID' | 'EXPIRED' | 'CANCELLED' | 'FAILED';
+  expiresAt: string;
+  pickupSession: string;
+  paymentUrl: string | null;
+}
+
+export interface NewMerchOrder {
+  sku: string;
+  quantity: number;
+  expectedUnitPrice: number;
+  buyerName: string;
+  buyerEmail: string;
+  buyerPhone: string;
+  buyerCategory: string;
+  institution?: string;
+  pickupSession: string;
+  pickupName?: string;
+  notes?: string;
+}
+
+export async function ambilMerchandise(): Promise<MerchCatalog> {
+  try {
+    return await kirim('/merchandise/products', { cache: 'no-store', autoRefresh: false });
+  } catch (error) {
+    // The frontend and backend deploy independently; the older backend
+    // doesn't have this route yet.
+    if (error instanceof ApiError && error.status === 404) return { mode: 'disabled', products: [] };
+    throw error;
+  }
+}
+
+export function pesanMerchandise(key: string, order: NewMerchOrder): Promise<MerchOrder> {
+  return kirim('/merchandise/orders', {
+    method: 'POST', body: order, headers: { 'x-merch-order-key': key }, autoRefresh: false,
+  });
+}
+
+export function cekPesananMerchandise(key: string): Promise<MerchOrder> {
+  return kirim('/merchandise/orders/current', {
+    headers: { 'x-merch-order-key': key }, cache: 'no-store', autoRefresh: false,
+  });
+}

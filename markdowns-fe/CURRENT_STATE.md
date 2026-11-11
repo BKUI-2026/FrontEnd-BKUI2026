@@ -2,10 +2,12 @@
 
 > Update file ini tiap kali status integrasi sebuah fitur berubah. Nilai status: `Belum Dikerjakan` / `Masih Dummy Data` / `Terhubung ke API`.
 
-Terakhir diperbarui: 2026-11-08
+Terakhir diperbarui: 2026-11-11
 
-## Iteration 2 — nomor 8, 9, dan 12
+## Iteration 2 — revisi landing
 
+- **Meet The CASA:** carousel Campus Ambassador tampil di atas Student Ambassador.
+  Setiap kartu menampilkan foto, nama, dan asal, dengan navigasi terpisah per kategori.
 - **Countdown Saintek Day/Soshum Day:** kedua pilihan dapat diganti langsung di Hero.
   Saintek Day memakai `NEXT_PUBLIC_BKUI_COUNTDOWN_TARGET` yang sudah ada; Soshum Day otomatis
   satu hari setelahnya. Target bawaan tetap 19 Desember 2026 pukul 00.00 WIB
@@ -18,8 +20,8 @@ Terakhir diperbarui: 2026-11-08
   foto proporsional, area gulir mengikuti tinggi layar, dan kontrol sentuh
   minimal 44px. Header kartu Acara Saya mengikuti lebar area kontennya agar
   judul/tanggal tidak berdesakan di samping sidebar pada tablet.
-- **Menunggu tim:** nomor 7 (materi/detail Trailer/Teaser), 10 (pengumpulan
-  tugas CASA), dan 11 (Sponsor) belum diimplementasikan pada iterasi ini.
+- **Menunggu tim:** nomor 7 (Trailer/Teaser) masih Pending, dan nomor 11
+  (Sponsor) masih Icebox.
 
 Detail dan validasi: [FE-0028](./features/FE-0028_Codex_Iteration-2-Countdown-dan-Responsive.md).
 
@@ -28,9 +30,8 @@ Detail dan validasi: [FE-0028](./features/FE-0028_Codex_Iteration-2-Countdown-da
 **Landing Page sudah dislicing penuh dari Figma** (FE-0005). Sepuluh FAQ resmi
 sudah dimasukkan dari dokumen tim (FE-0015). Seluruh Lorem ipsum dan label
 generik sudah diganti copy yang layak tampil (FE-0020); Previous Speakers sudah memakai konten tim. Foto dan nama 20 CASA
-sudah berasal dari folder resmi tim (25 Oktober 2026); kutipan asli masih
-menunggu. Kartu CASA hanya menampilkan “Hi, I'm <Nama>” dan “From <asal>”
-sesuai nama file sumber, tanpa label kategori atau placeholder kutipan. Placeholder video kini menampilkan
+sudah berasal dari folder resmi tim (25 Oktober 2026). Bagian Meet The CASA
+menampilkan nama dan asal sesuai data sumber. Placeholder video kini menampilkan
 “Coming Soon” dengan font judul BKUI (FE-0021).
 
 **Explore UI juga sudah dislicing penuh dari Figma** (FE-0007), lengkap dengan
@@ -39,9 +40,10 @@ sudah memakai konten tim (FE-0015). Semua kartu kini menampilkan chip nama
 program studi berdasarkan sumber resmi UI (FE-0017); foto masih dummy. Hero
 sudah mengikuti desain terbaru node `551:4325` tanpa mengubah isi (FE-0022).
 
-**Merchandise Catalog juga sudah dislicing penuh** (FE-0009) — katalog + CTA
-redirect ke Yesplis, tanpa cart/checkout sama sekali. Nama sementara dan pesan
-status sudah profesional; harga/stok palsu dihapus (FE-0020).
+**Merchandise** punya checkout QRIS melalui Midtrans Snap saat backend
+mengaktifkannya. Harga dan stok checkout berasal dari API, dan status pesanan
+dibaca kembali setelah pembayaran. Mode bawaan masih menampilkan katalog lama;
+katalog resmi dan aktivasi produksi menunggu tim.
 
 **Ticket juga sudah dislicing penuh** (FE-0009 & FE-0010) — CTA sudah terhubung
 ke event Yesplis resmi (FE-0015), tanpa payment gateway. Nama tier mengikuti
@@ -81,7 +83,7 @@ disesuaikan untuk penggunaan di layar sentuh.
 | Daftar Akun | `/daftar` | **Terhubung ke API** | `POST /auth/register` | [FE-0011](./features/FE-0011_Salman_Slicing-Daftar-Akun.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Masuk | `/masuk` | **Terhubung ke API** | `POST /auth/login` | [FE-0012](./features/FE-0012_Salman_Slicing-Masuk.md), [FE-0026](./features/FE-0026_Claude_Integrasi-API-Backend.md) |
 | Explore UI | `/explore-ui` | **Masih Dummy Data** (deskripsi & prodi resmi; foto dummy) | TBD (entity `Content` — foto) | [FE-0007](./features/FE-0007_Salman_Slicing-Explore-UI.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0016](./features/FE-0016_Codex_Hapus-Placeholder-Explore.md), [FE-0017](./features/FE-0017_Codex_Prodi-Semua-Fakultas.md), [FE-0022](./features/FE-0022_Codex_Revisi-Visual-Explore.md) |
-| Merchandise Catalog | `/merchandise` | **Masih Dummy Data** (copy layak tampil; harga/stok/foto menunggu) | TBD (entity `Content` — produk, harga, stok, foto) + redirect only ke Yesplis | [FE-0009](./features/FE-0009_Salman_Slicing-Merchandise-Catalog.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
+| Merchandise Catalog | `/merchandise` | **Terhubung ke API** untuk checkout Midtrans; mode produksi masih ditutup | `GET /merchandise/products`, `POST /merchandise/orders`, `GET /merchandise/orders/current` | [Kontrak API](./integrations/backend-api-contract.md) |
 | Ticket | `/ticket` | **Masih Dummy Data** (CTA Yesplis aktif; harga/stok/benefit menunggu) | TBD (entity `Content` — tier, harga, stok) + redirect only ke Yesplis | [FE-0010](./features/FE-0010_Salman_Slicing-Ticket.md), [FE-0015](./features/FE-0015_Codex_Konten-Fakultas-FAQ-dan-Link-Tiket.md), [FE-0020](./features/FE-0020_Codex_Bersihkan-Copy-Placeholder.md) |
 | Profile | `/profile` | **Terhubung ke API** | `GET` & `PATCH /users/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |
 | Student Dashboard | `/dashboard` | **Terhubung ke API** (status mentoring nyata; jadwal & link sesi menunggu Content dari Admin) | `GET /mentoring-registrations/me` | [FE-0018](./features/FE-0018_Codex_Slicing-Profile-dan-Dashboard.md) |

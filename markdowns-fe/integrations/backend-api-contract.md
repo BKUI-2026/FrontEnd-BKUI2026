@@ -30,6 +30,9 @@ Semua di bawah base path `/api/v1`. Pemanggilnya ada di `src/lib/api.ts`.
 | POST | `/school-roadshow-registrations` | — | `/school-roadshow` |
 | POST | `/casa-registrations` | — | belum dipakai (halaman masih placeholder) |
 | GET | `/contents`, `/contents/:slug` | — | belum dipakai |
+| GET | `/merchandise/products` | — | katalog dan mode checkout |
+| POST | `/merchandise/orders` | kunci pesanan | buat pesanan dan tautan QRIS |
+| GET | `/merchandise/orders/current` | kunci pesanan | status pesanan dari backend |
 
 ## Dua Aturan yang Gampang Kelewat
 
