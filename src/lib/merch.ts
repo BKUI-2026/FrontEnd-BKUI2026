@@ -45,7 +45,7 @@ export function gabungKatalog(katalog: MerchCatalog | null): readonly Produk[] {
   if (!katalog || katalog.mode === "disabled") return PRODUK;
   const dariFigma = PRODUK.map((produk) => {
     const data = katalog.products.find((p) => p.sku === produk.id);
-    return data ? { ...produk, harga: data.price, stok: data.stock } : produk;
+    return data ? { ...produk, nama: data.name, harga: data.price, stok: data.stock } : produk;
   });
   const tambahan = katalog.products
     .filter((p) => !PRODUK.some((produk) => produk.id === p.sku))
@@ -63,6 +63,10 @@ export function gabungKatalog(katalog: MerchCatalog | null): readonly Produk[] {
 
 export function bisaDibeli(produk: Produk, katalog: MerchCatalog | null): boolean {
   return !!katalog && katalog.mode !== "disabled" && produk.harga !== null && (produk.stok ?? 0) > 0;
+}
+
+export function alasanTidakBisaDibeli(produk: Produk): string {
+  return produk.harga === null ? "Belum tersedia" : "Stok habis";
 }
 
 export function linkBayar(order: MerchOrder): string | null {

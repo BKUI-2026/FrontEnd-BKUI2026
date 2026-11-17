@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 import { produkUntuk, type Kategori, type Produk } from "@/lib/merch-content";
-import { bisaDibeli, gabungKatalog, useKatalogMerch } from "@/lib/merch";
+import { alasanTidakBisaDibeli, bisaDibeli, gabungKatalog, useKatalogMerch } from "@/lib/merch";
 import { BERURUTAN, SEKALI_MASUK } from "@/components/explore/gerak";
 import { FilterMerch } from "./FilterMerch";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
@@ -107,7 +107,7 @@ export function KatalogMerch() {
             urlYesplis=""
             onLihatDetail={() => bukaDetail(produk)}
             onTambahKeranjang={tombolBeli(produk) ? () => tambah(produk.id, produk.nama) : undefined}
-            teksNonaktif="Stok habis"
+            teksNonaktif={alasanTidakBisaDibeli(produk)}
           />
         ))}
       </motion.div>
@@ -118,7 +118,7 @@ export function KatalogMerch() {
         urlYesplis=""
         onTutup={() => setDetail(null)}
         onTambahKeranjang={detail && tombolBeli(detail) ? (produk) => tambah(produk.id, produk.nama) : undefined}
-        teksNonaktif="Stok habis"
+        teksNonaktif={detail ? alasanTidakBisaDibeli(detail) : undefined}
       />
       {keranjangTerbuka && <KeranjangMerch
         produk={semuaProduk}
