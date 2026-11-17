@@ -106,7 +106,7 @@ export function KartuKatalog({
               type="button"
               disabled
               title={teksNonaktif ?? "URL Yesplis belum diberikan"}
-              className="h-12 shrink-0 cursor-not-allowed rounded-3xl bg-bkui-oren px-8 font-ui text-base font-medium text-bkui-coklat opacity-60"
+              className="h-12 shrink-0 cursor-not-allowed rounded-3xl bg-bkui-nonaktif px-8 font-ui text-base font-medium text-bkui-teks-nonaktif"
             >
               {teksNonaktif ?? "Beli di Yesplis"}
             </button>

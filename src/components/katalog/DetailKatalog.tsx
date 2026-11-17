@@ -210,7 +210,7 @@ function IsiDetail({
               type="button"
               disabled
               title={teksNonaktif ?? "URL Yesplis belum diberikan"}
-              className="h-16 w-fit cursor-not-allowed rounded-full bg-bkui-oren px-9 font-ui text-lg font-medium text-bkui-coklat opacity-60 lg:text-xl"
+              className="h-16 w-fit cursor-not-allowed rounded-full bg-bkui-nonaktif px-9 font-ui text-lg font-medium text-bkui-teks-nonaktif lg:text-xl"
             >
               {teksNonaktif ?? "Beli di Yesplis"}
             </button>

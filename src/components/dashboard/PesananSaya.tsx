@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ApiError, NetworkError, riwayatMerchandise, type MerchOrder } from "@/lib/api";
 import { rupiah } from "@/lib/katalog";
 import { JAM_WIB, STATUS_PESANAN, linkBayar } from "@/lib/merch";
+import { kelasTombol } from "@/lib/tombol";
 
 import { LatarDashboard } from "./LatarDashboard";
 import { SidebarDashboard } from "./SidebarDashboard";
@@ -72,7 +73,7 @@ export function PesananSaya() {
               <article className="flex flex-col items-center gap-3 rounded-3xl bg-bkui-navbar px-6 py-8 text-center sm:px-8">
                 <h2 className="font-ui text-[28px] font-semibold leading-[1.2] text-bkui-teks">Belum ada pesanan</h2>
                 <p className="font-body text-base font-medium text-bkui-teks">Pesanan merchandise yang kamu buat akan muncul di sini.</p>
-                <Link href="/merchandise" className="mt-2 font-ui font-semibold underline">Lihat merchandise</Link>
+                <Link href="/merchandise" className={`${kelasTombol("sekunder")} mt-2`}>Lihat Merchandise</Link>
               </article>
             )}
 
@@ -95,8 +96,8 @@ function KartuPesanan({ pesanan, disorot }: { pesanan: MerchOrder; disorot: bool
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="break-all font-ui text-sm">No. {pesanan.id}</p>
-          <p className="font-body text-sm">{JAM_WIB.format(new Date(pesanan.createdAt))} WIB</p>
+          <p className="break-all font-body text-sm font-medium leading-[1.35]">No. {pesanan.id}</p>
+          <p className="font-body text-sm font-medium leading-[1.35]">{JAM_WIB.format(new Date(pesanan.createdAt))} WIB</p>
         </div>
         <span className={`rounded-full px-4 py-1.5 font-ui text-sm font-semibold ${WARNA_STATUS[pesanan.status]}`} aria-live="polite">
           {STATUS_PESANAN[pesanan.status]}
@@ -105,7 +106,7 @@ function KartuPesanan({ pesanan, disorot }: { pesanan: MerchOrder; disorot: bool
 
       <ul className="divide-y divide-bkui-coklat/15">
         {pesanan.items.map((item) => (
-          <li key={item.sku} className="flex flex-wrap justify-between gap-2 py-2 font-body">
+          <li key={item.sku} className="flex flex-wrap justify-between gap-2 py-3 font-body text-xl font-medium leading-[1.2]">
             <span>{item.productName} × {item.quantity}</span>
             <span>{rupiah(item.subtotal)}</span>
           </li>
@@ -113,24 +114,24 @@ function KartuPesanan({ pesanan, disorot }: { pesanan: MerchOrder; disorot: bool
       </ul>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-ui text-xl font-bold">{rupiah(pesanan.grossAmount)}</p>
-        <p className="font-body text-sm">
+        <p className="font-ui text-[28px] font-semibold leading-[1.2]">{rupiah(pesanan.grossAmount)}</p>
+        <p className="font-body text-sm font-medium leading-[1.35]">
           Ambil: {pesanan.pickupSession}{pesanan.pickupName ? ` · diwakilkan ${pesanan.pickupName}` : ""}
         </p>
       </div>
 
       {pesanan.status === "PENDING" && (
         <div className="flex flex-wrap items-center gap-3">
-          <p className="font-body text-sm">Bayar sebelum {JAM_WIB.format(new Date(pesanan.expiresAt))} WIB.</p>
+          <p className="font-body text-sm font-medium leading-[1.35]">Bayar sebelum {JAM_WIB.format(new Date(pesanan.expiresAt))} WIB.</p>
           {url && (
-            <a href={url} className="tombol-kertas inline-flex min-h-11 items-center rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-5 font-ui font-medium text-bkui-coklat">
-              Lanjut bayar QRIS
+            <a href={url} className={kelasTombol("sekunder")}>
+              Lanjut Bayar QRIS
             </a>
           )}
         </div>
       )}
       {pesanan.status === "PAID" && (
-        <p className="font-body text-sm">Tunjukkan nomor pesanan ini di booth BKUI saat mengambil merchandise.</p>
+        <p className="font-body text-sm font-medium leading-[1.35]">Tunjukkan nomor pesanan ini di booth BKUI saat mengambil merchandise.</p>
       )}
     </article>
   );

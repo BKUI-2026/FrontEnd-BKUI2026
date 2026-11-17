@@ -111,6 +111,9 @@ body {
   --color-bkui-rumput: #606420;
   /* Neutral/10 */
   --color-bkui-netral: #fdfdfc;
+  /* Tombol nonaktif — Design System: Neutral/Base & Neutral/200. */
+  --color-bkui-nonaktif: #f6f7f2;
+  --color-bkui-teks-nonaktif: #bdbdbd;
 
   /* ---- Font ---- */
   /* Talina DEMO — judul display */

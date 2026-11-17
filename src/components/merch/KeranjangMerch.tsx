@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { rupiah } from "@/lib/katalog";
+import { kelasTombol } from "@/lib/tombol";
 import type { Produk } from "@/lib/merch-content";
 import { BATAS_JUMLAH, type IsiKeranjang } from "./keranjang-merch";
 
@@ -87,15 +88,15 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
               );
             })}
           </ul>
-          <p className="mt-4 font-ui text-lg font-semibold">
+          <p className="mt-4 font-ui text-[28px] font-semibold leading-[1.2]">
             {dibuka && !masalah ? `Total: ${rupiah(total)}` : "Total menyusul setelah harga tersedia."}
           </p>
-          {masalah && <p role="status" className="mt-4 rounded-xl border border-bkui-coklat/20 bg-white/70 px-4 py-3 font-ui font-semibold">{masalah}</p>}
+          {masalah && <p role="status" className="mt-4 rounded-xl border border-bkui-coklat/20 bg-white/70 px-4 py-3 font-body text-sm font-medium leading-[1.35]">{masalah}</p>}
           <button
             type="button"
             onClick={onCheckout}
             disabled={masalah !== null}
-            className="tombol-kertas mt-5 min-h-12 w-full rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-6 py-3 font-ui text-lg font-medium disabled:cursor-not-allowed disabled:opacity-60"
+            className={`${kelasTombol("sekunder", "besar")} mt-5 w-full`}
           >
             Checkout
           </button>

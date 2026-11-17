@@ -16,6 +16,10 @@ interface KolomIsianProps {
   /** Petunjuk singkat di bawah kolom, mis. contoh format yang diterima. */
   petunjuk?: string;
   inputMode?: "text" | "numeric" | "tel" | "email";
+  defaultValue?: string;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
 }
 
 /**
@@ -39,6 +43,10 @@ export function KolomIsian({
   galat,
   petunjuk,
   inputMode,
+  defaultValue,
+  required,
+  minLength,
+  maxLength,
 }: KolomIsianProps) {
   const id = useId();
   const idGalat = `${id}-galat`;
@@ -69,6 +77,10 @@ export function KolomIsian({
           placeholder={placeholder}
           autoComplete={autoComplete}
           inputMode={inputMode}
+          defaultValue={defaultValue}
+          required={required}
+          minLength={minLength}
+          maxLength={maxLength}
           aria-invalid={galat ? true : undefined}
           aria-describedby={galat ? idGalat : petunjuk ? idPetunjuk : undefined}
           className="h-6 min-w-0 flex-1 bg-transparent font-body text-sm font-medium leading-[1.2] text-bkui-teks placeholder:text-bkui-teks/65 focus:outline-none"
