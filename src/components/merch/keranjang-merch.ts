@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PRODUK } from "@/lib/merch-content";
-
 const STORAGE_KEY = "bkui-merch-cart";
 export const BATAS_JUMLAH = 10;
 export interface IsiKeranjang { id: string; jumlah: number }
@@ -15,7 +13,7 @@ function bacaKeranjang(): IsiKeranjang[] {
     return saved.filter((row): row is IsiKeranjang => {
       if (!row || typeof row !== "object" ||
           typeof row.id !== "string" || seen.has(row.id) ||
-          !PRODUK.some((p) => p.id === row.id) ||
+          !/^[A-Z0-9_-]{1,50}$/.test(row.id) ||
           !Number.isInteger(row.jumlah) || row.jumlah < 1 || row.jumlah > BATAS_JUMLAH) return false;
       seen.add(row.id);
       return true;

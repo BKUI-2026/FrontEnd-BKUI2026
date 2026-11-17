@@ -43,10 +43,22 @@ export function useKatalogMerch() {
 
 export function gabungKatalog(katalog: MerchCatalog | null): readonly Produk[] {
   if (!katalog || katalog.mode === "disabled") return PRODUK;
-  return PRODUK.map((produk) => {
+  const dariFigma = PRODUK.map((produk) => {
     const data = katalog.products.find((p) => p.sku === produk.id);
     return data ? { ...produk, harga: data.price, stok: data.stock } : produk;
   });
+  const tambahan = katalog.products
+    .filter((p) => !PRODUK.some((produk) => produk.id === p.sku))
+    .map((p): Produk => ({
+      id: p.sku,
+      nama: p.name,
+      kategori: "Event Memorabilia",
+      harga: p.price,
+      stok: p.stock,
+      deskripsi: p.testOnly ? "Produk simulasi untuk menguji pembayaran sandbox." : "",
+      jumlahFoto: 1,
+    }));
+  return [...dariFigma, ...tambahan];
 }
 
 export function bisaDibeli(produk: Produk, katalog: MerchCatalog | null): boolean {

@@ -24,6 +24,8 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
   const total = baris.reduce((sum, { row, produk }) => sum + (produk?.harga ?? 0) * row.jumlah, 0);
   const masalah = !dibuka
     ? "Pembelian merchandise belum dibuka."
+    : baris.some(({ produk }) => !produk)
+      ? "Ada produk yang sudah tidak tersedia. Hapus dulu dari keranjang."
     : baris.some(({ produk }) => produk?.harga == null)
       ? "Ada produk yang belum punya harga. Hapus dulu dari keranjang."
       : baris.some(({ row, produk }) => (produk?.stok ?? 0) < row.jumlah)
@@ -56,7 +58,14 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
         <>
           <ul className="mt-6 divide-y divide-bkui-coklat/20">
             {baris.map(({ row, produk }) => {
-              if (!produk) return null;
+              if (!produk) {
+                return (
+                  <li key={row.id} className="flex items-center justify-between gap-4 py-5">
+                    <p className="font-ui font-semibold">Produk {row.id} sudah tidak tersedia</p>
+                    <button type="button" className="min-h-11 rounded-full px-3 font-ui text-sm underline" onClick={() => onHapus(row.id)}>Hapus</button>
+                  </li>
+                );
+              }
               return (
                 <li key={row.id} className="flex flex-wrap items-center justify-between gap-4 py-5">
                   <div className="min-w-0 flex-1 basis-[200px]">

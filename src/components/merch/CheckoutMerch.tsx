@@ -59,14 +59,15 @@ export function CheckoutMerch() {
 
   const data = katalog.katalog;
   const produk = gabungKatalog(data);
-  const baris = keranjang.isi
-    .map((row) => ({ row, produk: produk.find((p) => p.id === row.id) }))
-    .filter((b): b is { row: (typeof keranjang.isi)[number]; produk: (typeof produk)[number] } => !!b.produk);
+  const semuaBaris = keranjang.isi.map((row) => ({ row, produk: produk.find((p) => p.id === row.id) }));
+  const baris = semuaBaris.filter((b): b is { row: (typeof keranjang.isi)[number]; produk: (typeof produk)[number] } => !!b.produk);
   const total = baris.reduce((sum, { row, produk: p }) => sum + (p.harga ?? 0) * row.jumlah, 0);
   const masalah = data.mode === "disabled"
     ? "Pembelian merchandise belum dibuka."
-    : baris.length === 0
+    : semuaBaris.length === 0
       ? "Keranjangmu masih kosong."
+      : baris.length < semuaBaris.length
+        ? "Ada produk di keranjang yang sudah tidak tersedia."
       : baris.some(({ produk: p }) => p.harga === null)
         ? "Ada produk yang belum punya harga."
         : baris.some(({ row, produk: p }) => (p.stok ?? 0) < row.jumlah)
