@@ -17,6 +17,7 @@ interface KartuKatalogProps {
   onLihatDetail: () => void;
   /** Aksi keranjang untuk pratinjau merchandise; tiket tetap memakai Yesplis. */
   onTambahKeranjang?: () => void;
+  teksNonaktif?: string;
   /**
    * Gerak masuk yang lebih terasa. Dipakai halaman Tiket, yang isinya cuma
    * tiga kartu dan muat satu layar — di sana gerak halus nyaris tidak terbaca.
@@ -29,6 +30,7 @@ export function KartuKatalog({
   urlYesplis,
   onLihatDetail,
   onTambahKeranjang,
+  teksNonaktif,
   tegas = false,
 }: KartuKatalogProps) {
   return (
@@ -103,10 +105,10 @@ export function KartuKatalog({
             <button
               type="button"
               disabled
-              title="URL Yesplis belum diberikan"
+              title={teksNonaktif ?? "URL Yesplis belum diberikan"}
               className="h-12 shrink-0 cursor-not-allowed rounded-3xl bg-bkui-oren px-8 font-ui text-base font-medium text-bkui-coklat opacity-60"
             >
-              Beli di Yesplis
+              {teksNonaktif ?? "Beli di Yesplis"}
             </button>
           )}
         </div>

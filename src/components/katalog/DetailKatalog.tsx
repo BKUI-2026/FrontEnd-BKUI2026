@@ -12,6 +12,7 @@ interface DetailKatalogProps {
   urlYesplis: string;
   onTutup: () => void;
   onTambahKeranjang?: (item: ItemKatalog) => void;
+  teksNonaktif?: string;
 }
 
 /**
@@ -38,7 +39,7 @@ interface DetailKatalogProps {
  * Aksi mengikuti halaman pemanggil: merchandise bisa menambahkan produk ke
  * keranjang pratinjau, sedangkan tiket tetap diarahkan ke Yesplis.
  */
-export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang }: DetailKatalogProps) {
+export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang, teksNonaktif }: DetailKatalogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   /*
    * `onTutup` disimpan di ref supaya listener `close` di bawah tidak perlu
@@ -98,7 +99,7 @@ export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang }: 
       className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[1282px] overflow-y-auto overscroll-contain bg-transparent p-0 backdrop:bg-black/50"
     >
       {item && (
-        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} onTambahKeranjang={onTambahKeranjang} />
+        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} onTambahKeranjang={onTambahKeranjang} teksNonaktif={teksNonaktif} />
       )}
     </dialog>
   );
@@ -109,11 +110,13 @@ function IsiDetail({
   urlYesplis,
   onTutup,
   onTambahKeranjang,
+  teksNonaktif,
 }: {
   item: ItemKatalog;
   urlYesplis: string;
   onTutup: () => void;
   onTambahKeranjang?: (item: ItemKatalog) => void;
+  teksNonaktif?: string;
 }) {
   const [foto, setFoto] = useState(0);
 
@@ -206,10 +209,10 @@ function IsiDetail({
             <button
               type="button"
               disabled
-              title="URL Yesplis belum diberikan"
+              title={teksNonaktif ?? "URL Yesplis belum diberikan"}
               className="h-16 w-fit cursor-not-allowed rounded-full bg-bkui-oren px-9 font-ui text-lg font-medium text-bkui-coklat opacity-60 lg:text-xl"
             >
-              Beli di Yesplis
+              {teksNonaktif ?? "Beli di Yesplis"}
             </button>
           )}
         </div>

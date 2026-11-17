@@ -1,8 +1,8 @@
 import type { ItemKatalog } from "@/lib/katalog";
 
 /**
- * Katalog sementara dari komposisi Figma. Foto, harga, dan stok resmi menunggu
- * tim. Produk tetap bisa dimasukkan ke keranjang pratinjau; checkout diblokir.
+ * Katalog dari komposisi Figma. `id` dipakai sebagai SKU: harga dan stok diambil
+ * dari tabel `merch_products` di BE dengan SKU yang sama (lihat `lib/merch.ts`).
  */
 
 /** Kategori di panel Filter, urutannya mengikuti Figma. */
@@ -22,15 +22,15 @@ export type Produk = ItemKatalog & { kategori: Kategori };
 type ProdukDasar = Pick<Produk, "id" | "nama" | "kategori"> & Partial<Produk>;
 
 const DAFTAR_DASAR: readonly ProdukDasar[] = [
-  { id: "m1", nama: "Apparel BKUI", kategori: "Apparel" },
-  { id: "m2", nama: "Aksesori BKUI", kategori: "Accessories" },
-  { id: "m3", nama: "Paket BKUI", kategori: "Bundles" },
-  { id: "m4", nama: "Memorabilia BKUI", kategori: "Event Memorabilia" },
-  { id: "m5", nama: "Apparel Makara", kategori: "Apparel" },
-  { id: "m6", nama: "Aksesori Makara", kategori: "Accessories" },
-  { id: "m7", nama: "Apparel Eksklusif", kategori: "Apparel" },
-  { id: "m8", nama: "Paket Makara", kategori: "Bundles" },
-  { id: "m9", nama: "Suvenir BKUI", kategori: "Event Memorabilia" },
+  { id: "M1", nama: "Apparel BKUI", kategori: "Apparel" },
+  { id: "M2", nama: "Aksesori BKUI", kategori: "Accessories" },
+  { id: "M3", nama: "Paket BKUI", kategori: "Bundles" },
+  { id: "M4", nama: "Memorabilia BKUI", kategori: "Event Memorabilia" },
+  { id: "M5", nama: "Apparel Makara", kategori: "Apparel" },
+  { id: "M6", nama: "Aksesori Makara", kategori: "Accessories" },
+  { id: "M7", nama: "Apparel Eksklusif", kategori: "Apparel" },
+  { id: "M8", nama: "Paket Makara", kategori: "Bundles" },
+  { id: "M9", nama: "Suvenir BKUI", kategori: "Event Memorabilia" },
 ];
 
 /** Informasi sementara yang jujur sampai katalog resmi tersedia. */
@@ -46,7 +46,7 @@ export const PRODUK: readonly Produk[] = DAFTAR_DASAR.map((p) => ({
 }));
 
 /** Produk yang lolos penyaring. Tanpa kategori terpilih = tampilkan semua. */
-export function produkUntuk(terpilih: readonly Kategori[]): readonly Produk[] {
-  if (terpilih.length === 0) return PRODUK;
-  return PRODUK.filter((p) => terpilih.includes(p.kategori));
+export function produkUntuk(daftar: readonly Produk[], terpilih: readonly Kategori[]): readonly Produk[] {
+  if (terpilih.length === 0) return daftar;
+  return daftar.filter((p) => terpilih.includes(p.kategori));
 }

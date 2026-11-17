@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 import { produkUntuk, type Kategori, type Produk } from "@/lib/merch-content";
+import { bisaDibeli, gabungKatalog, useKatalogMerch } from "@/lib/merch";
 import { BERURUTAN, SEKALI_MASUK } from "@/components/explore/gerak";
 import { FilterMerch } from "./FilterMerch";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
@@ -26,7 +28,12 @@ import { useKeranjangMerch } from "./keranjang-merch";
  * terbaca.
  */
 export function KatalogMerch() {
+  const router = useRouter();
   const [terpilih, setTerpilih] = useState<readonly Kategori[]>([]);
+  const katalog = useKatalogMerch();
+  const dataKatalog = katalog.jenis === "siap" ? katalog.katalog : null;
+  const semuaProduk = gabungKatalog(dataKatalog);
+  const dibuka = dataKatalog !== null && dataKatalog.mode !== "disabled";
   const keranjang = useKeranjangMerch();
   const [keranjangTerbuka, setKeranjangTerbuka] = useState(false);
   const [pesan, setPesan] = useState("");
@@ -62,7 +69,8 @@ export function KatalogMerch() {
     setDetail(produk);
     setPembuka((n) => n + 1);
   };
-  const daftar = produkUntuk(terpilih);
+  const daftar = produkUntuk(semuaProduk, terpilih);
+  const tombolBeli = (produk: Produk) => !dibuka || bisaDibeli(produk, dataKatalog);
 
   const ubah = (kategori: Kategori) =>
     setTerpilih((lama) =>
@@ -98,7 +106,8 @@ export function KatalogMerch() {
             item={produk}
             urlYesplis=""
             onLihatDetail={() => bukaDetail(produk)}
-            onTambahKeranjang={() => tambah(produk.id, produk.nama)}
+            onTambahKeranjang={tombolBeli(produk) ? () => tambah(produk.id, produk.nama) : undefined}
+            teksNonaktif="Stok habis"
           />
         ))}
       </motion.div>
@@ -108,10 +117,14 @@ export function KatalogMerch() {
         item={detail}
         urlYesplis=""
         onTutup={() => setDetail(null)}
-        onTambahKeranjang={(produk) => tambah(produk.id, produk.nama)}
+        onTambahKeranjang={detail && tombolBeli(detail) ? (produk) => tambah(produk.id, produk.nama) : undefined}
+        teksNonaktif="Stok habis"
       />
       {keranjangTerbuka && <KeranjangMerch
+        produk={semuaProduk}
+        dibuka={dibuka}
         isi={keranjang.isi}
+        onCheckout={() => router.push("/checkout")}
         onUbahJumlah={keranjang.ubahJumlah}
         onHapus={keranjang.hapus}
         onTutup={() => setKeranjangTerbuka(false)}

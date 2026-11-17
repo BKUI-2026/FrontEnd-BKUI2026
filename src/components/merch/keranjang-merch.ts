@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { PRODUK } from "@/lib/merch-content";
 
-const STORAGE_KEY = "bkui-merch-cart-preview";
-export const BATAS_JUMLAH = 99;
+const STORAGE_KEY = "bkui-merch-cart";
+export const BATAS_JUMLAH = 10;
 export interface IsiKeranjang { id: string; jumlah: number }
 
 function bacaKeranjang(): IsiKeranjang[] {
@@ -22,6 +22,14 @@ function bacaKeranjang(): IsiKeranjang[] {
     }).map(({ id, jumlah }) => ({ id, jumlah }));
   } catch {
     return [];
+  }
+}
+
+export function kosongkanKeranjangTersimpan() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Tidak ada yang perlu dibersihkan.
   }
 }
 
@@ -62,5 +70,6 @@ export function useKeranjangMerch() {
   };
 
   const hapus = (id: string) => setIsi((lama) => lama.filter((row) => row.id !== id));
-  return { isi, siap, tambah, ubahJumlah, hapus };
+  const kosongkan = () => setIsi([]);
+  return { isi, siap, tambah, ubahJumlah, hapus, kosongkan };
 }

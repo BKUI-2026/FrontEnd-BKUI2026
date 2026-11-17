@@ -471,21 +471,32 @@ export interface MerchCatalog {
   products: MerchProduct[];
 }
 
+export type MerchOrderStatus = 'PENDING' | 'PAID' | 'EXPIRED' | 'CANCELLED' | 'FAILED';
+
+export interface MerchOrderItem {
+  sku: string;
+  productName: string;
+  unitPrice: number;
+  quantity: number;
+  subtotal: number;
+}
+
 export interface MerchOrder {
   id: string;
-  productName: string;
-  quantity: number;
+  mode: 'sandbox' | 'production';
+  items: MerchOrderItem[];
   grossAmount: number;
-  status: 'PENDING' | 'PAID' | 'EXPIRED' | 'CANCELLED' | 'FAILED';
+  status: MerchOrderStatus;
+  createdAt: string;
   expiresAt: string;
+  paidAt: string | null;
   pickupSession: string;
+  pickupName: string | null;
   paymentUrl: string | null;
 }
 
 export interface NewMerchOrder {
-  sku: string;
-  quantity: number;
-  expectedUnitPrice: number;
+  items: { sku: string; quantity: number; expectedUnitPrice: number }[];
   buyerName: string;
   buyerEmail: string;
   buyerPhone: string;
@@ -500,8 +511,6 @@ export async function ambilMerchandise(): Promise<MerchCatalog> {
   try {
     return await kirim('/merchandise/products', { cache: 'no-store', autoRefresh: false });
   } catch (error) {
-    // The frontend and backend deploy independently; the older backend
-    // doesn't have this route yet.
     if (error instanceof ApiError && error.status === 404) return { mode: 'disabled', products: [] };
     throw error;
   }
@@ -509,12 +518,16 @@ export async function ambilMerchandise(): Promise<MerchCatalog> {
 
 export function pesanMerchandise(key: string, order: NewMerchOrder): Promise<MerchOrder> {
   return kirim('/merchandise/orders', {
-    method: 'POST', body: order, headers: { 'x-merch-order-key': key }, autoRefresh: false,
+    method: 'POST', body: order, headers: { 'x-merch-order-key': key },
   });
 }
 
 export function cekPesananMerchandise(key: string): Promise<MerchOrder> {
   return kirim('/merchandise/orders/current', {
-    headers: { 'x-merch-order-key': key }, cache: 'no-store', autoRefresh: false,
+    headers: { 'x-merch-order-key': key }, cache: 'no-store',
   });
+}
+
+export function riwayatMerchandise(): Promise<MerchOrder[]> {
+  return kirim('/merchandise/orders/me', { cache: 'no-store' });
 }

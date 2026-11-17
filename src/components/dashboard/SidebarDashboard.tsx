@@ -13,7 +13,7 @@ import { useSesi } from "@/lib/auth-state";
  * Nama yang tampil diambil dari sesi. Foto profil masih placeholder — BE belum
  * punya penyimpanan foto, jadi tidak ada yang bisa ditampilkan di sana.
  */
-export function SidebarDashboard({ aktif }: { aktif: "profil" | "acara" }) {
+export function SidebarDashboard({ aktif }: { aktif: "profil" | "acara" | "pesanan" }) {
   const { user, keluar } = useSesi();
   const router = useRouter();
   const [sedangKeluar, setSedangKeluar] = useState(false);
@@ -56,6 +56,9 @@ export function SidebarDashboard({ aktif }: { aktif: "profil" | "acara" }) {
         </Link>
         <Link href="/dashboard" aria-current={aktif === "acara" ? "page" : undefined} className={kelasMenu(aktif === "acara")}>
           Acara Saya
+        </Link>
+        <Link href="/pesanan" aria-current={aktif === "pesanan" ? "page" : undefined} className={kelasMenu(aktif === "pesanan")}>
+          Pesanan Merch
         </Link>
       </nav>
 
