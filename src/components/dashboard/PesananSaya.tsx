@@ -20,6 +20,7 @@ type Keadaan =
 const WARNA_STATUS: Record<MerchOrder["status"], string> = {
   PENDING: "bg-bkui-oren-muda text-bkui-coklat",
   PAID: "bg-bkui-hijau-tua text-white",
+  CLAIMED: "bg-bkui-coklat text-bkui-terang",
   EXPIRED: "bg-bkui-coklat/15 text-bkui-teks",
   CANCELLED: "bg-bkui-coklat/15 text-bkui-teks",
   FAILED: "bg-bkui-merah-muda text-bkui-merah",
@@ -130,8 +131,24 @@ function KartuPesanan({ pesanan, disorot }: { pesanan: MerchOrder; disorot: bool
           )}
         </div>
       )}
-      {pesanan.status === "PAID" && (
-        <p className="font-body text-sm font-medium leading-[1.35]">Tunjukkan nomor pesanan ini di booth BKUI saat mengambil merchandise.</p>
+      {pesanan.status === "PAID" && pesanan.claimQr && (
+        <div className="flex flex-col items-center gap-3 rounded-2xl bg-white p-5 text-center sm:flex-row sm:text-left">
+          {/* Data URL PNG dari BE; next/image tidak perlu mengoptimasinya. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={pesanan.claimQr} alt={`QR pengambilan pesanan ${pesanan.id}`} width={180} height={180} className="size-[180px] shrink-0 [image-rendering:pixelated]" />
+          <div className="flex flex-col gap-2">
+            <p className="font-ui text-xl font-semibold">QR Pengambilan</p>
+            <p className="font-body text-sm font-medium leading-[1.35]">
+              Tunjukkan QR ini di booth merch saat main event. QR hanya bisa dipakai sekali. Jangan bagikan ke orang lain selain yang mewakilkan pengambilan.
+            </p>
+          </div>
+        </div>
+      )}
+      {pesanan.status === "PAID" && !pesanan.claimQr && (
+        <p className="font-body text-sm font-medium leading-[1.35]">Tunjukkan nomor pesanan ini di booth merch saat main event.</p>
+      )}
+      {pesanan.status === "CLAIMED" && pesanan.claimedAt && (
+        <p className="font-body text-sm font-medium leading-[1.35]">Sudah diambil pada {JAM_WIB.format(new Date(pesanan.claimedAt))} WIB.</p>
       )}
     </article>
   );

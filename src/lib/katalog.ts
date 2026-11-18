@@ -28,6 +28,8 @@ export interface ItemKatalog {
   deskripsi: string;
   /** Cacah slide carousel di overlay detail. Fotonya sendiri belum ada. */
   jumlahFoto: number;
+  /** URL foto produk; kosong berarti placeholder. */
+  foto?: readonly string[];
 }
 
 /** Angka rupiah tanpa awalan, mis. "1.000.000.000". */

@@ -1130,3 +1130,38 @@ body:has(dialog[open]) {
 body:has(.auth-scene) .sakura-layer {
   display: none;
 }
+
+/*
+ * Pita CASA yang terus berjalan. Isi daftarnya dirender dua kali berturut-turut,
+ * jadi bergeser tepat -50% membuat salinan kedua menempati posisi salinan
+ * pertama: putarannya mulus tanpa lompatan. Arah dibalik lewat
+ * `animation-direction`, durasi diatur dari komponen lewat `--durasi`.
+ */
+@keyframes pita-casa {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.pita-casa {
+  animation: pita-casa var(--durasi, 40s) linear infinite;
+}
+
+.pita-casa[data-arah="kanan"] {
+  animation-direction: reverse;
+}
+
+/* Berhenti saat ditunjuk atau difokus supaya nama bisa dibaca dengan tenang. */
+.pita-casa-bingkai:hover .pita-casa,
+.pita-casa-bingkai:focus-within .pita-casa {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pita-casa {
+    animation: none;
+  }
+}

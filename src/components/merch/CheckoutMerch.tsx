@@ -8,7 +8,7 @@ import { ApiError, NetworkError, cekPesananMerchandise, pesanMerchandise, type M
 import { KolomIsian } from "@/components/auth/KolomIsian";
 import { useSesi } from "@/lib/auth-state";
 import { rupiah } from "@/lib/katalog";
-import { gabungKatalog, linkBayar, useKatalogMerch } from "@/lib/merch";
+import { gabungKatalog, linkBayar, namaSku, useKatalogMerch, type DataSku } from "@/lib/merch";
 import { kelasTombol } from "@/lib/tombol";
 import { kosongkanKeranjangTersimpan, useKeranjangMerch } from "./keranjang-merch";
 
@@ -53,6 +53,7 @@ export function CheckoutMerch() {
   const keranjang = useKeranjangMerch();
   const [mengirim, setMengirim] = useState(false);
   const [galat, setGalat] = useState("");
+  const [diwakilkan, setDiwakilkan] = useState(false);
 
   if (katalog.jenis === "memuat" || !keranjang.siap) {
     return <p role="status" className={`${PANEL} ${BODY}`}>Memuat keranjang…</p>;
@@ -62,20 +63,17 @@ export function CheckoutMerch() {
     return <p role="alert" className={`${PANEL} ${BODY}`}>Belum bisa memuat katalog merchandise. Coba muat ulang halaman.</p>;
   }
 
-  const data = katalog.katalog;
-  const produk = gabungKatalog(data);
-  const semuaBaris = keranjang.isi.map((row) => ({ row, produk: produk.find((p) => p.id === row.id) }));
-  const baris = semuaBaris.filter((b): b is { row: (typeof keranjang.isi)[number]; produk: (typeof produk)[number] } => !!b.produk);
-  const total = baris.reduce((sum, { row, produk: p }) => sum + (p.harga ?? 0) * row.jumlah, 0);
-  const masalah = data.mode === "disabled"
+  const data = gabungKatalog(katalog.katalog);
+  const semuaBaris = keranjang.isi.map((row) => ({ row, sku: data.sku.get(row.id) }));
+  const baris = semuaBaris.filter((b): b is { row: (typeof keranjang.isi)[number]; sku: DataSku } => !!b.sku);
+  const total = baris.reduce((sum, { row, sku }) => sum + sku.harga * row.jumlah, 0);
+  const masalah = !data.dibuka
     ? "Pembelian merchandise belum dibuka."
     : semuaBaris.length === 0
       ? "Keranjangmu masih kosong."
       : baris.length < semuaBaris.length
         ? "Ada produk di keranjang yang sudah tidak tersedia."
-      : baris.some(({ produk: p }) => p.harga === null)
-        ? "Ada produk yang belum punya harga."
-        : baris.some(({ row, produk: p }) => (p.stok ?? 0) < row.jumlah)
+        : baris.some(({ row, sku }) => sku.stok < row.jumlah)
           ? "Ada produk yang stoknya kurang dari jumlah di keranjang."
           : null;
 
@@ -105,14 +103,14 @@ export function CheckoutMerch() {
     setGalat("");
     try {
       selesai(await pesanMerchandise(kunci, {
-        items: baris.map(({ row, produk: p }) => ({ sku: p.id, quantity: row.jumlah, expectedUnitPrice: p.harga ?? 0 })),
+        items: baris.map(({ row, sku }) => ({ sku: sku.sku, quantity: row.jumlah, expectedUnitPrice: sku.harga })),
         buyerName: kolom("buyerName"),
         buyerEmail: kolom("buyerEmail"),
         buyerPhone: kolom("buyerPhone"),
         buyerCategory: kolom("buyerCategory"),
         institution: kolom("institution") || undefined,
         pickupSession: kolom("pickupSession"),
-        pickupName: kolom("pickupName") || undefined,
+        pickupName: diwakilkan ? kolom("pickupName") || undefined : undefined,
         notes: kolom("notes") || undefined,
       }));
       return;
@@ -144,10 +142,10 @@ export function CheckoutMerch() {
       <section aria-labelledby="judul-ringkasan" className="flex flex-col gap-4">
         <h2 id="judul-ringkasan" className={SUBJUDUL}>Ringkasan Pesanan</h2>
         <ul className="divide-y divide-bkui-coklat/20">
-          {baris.map(({ row, produk: p }) => (
-            <li key={p.id} className={`flex flex-wrap justify-between gap-2 py-3 ${BODY}`}>
-              <span>{p.nama} × {row.jumlah}</span>
-              <span>{rupiah((p.harga ?? 0) * row.jumlah)}</span>
+          {baris.map(({ row, sku }) => (
+            <li key={sku.sku} className={`flex flex-wrap justify-between gap-2 py-3 ${BODY}`}>
+              <span>{namaSku(sku)} × {row.jumlah}</span>
+              <span>{rupiah(sku.harga * row.jumlah)}</span>
             </li>
           ))}
         </ul>
@@ -160,7 +158,7 @@ export function CheckoutMerch() {
 
       <section aria-labelledby="judul-pemesan" className="flex flex-col gap-4">
         <h2 id="judul-pemesan" className={SUBJUDUL}>Data Pemesan</h2>
-        <p className={BODY}>Bayar dengan QRIS lewat Midtrans dalam 20 menit, lalu ambil pesanan di booth BKUI.</p>
+        <p className={BODY}>Bayar dengan QRIS lewat Midtrans dalam 20 menit. Setelah lunas, kamu mendapat QR pengambilan untuk ditunjukkan di booth merch saat main event.</p>
         <div className="grid gap-4 sm:grid-cols-2">
           <KolomIsian label="Nama lengkap" name="buyerName" autoComplete="name" minLength={2} maxLength={50} defaultValue={user?.fullName ?? ""} required />
           <KolomIsian label="Email aktif" name="buyerEmail" type="email" autoComplete="email" maxLength={254} defaultValue={user?.email ?? ""} required />
@@ -178,8 +176,14 @@ export function CheckoutMerch() {
               {SESI.map((v) => <option key={v}>{v}</option>)}
             </select>
           </label>
-          <div className="sm:col-span-2">
-            <KolomIsian label="Nama pengambil jika diwakilkan (opsional)" name="pickupName" autoComplete="off" maxLength={100} />
+          <div className="flex flex-col gap-3 sm:col-span-2">
+            <label className={`${LABEL} flex-row items-center gap-3`}>
+              <input type="checkbox" className="size-5 accent-bkui-oren" checked={diwakilkan} onChange={(e) => setDiwakilkan(e.target.checked)} />
+              Pengambilan diwakilkan orang lain
+            </label>
+            {diwakilkan && (
+              <KolomIsian label="Nama pengambil (sesuai identitas)" name="pickupName" autoComplete="off" minLength={2} maxLength={100} required />
+            )}
           </div>
           <label className={`${LABEL} sm:col-span-2`}>Catatan (opsional)
             <textarea className={`${PILIHAN} h-auto py-2`} name="notes" maxLength={500} rows={3} />

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 import { rupiah, type ItemKatalog } from "@/lib/katalog";
@@ -18,6 +19,8 @@ interface KartuKatalogProps {
   /** Aksi keranjang untuk pratinjau merchandise; tiket tetap memakai Yesplis. */
   onTambahKeranjang?: () => void;
   teksNonaktif?: string;
+  /** Teks tombol keranjang, mis. "Pilih Varian" untuk produk bervarian. */
+  teksTambah?: string;
   /**
    * Gerak masuk yang lebih terasa. Dipakai halaman Tiket, yang isinya cuma
    * tiga kartu dan muat satu layar — di sana gerak halus nyaris tidak terbaca.
@@ -31,8 +34,10 @@ export function KartuKatalog({
   onLihatDetail,
   onTambahKeranjang,
   teksNonaktif,
+  teksTambah = "Tambah",
   tegas = false,
 }: KartuKatalogProps) {
+  const foto = item.foto?.[0];
   return (
     <motion.article
       variants={tegas ? MUNCUL_TEGAS : MUNCUL}
@@ -41,21 +46,24 @@ export function KartuKatalog({
       className="group flex flex-col gap-7 rounded-3xl bg-bkui-krem-kartu p-6 drop-shadow-[0_4px_2px_rgba(0,0,0,0.1)]"
     >
       {/*
-        Foto produknya belum ada — di Figma pun kotaknya masih kosong. Tingginya
-        dikunci 200px supaya kartu tidak berubah ukuran begitu fotonya masuk.
+        Tinggi kotak foto dikunci 200px supaya kartu sejajar. Foto e-catalog
+        rasionya beragam, jadi `object-contain`: tidak ada produk yang terpotong.
+        Yang membesar saat ditunjuk isinya, bingkainya tetap.
       */}
-      {/*
-        `overflow-hidden` + isian yang membesar saat kartunya ditunjuk: fotonya
-        seolah mendekat di balik jendela kartu, bukan seluruh kartu yang
-        membengkak. Yang membesar isinya, bingkainya tetap — itu yang bikin
-        terbaca sebagai jendela.
-      */}
-      <div className="h-[200px] w-full overflow-hidden rounded-2xl bg-bkui-navbar">
-        <div className="flex size-full items-center justify-center transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
-          {!onTambahKeranjang && <span className="px-4 text-center font-ui text-sm text-bkui-teks/55">
-            Foto resmi segera hadir
-          </span>}
-        </div>
+      <div className="relative h-[200px] w-full overflow-hidden rounded-2xl bg-bkui-navbar">
+        {foto ? (
+          <Image
+            src={foto}
+            alt={item.nama}
+            fill
+            sizes="(min-width: 1280px) 30vw, (min-width: 640px) 45vw, 90vw"
+            className="object-contain p-2 transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          />
+        ) : (
+          <div className="flex size-full items-center justify-center">
+            <span className="px-4 text-center font-ui text-sm text-bkui-teks/55">Foto resmi segera hadir</span>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-4">
@@ -87,10 +95,10 @@ export function KartuKatalog({
             <button
               type="button"
               onClick={onTambahKeranjang}
-              aria-label={`Tambah ${item.nama} ke keranjang`}
+              aria-label={teksTambah === "Tambah" ? `Tambah ${item.nama} ke keranjang` : `${teksTambah} ${item.nama}`}
               className="tombol-kertas h-12 shrink-0 cursor-pointer rounded-3xl bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-8 font-ui text-base font-medium text-bkui-coklat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau"
             >
-              Keranjang
+              {teksTambah}
             </button>
           ) : urlYesplis ? (
             <a

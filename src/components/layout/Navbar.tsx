@@ -100,6 +100,21 @@ export function Navbar() {
           <ul className="hidden flex-1 items-center justify-center gap-2 px-2 xl:flex min-[1440px]:gap-5 min-[1440px]:px-5">
             {menu.map((item) => {
               const aktif = halamanAktif(item.href);
+              if (item.nonaktif) {
+                return (
+                  <motion.li key={item.href} layout="position" className="relative">
+                    <span
+                      role="link"
+                      aria-disabled="true"
+                      title={item.nonaktif}
+                      className="relative inline-flex h-16 cursor-not-allowed items-center justify-center rounded-full px-5 font-ui text-lg font-medium leading-none text-bkui-teks-nonaktif min-[1440px]:px-9 min-[1440px]:text-xl"
+                    >
+                      {item.label}
+                      <span className="sr-only"> ({item.nonaktif})</span>
+                    </span>
+                  </motion.li>
+                );
+              }
               return (
                 <motion.li key={item.href} layout="position" className="relative">
                   <Link
@@ -194,6 +209,16 @@ export function Navbar() {
                 <ul className="flex flex-col py-2">
                   {menu.map((item) => {
                     const aktif = halamanAktif(item.href);
+                    if (item.nonaktif) {
+                      return (
+                        <li key={item.href} className="relative">
+                          <span role="link" aria-disabled="true" className="block cursor-not-allowed rounded-lg px-3 py-2.5 text-base text-bkui-teks-nonaktif">
+                            {item.label}
+                            <span className="block text-xs">{item.nonaktif}</span>
+                          </span>
+                        </li>
+                      );
+                    }
                     return (
                       <li key={item.href} className="relative">
                         <Link

@@ -52,12 +52,12 @@ export function useKeranjangMerch() {
     }
   }, [isi, siap]);
 
-  const tambah = (id: string) => {
+  const tambah = (id: string, jumlah = 1) => {
     setIsi((lama) => {
       const ada = lama.some((row) => row.id === id);
       return ada
-        ? lama.map((row) => row.id === id ? { ...row, jumlah: Math.min(BATAS_JUMLAH, row.jumlah + 1) } : row)
-        : [...lama, { id, jumlah: 1 }];
+        ? lama.map((row) => row.id === id ? { ...row, jumlah: Math.min(BATAS_JUMLAH, row.jumlah + jumlah) } : row)
+        : [...lama, { id, jumlah: Math.min(BATAS_JUMLAH, jumlah) }];
     });
   };
 

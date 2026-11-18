@@ -1,14 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { rupiah } from "@/lib/katalog";
 import { kelasTombol } from "@/lib/tombol";
-import type { Produk } from "@/lib/merch-content";
+import { namaSku, type KatalogTampil } from "@/lib/merch";
 import { BATAS_JUMLAH, type IsiKeranjang } from "./keranjang-merch";
 
 interface KeranjangProps {
-  produk: readonly Produk[];
-  dibuka: boolean;
+  katalog: KatalogTampil;
   isi: readonly IsiKeranjang[];
   onCheckout: () => void;
   onUbahJumlah: (id: string, jumlah: number) => void;
@@ -18,18 +18,17 @@ interface KeranjangProps {
 
 const KONTROL = "inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-bkui-coklat/30 font-ui text-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-hijau disabled:opacity-40";
 
-export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, onUbahJumlah, onHapus, onTutup }: KeranjangProps) {
+export function KeranjangMerch({ katalog, isi, onCheckout, onUbahJumlah, onHapus, onTutup }: KeranjangProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const jumlah = isi.reduce((total, row) => total + row.jumlah, 0);
-  const baris = isi.map((row) => ({ row, produk: daftarProduk.find((p) => p.id === row.id) }));
-  const total = baris.reduce((sum, { row, produk }) => sum + (produk?.harga ?? 0) * row.jumlah, 0);
+  const dibuka = katalog.dibuka;
+  const baris = isi.map((row) => ({ row, data: katalog.sku.get(row.id) }));
+  const total = baris.reduce((sum, { row, data }) => sum + (data?.harga ?? 0) * row.jumlah, 0);
   const masalah = !dibuka
-    ? "Pembelian merchandise belum dibuka."
-    : baris.some(({ produk }) => !produk)
+    ? "Pembelian merchandise belum dibuka. Pantau Instagram @bkui.official untuk jadwalnya."
+    : baris.some(({ data }) => !data)
       ? "Ada produk yang sudah tidak tersedia. Hapus dulu dari keranjang."
-    : baris.some(({ produk }) => produk?.harga == null)
-      ? "Ada produk yang belum punya harga. Hapus dulu dari keranjang."
-      : baris.some(({ row, produk }) => (produk?.stok ?? 0) < row.jumlah)
+      : baris.some(({ row, data }) => (data?.stok ?? 0) < row.jumlah)
         ? "Ada produk yang stoknya kurang dari jumlah di keranjang."
         : null;
 
@@ -58,8 +57,8 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
       ) : (
         <>
           <ul className="mt-6 divide-y divide-bkui-coklat/20">
-            {baris.map(({ row, produk }) => {
-              if (!produk) {
+            {baris.map(({ row, data }) => {
+              if (!data) {
                 return (
                   <li key={row.id} className="flex items-center justify-between gap-4 py-5">
                     <p className="font-ui font-semibold">Produk {row.id} sudah tidak tersedia</p>
@@ -67,15 +66,18 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
                   </li>
                 );
               }
+              const produk = { nama: namaSku(data) };
+              const foto = data.produk.foto?.[0];
               return (
                 <li key={row.id} className="flex flex-wrap items-center justify-between gap-4 py-5">
-                  <div className="min-w-0 flex-1 basis-[200px]">
+                  {foto && <Image src={foto} alt="" width={64} height={64} className="size-16 shrink-0 rounded-xl bg-white object-contain p-1" />}
+                  <div className="min-w-0 flex-1 basis-[180px]">
                     <h3 className="font-ui text-lg font-semibold">{produk.nama}</h3>
                     <p className="mt-1 text-sm">
-                      {produk.harga === null ? "Harga segera diumumkan" : `${rupiah(produk.harga)} × ${row.jumlah} = ${rupiah(produk.harga * row.jumlah)}`}
+                      {`${rupiah(data.harga)} × ${row.jumlah} = ${rupiah(data.harga * row.jumlah)}`}
                     </p>
-                    {produk.stok !== null && produk.stok < row.jumlah && (
-                      <p className="mt-1 text-sm font-semibold text-bkui-galat">Sisa stok {produk.stok}</p>
+                    {data.stok < row.jumlah && (
+                      <p className="mt-1 text-sm font-semibold text-bkui-galat">Sisa stok {data.stok}</p>
                     )}
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -89,7 +91,7 @@ export function KeranjangMerch({ produk: daftarProduk, dibuka, isi, onCheckout, 
             })}
           </ul>
           <p className="mt-4 font-ui text-[28px] font-semibold leading-[1.2]">
-            {dibuka && !masalah ? `Total: ${rupiah(total)}` : "Total menyusul setelah harga tersedia."}
+            {dibuka && !masalah ? `Total: ${rupiah(total)}` : "Total dihitung saat penjualan dibuka."}
           </p>
           {masalah && <p role="status" className="mt-4 rounded-xl border border-bkui-coklat/20 bg-white/70 px-4 py-3 font-body text-sm font-medium leading-[1.35]">{masalah}</p>}
           <button

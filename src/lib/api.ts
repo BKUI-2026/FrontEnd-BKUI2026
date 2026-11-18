@@ -468,10 +468,12 @@ export interface MerchProduct {
 
 export interface MerchCatalog {
   mode: 'disabled' | 'sandbox' | 'production';
+  /** Toko dibuka panitia dari panel admin. Katalog tetap tampil saat tutup. */
+  saleOpen: boolean;
   products: MerchProduct[];
 }
 
-export type MerchOrderStatus = 'PENDING' | 'PAID' | 'EXPIRED' | 'CANCELLED' | 'FAILED';
+export type MerchOrderStatus = 'PENDING' | 'PAID' | 'CLAIMED' | 'EXPIRED' | 'CANCELLED' | 'FAILED';
 
 export interface MerchOrderItem {
   sku: string;
@@ -490,6 +492,10 @@ export interface MerchOrder {
   createdAt: string;
   expiresAt: string;
   paidAt: string | null;
+  claimedAt: string | null;
+  /** Kode klaim dan gambar QR-nya (data URL PNG); hanya ada saat PAID. */
+  claimCode: string | null;
+  claimQr: string | null;
   pickupSession: string;
   pickupName: string | null;
   paymentUrl: string | null;
@@ -511,7 +517,7 @@ export async function ambilMerchandise(): Promise<MerchCatalog> {
   try {
     return await kirim('/merchandise/products', { cache: 'no-store', autoRefresh: false });
   } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return { mode: 'disabled', products: [] };
+    if (error instanceof ApiError && error.status === 404) return { mode: 'disabled', saleOpen: false, products: [] };
     throw error;
   }
 }

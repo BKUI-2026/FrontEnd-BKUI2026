@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { angkaRupiah, type ItemKatalog } from "@/lib/katalog";
 
@@ -13,6 +13,16 @@ interface DetailKatalogProps {
   onTutup: () => void;
   onTambahKeranjang?: (item: ItemKatalog) => void;
   teksNonaktif?: string;
+  /**
+   * Pengganti tombol CTA, mis. pemilih varian merchandise. `pilihFoto`
+   * menggeser carousel ke foto varian yang dipilih.
+   */
+  aksi?: (kontrol: KontrolDetail) => ReactNode;
+}
+
+export interface KontrolDetail {
+  pilihFoto: (indeks: number) => void;
+  tutup: () => void;
 }
 
 /**
@@ -39,7 +49,7 @@ interface DetailKatalogProps {
  * Aksi mengikuti halaman pemanggil: merchandise bisa menambahkan produk ke
  * keranjang pratinjau, sedangkan tiket tetap diarahkan ke Yesplis.
  */
-export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang, teksNonaktif }: DetailKatalogProps) {
+export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang, teksNonaktif, aksi }: DetailKatalogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   /*
    * `onTutup` disimpan di ref supaya listener `close` di bawah tidak perlu
@@ -99,7 +109,7 @@ export function DetailKatalog({ item, urlYesplis, onTutup, onTambahKeranjang, te
       className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[1282px] overflow-y-auto overscroll-contain bg-transparent p-0 backdrop:bg-black/50"
     >
       {item && (
-        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} onTambahKeranjang={onTambahKeranjang} teksNonaktif={teksNonaktif} />
+        <IsiDetail key={item.id} item={item} urlYesplis={urlYesplis} onTutup={onTutup} onTambahKeranjang={onTambahKeranjang} teksNonaktif={teksNonaktif} aksi={aksi} />
       )}
     </dialog>
   );
@@ -111,12 +121,14 @@ function IsiDetail({
   onTutup,
   onTambahKeranjang,
   teksNonaktif,
+  aksi,
 }: {
   item: ItemKatalog;
   urlYesplis: string;
   onTutup: () => void;
   onTambahKeranjang?: (item: ItemKatalog) => void;
   teksNonaktif?: string;
+  aksi?: (kontrol: KontrolDetail) => ReactNode;
 }) {
   const [foto, setFoto] = useState(0);
 
@@ -139,10 +151,20 @@ function IsiDetail({
           Area foto. Rasionya dikunci 600:446 sesuai Figma supaya tinggi
           overlay tidak berubah saat foto aslinya nanti masuk.
         */}
-        <div className="relative aspect-[600/446] w-full shrink-0 overflow-hidden rounded bg-bkui-coklat lg:w-[52%]">
-          <p className="absolute inset-0 flex items-center justify-center font-ui text-sm text-bkui-terang/45">
-            Pratinjau foto {foto + 1} segera hadir
-          </p>
+        <div className={`relative aspect-[600/446] w-full shrink-0 overflow-hidden rounded lg:w-[52%] ${item.foto?.length ? "bg-white" : "bg-bkui-coklat"}`}>
+          {item.foto?.[foto] ? (
+            <Image
+              src={item.foto[foto]}
+              alt={`${item.nama}, foto ${foto + 1} dari ${item.jumlahFoto}`}
+              fill
+              sizes="(min-width: 1024px) 600px, 90vw"
+              className="object-contain p-3"
+            />
+          ) : (
+            <p className="absolute inset-0 flex items-center justify-center font-ui text-sm text-bkui-terang/45">
+              Pratinjau foto {foto + 1} segera hadir
+            </p>
+          )}
 
           <TombolGeser arah="mundur" onClick={() => geser(-1)} />
           <TombolGeser arah="maju" onClick={() => geser(1)} />
@@ -157,7 +179,7 @@ function IsiDetail({
                 aria-current={i === foto}
                 className="flex size-11 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang"
               >
-                <span aria-hidden className={`size-2 rounded-full bg-bkui-terang transition-opacity ${i === foto ? "opacity-100" : "opacity-40"}`} />
+                <span aria-hidden className={`size-2 rounded-full transition-opacity ${item.foto?.length ? "bg-bkui-coklat" : "bg-bkui-terang"} ${i === foto ? "opacity-100" : "opacity-40"}`} />
               </button>
             ))}
           </div>
@@ -188,7 +210,9 @@ function IsiDetail({
             {item.deskripsi}
           </p>
 
-          {onTambahKeranjang ? (
+          {aksi ? (
+            aksi({ pilihFoto: (i) => setFoto(Math.max(0, Math.min(item.jumlahFoto - 1, i))), tutup: onTutup })
+          ) : onTambahKeranjang ? (
             <button
               type="button"
               onClick={() => { onTambahKeranjang(item); onTutup(); }}
@@ -232,7 +256,7 @@ function TombolGeser({ arah, onClick }: { arah: "maju" | "mundur"; onClick: () =
       type="button"
       onClick={onClick}
       aria-label={maju ? "Foto berikutnya" : "Foto sebelumnya"}
-      className={`absolute top-1/2 z-10 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang ${
+      className={`absolute top-1/2 z-10 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-bkui-coklat/60 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bkui-terang ${
         maju ? "right-3" : "left-3"
       }`}
     >

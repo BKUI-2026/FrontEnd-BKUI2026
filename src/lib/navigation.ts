@@ -31,6 +31,12 @@ export interface NavItem {
   label: string;
   href: string;
   tampilUntuk: TampilUntuk;
+  /**
+   * Diisi alasan singkat bila menu sengaja dimatikan, mis. pendaftaran sudah
+   * ditutup. Menu tetap tampil sebagai tombol nonaktif, bukan dihapus, supaya
+   * pengunjung tahu programnya ada tetapi tidak sedang dibuka.
+   */
+  nonaktif?: string;
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
@@ -44,7 +50,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
    * mendaftar lagi cuma membingungkan. Statusnya ada di halaman "Acara Saya"
    * pada dashboard, yang dijangkau lewat avatar di navbar.
    */
-  { label: "Daftar Mentoring", href: "/daftar-mentoring", tampilUntuk: "belumSiswa" },
+  { label: "Daftar Mentoring", href: "/daftar-mentoring", tampilUntuk: "belumSiswa", nonaktif: "Pendaftaran mentoring sudah ditutup" },
   { label: "Merchandise", href: "/merchandise", tampilUntuk: "semua" },
 ] as const;
 

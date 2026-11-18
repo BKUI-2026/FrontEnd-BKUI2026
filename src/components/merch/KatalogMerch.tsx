@@ -4,131 +4,100 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
-import { produkUntuk, type Kategori, type Produk } from "@/lib/merch-content";
-import { alasanTidakBisaDibeli, bisaDibeli, gabungKatalog, useKatalogMerch } from "@/lib/merch";
+import type { ProdukMerch } from "@/lib/merch-content";
+import { alasanTidakBisaDibeli, gabungKatalog, useKatalogMerch } from "@/lib/merch";
 import { BERURUTAN, SEKALI_MASUK } from "@/components/explore/gerak";
-import { FilterMerch } from "./FilterMerch";
 import { KartuKatalog } from "@/components/katalog/KartuKatalog";
 import { DetailKatalog } from "@/components/katalog/DetailKatalog";
 import { KeranjangMerch } from "./KeranjangMerch";
+import { PemilihVarian } from "./PemilihVarian";
+import { TombolCheckout } from "./TombolCheckout";
 import { useKeranjangMerch } from "./keranjang-merch";
 
 /**
- * Katalog merchandise: panel penyaring di kiri, kisi produk di kanan.
+ * Katalog merchandise: kisi produk, overlay detail dengan pemilih varian, dan
+ * tombol Checkout mengambang di kiri bawah.
  *
- * Satu-satunya tempat yang memegang state pilihan kategori. `FilterMerch` dan
- * `KartuMerch` sengaja tanpa state sendiri supaya bisa dipakai ulang.
- *
- * `key` pada pembungkus kisi memaksa kartu dibuat ulang tiap kali saringannya
- * berubah, sehingga animasi "muncul" jalan lagi untuk hasil yang baru — tanpa
- * itu React memakai ulang elemen lama dan isinya berganti begitu saja.
- *
- * Di bawah `lg` panel filter naik ke atas kisi dan kotak centangnya berbaris
- * mendatar: sidebar 212px di layar 390px akan menyisakan lebar kartu yang tidak
- * terbaca.
+ * Produk tanpa varian langsung masuk keranjang dari kartunya. Produk bervarian
+ * membuka overlay detail lebih dulu karena SKU-nya baru jelas setelah warna /
+ * ukuran / desain dipilih.
  */
 export function KatalogMerch() {
   const router = useRouter();
-  const [terpilih, setTerpilih] = useState<readonly Kategori[]>([]);
-  const katalog = useKatalogMerch();
-  const dataKatalog = katalog.jenis === "siap" ? katalog.katalog : null;
-  const semuaProduk = gabungKatalog(dataKatalog);
-  const dibuka = dataKatalog !== null && dataKatalog.mode !== "disabled";
+  const keadaan = useKatalogMerch();
+  const katalog = gabungKatalog(keadaan.jenis === "siap" ? keadaan.katalog : null);
   const keranjang = useKeranjangMerch();
   const [keranjangTerbuka, setKeranjangTerbuka] = useState(false);
   const [pesan, setPesan] = useState("");
   const totalItem = keranjang.isi.reduce((total, row) => total + row.jumlah, 0);
-  const tambah = (id: string, nama: string) => {
-    keranjang.tambah(id);
-    setPesan(`${nama} ditambahkan ke keranjang.`);
-  };
   /*
-   * Overlay detail dipegang di sini, satu untuk seluruh katalog — bukan satu
-   * <dialog> per kartu. Sembilan dialog yang isinya sama cuma menggandakan
-   * markup tanpa guna; yang tampil toh selalu satu.
+   * Satu overlay detail untuk seluruh katalog. `pembuka` dipakai sebagai `key`
+   * supaya overlay selalu dipasang ulang saat dibuka, termasuk untuk kartu yang
+   * sama, dan carousel kembali ke foto pertama.
    */
-  const [detail, setDetail] = useState<Produk | null>(null);
-  /*
-   * Penghitung yang naik tiap kali detail diminta, dipakai sebagai `key`
-   * <DetailMerch>.
-   *
-   * Kelihatannya berlebihan, tapi menutup satu mode gagal yang buruk: overlay
-   * dibuka lewat `showModal()` dari dalam effect yang bergantung pada `produk`.
-   * Kalau karena satu dan lain hal state tidak sempat kembali null saat overlay
-   * ditutup, menekan "Lihat Detail" pada kartu yang SAMA tidak mengubah state,
-   * effect-nya tidak jalan, dan kartu itu mati selamanya — sementara kartu lain
-   * tetap normal, jadi bug-nya sulit ditemukan.
-   *
-   * Dengan `key` yang selalu berubah, komponennya dipasang ulang dan overlay
-   * pasti terbuka. Efek sampingnya kebetulan diinginkan: carousel fotonya ikut
-   * kembali ke foto pertama.
-   */
+  const [detail, setDetail] = useState<ProdukMerch | null>(null);
   const [pembuka, setPembuka] = useState(0);
 
-  const bukaDetail = (produk: Produk) => {
+  const bukaDetail = (produk: ProdukMerch) => {
     setDetail(produk);
     setPembuka((n) => n + 1);
   };
-  const daftar = produkUntuk(semuaProduk, terpilih);
-  const tombolBeli = (produk: Produk) => !dibuka || bisaDibeli(produk, dataKatalog);
 
-  const ubah = (kategori: Kategori) =>
-    setTerpilih((lama) =>
-      lama.includes(kategori) ? lama.filter((k) => k !== kategori) : [...lama, kategori],
-    );
+  const tambah = (sku: string, jumlah: number) => {
+    keranjang.tambah(sku, jumlah);
+    const data = katalog.sku.get(sku);
+    setPesan(`${data ? data.produk.nama : sku} ditambahkan ke keranjang.`);
+  };
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-[25px]">
-      <div className="lg:w-[212px] lg:shrink-0">
-        <FilterMerch terpilih={terpilih} onUbah={ubah} />
-        <button
-          type="button"
-          onClick={() => setKeranjangTerbuka(true)}
-          disabled={!keranjang.siap}
-          className="tombol-kertas mt-4 min-h-12 w-full rounded-full bg-gradient-to-b from-bkui-oren to-bkui-oren-muda px-4 py-3 font-ui font-medium text-bkui-coklat disabled:opacity-60"
-        >
-          Keranjang ({totalItem})
-        </button>
-        <p role="status" className="sr-only">{pesan}</p>
-      </div>
-
+    <>
       <motion.div
-        key={terpilih.join("|")}
         variants={BERURUTAN}
         initial="sembunyi"
         whileInView="tampil"
         viewport={SEKALI_MASUK}
-        className="grid min-w-0 flex-1 gap-x-4 gap-y-6 sm:grid-cols-2 xl:grid-cols-3"
+        className="grid min-w-0 gap-x-4 gap-y-6 sm:grid-cols-2 xl:grid-cols-3"
       >
-        {daftar.map((produk) => (
-          <KartuKatalog
-            key={produk.id}
-            item={produk}
-            urlYesplis=""
-            onLihatDetail={() => bukaDetail(produk)}
-            onTambahKeranjang={tombolBeli(produk) ? () => tambah(produk.id, produk.nama) : undefined}
-            teksNonaktif={alasanTidakBisaDibeli(produk)}
-          />
-        ))}
+        {katalog.produk.map((produk) => {
+          const alasan = alasanTidakBisaDibeli(produk, katalog);
+          const bervarian = produk.varian.length > 0;
+          return (
+            <KartuKatalog
+              key={produk.id}
+              item={produk}
+              urlYesplis=""
+              onLihatDetail={() => bukaDetail(produk)}
+              onTambahKeranjang={alasan ? undefined : bervarian ? () => bukaDetail(produk) : () => tambah(produk.skuDasar, 1)}
+              teksTambah={bervarian ? "Pilih Varian" : "Tambah"}
+              teksNonaktif={alasan ?? undefined}
+            />
+          );
+        })}
       </motion.div>
+      <p role="status" className="sr-only">{pesan}</p>
 
       <DetailKatalog
         key={pembuka}
         item={detail}
         urlYesplis=""
         onTutup={() => setDetail(null)}
-        onTambahKeranjang={detail && tombolBeli(detail) ? (produk) => tambah(produk.id, produk.nama) : undefined}
-        teksNonaktif={detail ? alasanTidakBisaDibeli(detail) : undefined}
+        aksi={detail ? (kontrol) => (
+          <PemilihVarian produk={detail} katalog={katalog} kontrol={kontrol} onTambah={tambah} />
+        ) : undefined}
       />
-      {keranjangTerbuka && <KeranjangMerch
-        produk={semuaProduk}
-        dibuka={dibuka}
-        isi={keranjang.isi}
-        onCheckout={() => router.push("/checkout")}
-        onUbahJumlah={keranjang.ubahJumlah}
-        onHapus={keranjang.hapus}
-        onTutup={() => setKeranjangTerbuka(false)}
-      />}
-    </div>
+
+      {keranjang.siap && <TombolCheckout jumlah={totalItem} onClick={() => setKeranjangTerbuka(true)} />}
+
+      {keranjangTerbuka && (
+        <KeranjangMerch
+          katalog={katalog}
+          isi={keranjang.isi}
+          onCheckout={() => router.push("/checkout")}
+          onUbahJumlah={keranjang.ubahJumlah}
+          onHapus={keranjang.hapus}
+          onTutup={() => setKeranjangTerbuka(false)}
+        />
+      )}
+    </>
   );
 }
