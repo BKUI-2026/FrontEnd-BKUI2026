@@ -17,7 +17,7 @@ export default function MerchandiseCatalogPage() {
                 Merchandise Eksklusif
               </JudulSticker>
               <p className="rounded-full bg-bkui-krem-kartu px-5 py-2 text-center font-body text-sm font-medium leading-[1.35] text-bkui-teks shadow-sm sm:text-base">
-                Merch akan diambil di main event.
+                Merch dapat diambil di Puncak Acara BKUI 2026. Pastikan kamu sudah memiliki tiketnya, ya!
               </p>
             </div>
 
